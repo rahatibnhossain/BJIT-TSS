@@ -2,7 +2,7 @@ import SplitScreen from "./layouts/SplitScreen"
 
 const LeftHandComponent = ({name}) => {
   return (
-    <h2 style={{ backgroundColor: "red" }} >Hello {name}</h2>
+    <h2 style={{ backgroundColor: "red" }} >Hello d {name}</h2>
   )
 }
 
