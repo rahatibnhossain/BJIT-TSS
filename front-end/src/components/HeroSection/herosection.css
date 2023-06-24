@@ -1,0 +1,12 @@
+.hero-section {
+    min-height: 80vh;
+    background-color: rgb(198, 198, 200);
+  }
+
+  
+@media (max-width: 798px) {
+  .hero-section {
+    min-height: 0px;
+
+  }
+}
