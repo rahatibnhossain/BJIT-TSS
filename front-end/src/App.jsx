@@ -8,7 +8,7 @@ function App() {
   return (
     <>
 
-        <Header logedIn={true} admin={true} />
+        <Header logedIn={false} admin={true} />
         <HeroSection>
           <Home />
         </HeroSection>
