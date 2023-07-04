@@ -26,11 +26,9 @@ public class ExamineeInfo {
     @JoinColumn(name = "user_id")
     private UserInfo userInfo;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "course_id")
     private CourseInfo courseInfo;
-
-
 
     private Date applicationTime;
     private String role;

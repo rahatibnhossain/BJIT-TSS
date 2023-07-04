@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -19,9 +20,11 @@ public class CourseInfo {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long courseId;
     private String courseName;
-    private String applicationDeadline;
-    private String startDate;
-    private String endDate;
+    private Date applicationDeadline;
+    private Date startDate;
+    private Date endDate;
+    private String batchCode;
+
 
 
 

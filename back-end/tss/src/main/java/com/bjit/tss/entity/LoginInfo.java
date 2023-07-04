@@ -25,4 +25,8 @@ public class LoginInfo {
     @JoinColumn(name = "user_id")
     private UserInfo userInfo;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "evaluator_id")
+    private EvaluatorInfo evaluatorInfo;
+
 }
