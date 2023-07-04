@@ -26,9 +26,11 @@ public class ExamineeInfo {
     @JoinColumn(name = "user_id")
     private UserInfo userInfo;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "course_id" , referencedColumnName = "examinee_id")
-    private List<CourseInfo> courseInfo;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "course_id")
+    private CourseInfo courseInfo;
+
+
 
     private Date applicationTime;
     private String role;

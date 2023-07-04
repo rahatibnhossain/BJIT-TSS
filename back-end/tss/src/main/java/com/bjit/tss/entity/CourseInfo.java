@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "course_info")
@@ -21,6 +22,8 @@ public class CourseInfo {
     private String applicationDeadline;
     private String startDate;
     private String endDate;
+
+
 
 
 }
