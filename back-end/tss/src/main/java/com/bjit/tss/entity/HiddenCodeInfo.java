@@ -16,6 +16,8 @@ import javax.persistence.*;
 public class HiddenCodeInfo {
 
     @Id
+    @GeneratedValue
+    @Column(name = "hidden_code")
     private Long hiddenCode;
 
     @OneToOne(cascade = CascadeType.ALL)

@@ -16,7 +16,7 @@ import java.util.Date;
 @Builder
 public class UserInfo {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private Long userId;
     private String firstName;
     private String lastName;

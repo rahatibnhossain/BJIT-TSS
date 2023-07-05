@@ -17,16 +17,14 @@ import java.util.List;
 @Builder
 public class CourseInfo {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
+    @Column(name = "course_id")
     private Long courseId;
     private String courseName;
     private Date applicationDeadline;
     private Date startDate;
     private Date endDate;
     private String batchCode;
-
-
-
-
+    private String courseDescription;
 
 }

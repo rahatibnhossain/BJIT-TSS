@@ -16,6 +16,7 @@ import javax.persistence.*;
 public class TechnicalQuestionMarks {
     @Id
     @GeneratedValue
+    @Column(name = "technical_question_id")
     private Long technicalQuestionId;
     private Float technicalQuestionMark;
     private Integer questionNo;

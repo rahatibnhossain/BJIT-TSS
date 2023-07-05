@@ -15,8 +15,9 @@ import javax.persistence.*;
 @Builder
 public class LoginInfo {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue
+    @Column(name = "login_id")
+    private Long loginId;
     private String email;
     private String password;
     private String role;

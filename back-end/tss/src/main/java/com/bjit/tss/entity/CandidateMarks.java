@@ -15,7 +15,8 @@ public class CandidateMarks {
 
     @Id
     @GeneratedValue
-    private Long id;
+    @Column(name = "candidate_id")
+    private Long candidateId;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "examinee_id")
     private ExamineeInfo examineeInfo;
