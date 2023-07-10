@@ -2,7 +2,7 @@ package com.bjit.tss.entity;
 
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "candidate_marks")
