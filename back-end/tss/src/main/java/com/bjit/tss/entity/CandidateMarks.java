@@ -3,7 +3,6 @@ package com.bjit.tss.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "candidate_marks")
@@ -23,19 +22,19 @@ public class CandidateMarks {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "technical_viva_id")
-    private TechnicalVivaMarks technicalVivaMarks;
+    private RoundMarks technicalViva;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "aptitude_test_id")
-    private AptitudeTestMarks aptitudeTestMarks;
+    private RoundMarks aptitudeTest;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "hr_viva_id")
-    private HRVivaMarks hrVivaMarks;
+    private RoundMarks hrViva;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "written_mark_id")
-    private WrittenVivaMarks writtenVivaMarks;
+    private WrittenMarks writtenVivaMarks;
 
     private Float fullMark;
 }

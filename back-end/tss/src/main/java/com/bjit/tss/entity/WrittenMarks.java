@@ -9,12 +9,12 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "written_viva_marks")
+@Table(name = "written_marks")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class WrittenVivaMarks {
+public class WrittenMarks {
 
     @Id
     @GeneratedValue

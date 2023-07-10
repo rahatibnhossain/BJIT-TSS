@@ -8,17 +8,17 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "aptitude_question_marks")
+@Table(name = "question_marks")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AptitudeQuestionMarks {
+public class QuestionMarks {
     @Id
     @GeneratedValue
-    @Column(name = "aptitude_question_id")
-    private Long aptitudeQuestionId;
-    private Float aptitudeQuestionMark;
+    @Column(name = "question_id")
+    private Long writtenQuestionId;
+    private Float writtenQuestionMark;
     private Integer questionNo;
 
 
