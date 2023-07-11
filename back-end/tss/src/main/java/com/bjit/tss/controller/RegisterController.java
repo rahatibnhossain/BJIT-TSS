@@ -21,7 +21,7 @@ public class RegisterController {
     private final RegisterService registerService;
 
     @PostMapping("/applicant")
-    public ResponseEntity<ApiResponse> applicantRegistration(@RequestBody RegisterRequest registerRequest){
-        return ResponseEntity.ok(registerService.applicantRegistration(registerRequest));
+    public ResponseEntity<ApiResponse<?>> applicantRegistration(@RequestBody RegisterRequest registerRequest){
+        return registerService.applicantRegistration(registerRequest);
     }
 }

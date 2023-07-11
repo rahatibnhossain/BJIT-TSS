@@ -46,7 +46,6 @@ public class JwtService {
             if(isTokenExpired(jwtToken)){
                 return false;
             }
-
             return true;
         }
         catch (Exception ex){
@@ -57,7 +56,6 @@ public class JwtService {
     private boolean isTokenExpired(String jwtToken) {
         return extractExpiration(jwtToken).before(new Date());
     }
-
     private Date extractExpiration(String jwtToken) {
         return extractClaim(jwtToken, Claims::getExpiration);
     }

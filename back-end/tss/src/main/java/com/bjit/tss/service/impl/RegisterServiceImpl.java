@@ -4,12 +4,15 @@ import com.bjit.tss.config.JwtService;
 import com.bjit.tss.entity.LoginInfo;
 import com.bjit.tss.entity.Role;
 import com.bjit.tss.entity.UserInfo;
+import com.bjit.tss.exception.AuthenticationException;
 import com.bjit.tss.model.AuthenticationResponse;
 import com.bjit.tss.model.RegisterRequest;
 import com.bjit.tss.repository.LoginRepository;
 import com.bjit.tss.service.RegisterService;
 import com.bjit.tss.model.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +25,13 @@ public class RegisterServiceImpl implements RegisterService {
     private final LoginRepository loginRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+
     @Override
-    public ApiResponse applicantRegistration(RegisterRequest registerRequest) {
+    public ResponseEntity<ApiResponse<?>> applicantRegistration(RegisterRequest registerRequest) {
         Optional<LoginInfo> checkAvailability = loginRepository.findByEmail(registerRequest.getEmail());
 
-        if (checkAvailability.isPresent()){
-            return new ApiResponse().builder().data("Not Available").build();
+        if (checkAvailability.isPresent()) {
+            throw new AuthenticationException("The Email " + registerRequest.getEmail() + " is already registered");
         }
 
         UserInfo userInfo = UserInfo.builder()
@@ -54,13 +58,14 @@ public class RegisterServiceImpl implements RegisterService {
                 .userInfo(userInfo)
                 .build();
 
-
-
         loginRepository.save(loginInfo);
-        var jwtToken = jwtService.generateToken(loginInfo);
+        String jwtToken = jwtService.generateToken(loginInfo);
         AuthenticationResponse authenticationResponse = AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
-        return new ApiResponse().builder().data(authenticationResponse).build();
+        return new ResponseEntity<ApiResponse<?>>(ApiResponse
+                .builder()
+                .data(authenticationResponse)
+                .build(), HttpStatus.CREATED);
     }
 }
