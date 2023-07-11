@@ -15,3 +15,9 @@ spring:
         dialect: org.hibernate.dialect.MySQL5Dialect
     platform: mysql
 
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+

@@ -7,6 +7,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.hibernate.annotations.DialectOverride;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
@@ -14,9 +15,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+@Service
 public class JwtService {
 
-    private static final String SECRET_KEY= "GyIXX6fJn1aoZ529SFxU0sQ8ULF2G1Uu";
+    private static final String SECRET_KEY= "703373367639792442264529482B4D6251655468576D5A7134743777217A2543";
 
     public String extractUsername(String jwtToken) {
         return extractClaim(jwtToken, Claims::getSubject);
