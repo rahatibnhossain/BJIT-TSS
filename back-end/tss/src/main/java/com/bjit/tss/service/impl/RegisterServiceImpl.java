@@ -2,7 +2,7 @@ package com.bjit.tss.service.impl;
 
 import com.bjit.tss.config.JwtService;
 import com.bjit.tss.entity.LoginInfo;
-import com.bjit.tss.entity.Role;
+import com.bjit.tss.role.Role;
 import com.bjit.tss.entity.UserInfo;
 import com.bjit.tss.exception.AuthenticationException;
 import com.bjit.tss.model.AuthenticationResponse;
@@ -67,5 +67,25 @@ public class RegisterServiceImpl implements RegisterService {
                 .builder()
                 .data(authenticationResponse)
                 .build(), HttpStatus.CREATED);
+    }
+
+    @Override
+    public void adminRegistration(String email, String password) {
+
+
+        Optional<LoginInfo> checkAvailability = loginRepository.findByEmail(email);
+
+        if (checkAvailability.isEmpty()) {
+            LoginInfo loginInfo = LoginInfo.builder()
+                    .email(email)
+                    .password(passwordEncoder.encode(password))
+                    .role(Role.ADMIN)
+                    .build();
+            loginRepository.save(loginInfo);
+
+        }
+
+
+        return;
     }
 }

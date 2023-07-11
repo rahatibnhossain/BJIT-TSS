@@ -44,6 +44,10 @@ public class SecurityConfig {
 
                 )
                 .permitAll()
+                .requestMatchers("")
+                .hasAnyAuthority("ADMIN","APPLICANT")
+                .requestMatchers("/api/course/**")
+                .hasAuthority("ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()

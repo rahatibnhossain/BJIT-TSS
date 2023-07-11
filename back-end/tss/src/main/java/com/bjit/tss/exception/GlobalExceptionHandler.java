@@ -9,14 +9,20 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler
-    public ResponseEntity<ApiResponse> AuthenticationE(Exception ex){
+    public ResponseEntity<ApiResponse<?>> AllEx(Exception ex){
 
         return new ResponseEntity<>(ApiResponse.builder().error_message(ex.getMessage()).build(), HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler({AuthenticationException.class})
-    public ResponseEntity<ApiResponse> Authentication(Exception ex){
+    public ResponseEntity<ApiResponse<?>> AuthenticationEx(Exception ex){
 
         return new ResponseEntity<>(ApiResponse.builder().error_message(ex.getMessage()).build(), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler({CourseException.class})
+    public ResponseEntity<ApiResponse<?>> CourseEX(Exception ex){
+
+        return new ResponseEntity<>(ApiResponse.builder().error_message(ex.getMessage()).build(), HttpStatus.BAD_REQUEST);
     }
 
 }
