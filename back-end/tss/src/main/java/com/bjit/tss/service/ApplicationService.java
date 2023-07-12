@@ -6,4 +6,6 @@ import org.springframework.http.ResponseEntity;
 
 public interface ApplicationService {
     ResponseEntity<ApiResponse<?>> applyCourse(ApplicationRequest applicationRequest);
+
+    ResponseEntity<ApiResponse<?>> allApplicationSpecific(String batchCode);
 }

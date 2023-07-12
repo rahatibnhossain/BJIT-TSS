@@ -17,9 +17,11 @@ import com.bjit.tss.role.Role;
 import com.bjit.tss.service.ApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,10 +36,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public ResponseEntity<ApiResponse<?>> applyCourse(ApplicationRequest applicationRequest) {
 
-        Optional<CourseInfo> courseInfo = courseRepository.findByBatchCode(applicationRequest.getBatchCode());
-        if (courseInfo.isEmpty()) {
-            throw new CourseException("Invalid Batch Code : " + applicationRequest.getBatchCode());
-        }
+
 
         Optional<UserInfo> userInfo = userRepository.findByEmail(applicationRequest.getEmail());
 
@@ -45,11 +44,30 @@ public class ApplicationServiceImpl implements ApplicationService {
             throw new UserException("Invalid user : " + applicationRequest.getEmail());
         }
 
+        LoginInfo loginInfo = (LoginInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (!userInfo.get().getVerified()){
+            throw new UserException("Your Email : " + applicationRequest.getEmail() + " is not verified ");
+
+        }
+        if(!loginInfo.getEmail().equals(userInfo.get().getEmail())){
+            throw new UserException("Invalid Token!!!");
+
+        }
+
+
+
+
+        Optional<CourseInfo> courseInfo = courseRepository.findByBatchCode(applicationRequest.getBatchCode());
+        if (courseInfo.isEmpty()) {
+            throw new CourseException("Invalid Batch Code : " + applicationRequest.getBatchCode());
+        }
         Optional<ExamineeInfo> examinee = examineeRepository.findByUserInfoUserIdAndCourseInfoCourseId(userInfo.get().getUserId(), courseInfo.get().getCourseId());
         if (examinee.isPresent()) {
             throw new ExamineeException("You are already registered for this course");
 
         }
+
 
         ExamineeInfo examineeInfo = ExamineeInfo.builder()
                 .userInfo(userInfo.get())
@@ -60,5 +78,12 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         ExamineeInfo savedApplication = examineeRepository.save(examineeInfo);
         return ApiResponseMapper.mapToResponseEntityCreated(savedApplication);
+    }
+
+
+    @Override
+    public ResponseEntity<ApiResponse<?>> allApplicationSpecific(String batchCode) {
+        Optional<List<ExamineeInfo>> examineeInfos = examineeRepository.findByRoleAndCourseInfoIsAvailableAndCourseInfoBatchCode(Role.APPLICANT, true, batchCode);
+        return ApiResponseMapper.mapToResponseEntityOK(examineeInfos);
     }
 }
