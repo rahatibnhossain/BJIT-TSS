@@ -14,7 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -62,6 +64,12 @@ public class CourseServiceImpl implements CourseService {
         if (course.isEmpty()){
             throw new CourseException("Invalid Batch Code : "+batchCode);
         }
+        Optional<CourseInfo> courseModelCode = courseRepository.findByBatchCode(courseModel.getBatchCode());
+        if (courseModelCode.isPresent() && !Objects.equals(batchCode.toUpperCase() , courseModel.getBatchCode().toUpperCase())){
+            
+            throw new CourseException("This batch code : "+courseModel.getBatchCode()+ " you want to update to already exists");
+        }
+
         CourseInfo courseInfo = CourseMapper.mapToCourseInfo(courseModel);
         courseInfo.setCourseId(course.get().getCourseId());
         CourseInfo savedCourse= courseRepository.save(courseInfo);
