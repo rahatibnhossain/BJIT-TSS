@@ -44,6 +44,8 @@ public class SecurityConfig {
 
                 )
                 .permitAll()
+                .requestMatchers("/api/application/apply")
+                .hasAuthority("APPLICANT")
                 .requestMatchers("/api/course","/api/course/batch_code/**")
                 .hasAnyAuthority("ADMIN","APPLICANT")
                 .requestMatchers("/api/course/**","/api/course/update/batch_code/**")
