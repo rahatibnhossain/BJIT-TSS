@@ -19,4 +19,5 @@ public class CourseModel {
     private Date endDate;
     private String batchCode;
     private String courseDescription;
+    private Boolean isAvailable;
 }

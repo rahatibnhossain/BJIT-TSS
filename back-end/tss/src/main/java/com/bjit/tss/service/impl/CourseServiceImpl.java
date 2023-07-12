@@ -66,7 +66,7 @@ public class CourseServiceImpl implements CourseService {
         }
         Optional<CourseInfo> courseModelCode = courseRepository.findByBatchCode(courseModel.getBatchCode());
         if (courseModelCode.isPresent() && !Objects.equals(batchCode.toUpperCase() , courseModel.getBatchCode().toUpperCase())){
-            
+
             throw new CourseException("This batch code : "+courseModel.getBatchCode()+ " you want to update to already exists");
         }
 

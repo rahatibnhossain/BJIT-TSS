@@ -26,5 +26,6 @@ public class CourseInfo {
     private Date endDate;
     private String batchCode;
     private String courseDescription;
+    private Boolean isAvailable;
 
 }

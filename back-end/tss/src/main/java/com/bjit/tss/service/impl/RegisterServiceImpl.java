@@ -59,10 +59,11 @@ public class RegisterServiceImpl implements RegisterService {
                 .userInfo(userInfo)
                 .build();
 
-        loginRepository.save(loginInfo);
+        LoginInfo saved=  loginRepository.save(loginInfo);
         String jwtToken = jwtService.generateToken(loginInfo);
         AuthenticationResponse authenticationResponse = AuthenticationResponse.builder()
                 .token(jwtToken)
+                .userInfo(saved.getUserInfo())
                 .build();
 
         return ApiResponseMapper.mapToResponseEntityCreated(authenticationResponse);
