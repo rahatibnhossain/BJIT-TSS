@@ -53,7 +53,8 @@ public class SecurityConfig {
                 .requestMatchers(
                         "/api/course/**",
                         "/api/course/update/batch_code/**",
-                        "/api/application/course/**"
+                        "/api/application/course/**",
+                        "/api/approval/applicant"
 
                 )
                 .hasAuthority("ADMIN")
