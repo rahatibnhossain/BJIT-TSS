@@ -6,4 +6,6 @@ import org.springframework.http.ResponseEntity;
 
 public interface CourseService {
     ResponseEntity<ApiResponse<?>> createCourse(CourseModel courseModel);
+
+    ResponseEntity<ApiResponse<?>> allCourses();
 }
