@@ -21,7 +21,7 @@ import java.util.List;
 @Builder
 public class LoginInfo implements UserDetails {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "login_id")
     private Long loginId;
     private String email;

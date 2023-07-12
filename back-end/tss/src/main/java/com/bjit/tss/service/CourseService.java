@@ -8,4 +8,8 @@ public interface CourseService {
     ResponseEntity<ApiResponse<?>> createCourse(CourseModel courseModel);
 
     ResponseEntity<ApiResponse<?>> allCourses();
+
+    ResponseEntity<ApiResponse<?>> getCourse(String batchCode);
+
+    ResponseEntity<ApiResponse<?>> updateCourse(String batchCode, CourseModel courseModel);
 }

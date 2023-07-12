@@ -2,6 +2,7 @@ package com.bjit.tss.service.impl;
 
 import com.bjit.tss.entity.CourseInfo;
 import com.bjit.tss.exception.CourseException;
+import com.bjit.tss.mapper.ApiResponseMapper;
 import com.bjit.tss.mapper.CourseMapper;
 import com.bjit.tss.model.ApiResponse;
 import com.bjit.tss.model.CourseModel;
@@ -33,20 +34,39 @@ public class CourseServiceImpl implements CourseService {
 
         CourseInfo savedCourse= courseRepository.save(courseInfo);
 
+        return ApiResponseMapper.mapToResponseEntityCreated(savedCourse);
 
-        return new ResponseEntity<ApiResponse<?>>(ApiResponse
-                .builder()
-                .data(savedCourse)
-                .build(), HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<ApiResponse<?>> allCourses() {
         List<CourseInfo> courseInfoList= courseRepository.findAll();
-        return new ResponseEntity<ApiResponse<?>>(ApiResponse
-                .builder()
-                .data(courseInfoList)
-                .build(), HttpStatus.OK);
+
+        return ApiResponseMapper.mapToResponseEntityOK(courseInfoList);
+
     }
+
+    @Override
+    public ResponseEntity<ApiResponse<?>> getCourse(String batchCode) {
+
+        Optional<CourseInfo> courseInfo = courseRepository.findByBatchCode(batchCode);
+        if (courseInfo.isEmpty()){
+            throw new CourseException("Invalid Batch Code : "+batchCode);
+        }
+        return ApiResponseMapper.mapToResponseEntityOK(courseInfo);
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse<?>> updateCourse(String batchCode, CourseModel courseModel) {
+        Optional<CourseInfo> course = courseRepository.findByBatchCode(batchCode);
+        if (course.isEmpty()){
+            throw new CourseException("Invalid Batch Code : "+batchCode);
+        }
+        CourseInfo courseInfo = CourseMapper.mapToCourseInfo(courseModel);
+        courseInfo.setCourseId(course.get().getCourseId());
+        CourseInfo savedCourse= courseRepository.save(courseInfo);
+        return ApiResponseMapper.mapToResponseEntityOK(savedCourse);
+    }
+
 
 }

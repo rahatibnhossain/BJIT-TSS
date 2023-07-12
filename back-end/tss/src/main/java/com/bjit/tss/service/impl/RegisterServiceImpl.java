@@ -2,6 +2,7 @@ package com.bjit.tss.service.impl;
 
 import com.bjit.tss.config.JwtService;
 import com.bjit.tss.entity.LoginInfo;
+import com.bjit.tss.mapper.ApiResponseMapper;
 import com.bjit.tss.role.Role;
 import com.bjit.tss.entity.UserInfo;
 import com.bjit.tss.exception.AuthenticationException;
@@ -63,10 +64,9 @@ public class RegisterServiceImpl implements RegisterService {
         AuthenticationResponse authenticationResponse = AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
-        return new ResponseEntity<ApiResponse<?>>(ApiResponse
-                .builder()
-                .data(authenticationResponse)
-                .build(), HttpStatus.CREATED);
+
+        return ApiResponseMapper.mapToResponseEntityCreated(authenticationResponse);
+
     }
 
     @Override

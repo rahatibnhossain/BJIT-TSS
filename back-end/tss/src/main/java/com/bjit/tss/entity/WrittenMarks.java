@@ -17,7 +17,7 @@ import java.util.List;
 public class WrittenMarks {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "written_mark_id")
     private Long writtenMarkId;
     private Float writtenMark;

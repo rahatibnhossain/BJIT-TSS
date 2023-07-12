@@ -16,7 +16,7 @@ import java.util.Date;
 @Builder
 public class EmailInfo {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "email_id")
     private Long emailId;
     private String receiverName;

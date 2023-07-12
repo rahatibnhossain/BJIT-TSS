@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class DataStorage {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "data_id")
     private Long dataId;
     private String dataKey;

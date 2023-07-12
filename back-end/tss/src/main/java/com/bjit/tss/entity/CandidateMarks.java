@@ -13,7 +13,7 @@ import jakarta.persistence.*;
 public class CandidateMarks {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "candidate_id")
     private Long candidateId;
     @OneToOne(cascade = CascadeType.ALL)

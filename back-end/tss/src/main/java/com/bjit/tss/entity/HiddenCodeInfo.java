@@ -16,7 +16,7 @@ import jakarta.persistence.*;
 public class HiddenCodeInfo {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "hidden_code")
     private Long hiddenCode;
 

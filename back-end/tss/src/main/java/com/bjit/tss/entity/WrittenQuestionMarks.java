@@ -15,7 +15,7 @@ import jakarta.persistence.*;
 @Builder
 public class WrittenQuestionMarks {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "written_question_id")
     private Long writtenQuestionId;
     private Float writtenQuestionMark;

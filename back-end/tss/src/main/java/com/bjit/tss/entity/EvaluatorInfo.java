@@ -15,7 +15,7 @@ import jakarta.persistence.*;
 @Builder
 public class EvaluatorInfo {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "evaluator_id")
     private Long evaluatorId;
     private String name;

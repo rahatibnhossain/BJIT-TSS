@@ -3,6 +3,7 @@ package com.bjit.tss.service.impl;
 import com.bjit.tss.config.JwtService;
 import com.bjit.tss.entity.LoginInfo;
 import com.bjit.tss.exception.AuthenticationException;
+import com.bjit.tss.mapper.ApiResponseMapper;
 import com.bjit.tss.model.AuthenticationResponse;
 import com.bjit.tss.model.LoginRequest;
 import com.bjit.tss.repository.LoginRepository;
@@ -42,9 +43,7 @@ public class LoginServiceImpl implements LoginService {
                 .token(jwtToken)
                 .build();
 
-        return new ResponseEntity<ApiResponse<?>>(ApiResponse
-                .builder()
-                .data(authenticationResponse)
-                .build(), HttpStatus.OK);
+        return ApiResponseMapper.mapToResponseEntityOK(authenticationResponse);
+
     }
 }

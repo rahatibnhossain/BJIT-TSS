@@ -17,7 +17,7 @@ import java.util.List;
 public class RoundMarks {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "round_id")
     private Long roundId;
     private String roundName;
