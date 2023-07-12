@@ -10,6 +10,7 @@ import com.bjit.tss.exception.UserException;
 import com.bjit.tss.mapper.ApiResponseMapper;
 import com.bjit.tss.model.ApiResponse;
 import com.bjit.tss.model.ApplicationRequest;
+import com.bjit.tss.model.CourseRoleRequest;
 import com.bjit.tss.repository.CourseRepository;
 import com.bjit.tss.repository.ExamineeRepository;
 import com.bjit.tss.repository.UserRepository;
@@ -81,9 +82,11 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
 
+
+
     @Override
-    public ResponseEntity<ApiResponse<?>> allApplicationSpecific(String batchCode) {
-        Optional<List<ExamineeInfo>> examineeInfos = examineeRepository.findByRoleAndCourseInfoIsAvailableAndCourseInfoBatchCode(Role.APPLICANT, true, batchCode);
+    public ResponseEntity<ApiResponse<?>> allApplicationSpecific(CourseRoleRequest courseRoleRequest) {
+        Optional<List<ExamineeInfo>> examineeInfos = examineeRepository.findByRoleAndCourseInfoIsAvailableAndCourseInfoBatchCode(courseRoleRequest.getRole(), true, courseRoleRequest.getBatchCode());
         return ApiResponseMapper.mapToResponseEntityOK(examineeInfos);
     }
 }
