@@ -24,4 +24,5 @@ public class RegisterController {
     public ResponseEntity<ApiResponse<?>> applicantRegistration(@RequestBody RegisterRequest registerRequest){
         return registerService.applicantRegistration(registerRequest);
     }
+    
 }
