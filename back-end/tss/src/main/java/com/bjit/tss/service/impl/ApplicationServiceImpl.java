@@ -36,39 +36,20 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public ResponseEntity<ApiResponse<?>> applyCourse(ApplicationRequest applicationRequest) {
-
-
-
-        Optional<UserInfo> userInfo = userRepository.findByEmail(applicationRequest.getEmail());
-
-        if (userInfo.isEmpty()) {
-            throw new UserException("Invalid user : " + applicationRequest.getEmail());
-        }
-
         LoginInfo loginInfo = (LoginInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if (!userInfo.get().getVerified()){
-            throw new UserException("Your Email : " + applicationRequest.getEmail() + " is not verified ");
-
-        }
-        if(!loginInfo.getEmail().equals(userInfo.get().getEmail())){
-            throw new UserException("Invalid Token!!!");
-
-        }
-
-
-
-
         Optional<CourseInfo> courseInfo = courseRepository.findByBatchCode(applicationRequest.getBatchCode());
         if (courseInfo.isEmpty()) {
             throw new CourseException("Invalid Batch Code : " + applicationRequest.getBatchCode());
         }
-        Optional<ExamineeInfo> examinee = examineeRepository.findByUserInfoUserIdAndCourseInfoCourseId(userInfo.get().getUserId(), courseInfo.get().getCourseId());
+        Optional<ExamineeInfo> examinee = examineeRepository.findByUserInfoUserIdAndCourseInfoCourseId(loginInfo.getUserInfo().getUserId(), courseInfo.get().getCourseId());
         if (examinee.isPresent()) {
             throw new ExamineeException("You are already registered for this course");
 
         }
-
+        Optional<UserInfo> userInfo = userRepository.findById(loginInfo.getUserInfo().getUserId());
+        if (userInfo.isEmpty()){
+            throw new UserException("No User Found");
+        }
 
         ExamineeInfo examineeInfo = ExamineeInfo.builder()
                 .userInfo(userInfo.get())
@@ -76,6 +57,8 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .applicationTime(new Date(System.currentTimeMillis()))
                 .role(Role.APPLICANT)
                 .build();
+
+        System.out.println(examineeInfo);
 
         ExamineeInfo savedApplication = examineeRepository.save(examineeInfo);
         return ApiResponseMapper.mapToResponseEntityCreated(savedApplication);
