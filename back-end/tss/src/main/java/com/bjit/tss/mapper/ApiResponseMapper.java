@@ -40,5 +40,12 @@ public class ApiResponseMapper {
                 .error_message(object)
                 .build(), HttpStatus.BAD_REQUEST);
     }
+    public static ResponseEntity<ApiResponse<?>> mapToResponseEntityUnsupported(Object object){
+
+        return new ResponseEntity<ApiResponse<?>>(ApiResponse
+                .builder()
+                .error_message(object)
+                .build(), HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+    }
 
 }

@@ -27,4 +27,10 @@ public class GlobalExceptionHandler {
         return ApiResponseMapper.mapToResponseEntityBadRequest(ex.getMessage());
     }
 
+    @ExceptionHandler({FileUploadException.class})
+    public ResponseEntity<ApiResponse<?>> FileUploadEX(Exception ex) {
+
+        return ApiResponseMapper.mapToResponseEntityUnsupported(ex.getMessage());
+    }
+
 }

@@ -44,8 +44,19 @@ public class SecurityConfig {
 
                 )
                 .permitAll()
-                .requestMatchers("/api/application/apply")
+                .requestMatchers(
+                        "api/upload/file-upload/image",
+                        "api/upload/file-upload/resume"
+                )
+                .hasAuthority("USER")
+                .requestMatchers("/api/application/apply",
+                        "api/upload/file-upload/image",
+                        "api/upload/file-upload/resume"
+
+
+                )
                 .hasAuthority("APPLICANT")
+
                 .requestMatchers("/api/course",
                         "/api/course/batch_code/**"
                 )

@@ -55,7 +55,7 @@ public class RegisterServiceImpl implements RegisterService {
         LoginInfo loginInfo = LoginInfo.builder()
                 .email(registerRequest.getEmail())
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
-                .role(Role.APPLICANT)
+                .role(Role.USER)
                 .userInfo(userInfo)
                 .build();
 

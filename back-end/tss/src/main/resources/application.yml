@@ -15,6 +15,12 @@ spring:
         dialect: org.hibernate.dialect.MySQL5Dialect
     platform: mysql
 
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB
+      file-size-threshold: 2KB
+
 logging:
   level:
     org:

@@ -42,6 +42,7 @@ build/
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
+static
 
 ### IntelliJ IDEA ###
 .idea
