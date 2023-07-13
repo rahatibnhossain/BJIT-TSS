@@ -21,9 +21,22 @@ spring:
       max-file-size: 50MB
       file-size-threshold: 2KB
 
+  mail:
+    host: smtp.gmail.com
+    username: ribnahossain@gmail.com
+    password: kkhyrqtifhuekuhp
+    port: 587
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+          auth: true
 logging:
   level:
     org:
       springframework:
         security: DEBUG
+
+
 

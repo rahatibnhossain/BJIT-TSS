@@ -65,7 +65,8 @@ public class SecurityConfig {
                         "/api/course/**",
                         "/api/course/update/batch_code/**",
                         "/api/application/course/**",
-                        "/api/approval/applicant"
+                        "/api/approval/applicant",
+                        "/api/email/send"
 
                 )
                 .hasAuthority("ADMIN")
