@@ -41,6 +41,7 @@ public class SecurityConfig {
                         "api/auth/login",
                         "api/auth/register/applicant"
 
+
                 )
                 .permitAll()
                 .requestMatchers(
@@ -52,7 +53,8 @@ public class SecurityConfig {
                 .requestMatchers(
                         "/api/application/apply",
                         "api/upload/file-upload/image",
-                        "api/upload/file-upload/resume"
+                        "api/upload/file-upload/resume",
+                        "api/candidate/generate-admit"
 
                 )
                 .hasAuthority("APPLICANT")

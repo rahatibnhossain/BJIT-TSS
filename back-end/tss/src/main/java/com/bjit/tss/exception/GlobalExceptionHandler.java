@@ -11,13 +11,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<ApiResponse<?>> AllEx(Exception ex) {
-
         return ApiResponseMapper.mapToResponseEntityBadRequest(ex.getMessage());
     }
-
     @ExceptionHandler({AuthenticationException.class})
     public ResponseEntity<ApiResponse<?>> AuthenticationEx(Exception ex) {
-
         return ApiResponseMapper.mapToResponseEntityUnauthorized(ex.getMessage());
     }
 

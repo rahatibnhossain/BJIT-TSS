@@ -22,6 +22,7 @@ public class CourseInfo {
     private Long courseId;
     private String courseName;
     private Date applicationDeadline;
+    private Date writtenExamTime;
     private Date startDate;
     private Date endDate;
     private String batchCode;
