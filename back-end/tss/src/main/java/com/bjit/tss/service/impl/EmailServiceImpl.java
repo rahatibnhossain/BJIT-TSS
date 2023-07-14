@@ -40,16 +40,19 @@ public class EmailServiceImpl implements EmailService {
 
 
 
+
+            SuccessMessageResponse successMessageResponse = SuccessMessageResponse.builder()
+                    .successMessage("Email sent successful.")
+                    .build();
+
+            return ApiResponseMapper.mapToResponseEntityOK(successMessageResponse);
+
         }
         catch (Exception ex){
-                throw new EmailException(ex.getMessage());
+            throw new EmailException(ex.getMessage());
         }
 
-        SuccessMessageResponse successMessageResponse = SuccessMessageResponse.builder()
-                .successMessage("Email sent successful.")
-                .build();
 
-        return ApiResponseMapper.mapToResponseEntityOK(successMessageResponse);
 
 
 

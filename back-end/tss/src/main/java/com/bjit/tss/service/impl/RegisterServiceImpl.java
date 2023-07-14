@@ -3,27 +3,30 @@ package com.bjit.tss.service.impl;
 import com.bjit.tss.config.JwtService;
 import com.bjit.tss.entity.LoginInfo;
 import com.bjit.tss.entity.ValidationCodes;
+import com.bjit.tss.exception.EmailException;
+import com.bjit.tss.exception.ValidationException;
 import com.bjit.tss.mapper.ApiResponseMapper;
-import com.bjit.tss.model.EmailRequest;
+import com.bjit.tss.model.*;
 import com.bjit.tss.repository.ValidationRepository;
 import com.bjit.tss.role.Role;
 import com.bjit.tss.entity.UserInfo;
 import com.bjit.tss.exception.AuthenticationException;
-import com.bjit.tss.model.AuthenticationResponse;
-import com.bjit.tss.model.RegisterRequest;
 import com.bjit.tss.repository.LoginRepository;
 import com.bjit.tss.service.EmailService;
 import com.bjit.tss.service.RegisterService;
-import com.bjit.tss.model.ApiResponse;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
@@ -35,8 +38,22 @@ public class RegisterServiceImpl implements RegisterService {
     private final ValidationRepository validationRepository;
     private final EmailService emailService;
 
+    @Transactional
     @Override
     public ResponseEntity<ApiResponse<?>> applicantRegistration(RegisterRequest registerRequest) {
+
+        if (registerRequest.getEmail()== null || registerRequest.getEmail().isEmpty()){
+            throw new AuthenticationException("Email is required.");
+
+        }
+        String emailRegex = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        Pattern pattern = Pattern.compile(emailRegex);
+
+        if (!pattern.matcher(registerRequest.getEmail()).matches()){
+            throw new EmailException("Invalid Email");
+
+        }
 
         Optional<LoginInfo> checkAvailability = loginRepository.findByEmail(registerRequest.getEmail());
 
@@ -58,7 +75,6 @@ public class RegisterServiceImpl implements RegisterService {
                 .presentAddress(registerRequest.getPresentAddress())
                 .photoUrl(registerRequest.getPhotoUrl())
                 .resumeUrl(registerRequest.getResumeUrl())
-                .verified(false)
                 .build();
 
         LoginInfo loginInfo = LoginInfo.builder()
@@ -72,9 +88,26 @@ public class RegisterServiceImpl implements RegisterService {
                 .userInfo(userInfo)
                 .build();
 
-        ValidationCodes savedValidationCode= validationRepository.save(validationCodes);
 
 
+        List<String> to = new ArrayList<String>();
+        to.add(loginInfo.getEmail());
+        String[] toEmail = to.toArray(new String[0]);
+
+        String emailSubject= "Email Verification";
+        String emailBody = "Your Verification Code is : "+validationCodes.getValidationCode();
+
+
+        EmailRequest emailRequest = EmailRequest.builder()
+                .to(toEmail)
+                .body(emailBody)
+                .subject(emailSubject)
+                .build();
+        ResponseEntity<ApiResponse<?>> emailResponse=  emailService.sendEmail(emailRequest);
+
+
+
+         validationRepository.save(validationCodes);
 
 
         LoginInfo saved=  loginRepository.save(loginInfo);
@@ -83,22 +116,6 @@ public class RegisterServiceImpl implements RegisterService {
                 .token(jwtToken)
                 .userInfo(saved.getUserInfo())
                 .build();
-
-        List<String> to = new ArrayList<String>();
-        to.add(loginInfo.getEmail());
-        String[] toEmail = to.toArray(new String[0]);
-
-        String emailSubject= "Email Verification";
-        String emailBody = "Your Verification Code is : "+savedValidationCode.getValidationCode();
-
-
-        EmailRequest emailRequest = EmailRequest.builder()
-                .to(toEmail)
-                .body(emailBody)
-                .subject(emailSubject)
-                .build();
-        emailService.sendEmail(emailRequest);
-
 
         return ApiResponseMapper.mapToResponseEntityCreated(authenticationResponse);
 
@@ -121,5 +138,29 @@ public class RegisterServiceImpl implements RegisterService {
 
 
         return;
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse<?>> mailValidation(ValidationRequest validationRequest) {
+        LoginInfo loginInfo = (LoginInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Optional<ValidationCodes> validationCodes = validationRepository.findByUserInfoUserId(loginInfo.getUserInfo().getUserId());
+
+        if (validationCodes.isEmpty()){
+            throw new ValidationException("Cannot be validated");
+        }
+        if (validationRequest.getValidationCode().equals(validationCodes.get().getValidationCode())){
+            loginInfo.setRole(Role.APPLICANT);
+            loginRepository.save(loginInfo);
+        }
+        else {
+            throw new ValidationException("Invalid Validation Code");
+        }
+
+        SuccessMessageResponse successMessageResponse = SuccessMessageResponse.builder()
+                .successMessage("Email is validated")
+                .build();
+
+        return ApiResponseMapper.mapToResponseEntityOK(successMessageResponse);
     }
 }

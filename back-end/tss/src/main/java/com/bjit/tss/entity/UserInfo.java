@@ -31,6 +31,5 @@ public class UserInfo {
     private String presentAddress;
     private String photoUrl;
     private String resumeUrl;
-    private Boolean verified;
 
 }

@@ -39,25 +39,25 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers(
                         "api/auth/login",
-                        "api/auth/register/applicant",
-                        "api/auth/register/evaluator"
+                        "api/auth/register/applicant"
 
                 )
                 .permitAll()
                 .requestMatchers(
                         "api/upload/file-upload/image",
-                        "api/upload/file-upload/resume"
+                        "api/upload/file-upload/resume",
+                        "/api/auth/register/applicant/validation"
                 )
                 .hasAuthority("USER")
-                .requestMatchers("/api/application/apply",
+                .requestMatchers(
+                        "/api/application/apply",
                         "api/upload/file-upload/image",
                         "api/upload/file-upload/resume"
 
-
                 )
                 .hasAuthority("APPLICANT")
-
-                .requestMatchers("/api/course",
+                .requestMatchers(
+                        "/api/course",
                         "/api/course/batch_code/**"
                 )
                 .hasAnyAuthority("ADMIN","APPLICANT")
@@ -66,7 +66,8 @@ public class SecurityConfig {
                         "/api/course/update/batch_code/**",
                         "/api/application/course/**",
                         "/api/approval/applicant",
-                        "/api/email/send"
+                        "/api/email/send",
+                        "api/auth/register/evaluator"
 
                 )
                 .hasAuthority("ADMIN")
