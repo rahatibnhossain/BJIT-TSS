@@ -20,12 +20,13 @@ public class ApprovalServiceImpl implements ApprovalService {
     private final ExamineeRepository examineeRepository;
 
     @Override
-    public ResponseEntity<ApiResponse<?>> markAs(ApprovalRequest approvalRequest) {
-        Optional<ExamineeInfo> examineeInfo = examineeRepository.findById(approvalRequest.getExamineeId());
+    public ResponseEntity<ApiResponse<?>> markAs(ApprovalRequest request) {
+        Optional<ExamineeInfo> examineeInfo = examineeRepository.findById(request.getExamineeId());
         if (examineeInfo.isEmpty()){
             throw new UserException("User not found!!!");
         }
-        examineeInfo.get().setRole(approvalRequest.getRole());
+
+        examineeInfo.get().setRole(request.getRole());
 
        ExamineeInfo savedExaminee= examineeRepository.save(examineeInfo.get());
         return ApiResponseMapper.mapToResponseEntityOK(savedExaminee);
