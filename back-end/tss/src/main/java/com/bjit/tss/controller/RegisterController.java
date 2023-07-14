@@ -1,5 +1,7 @@
 package com.bjit.tss.controller;
 
+import com.bjit.tss.mapper.ApiResponseMapper;
+import com.bjit.tss.model.EvaluatorRegisterRequest;
 import com.bjit.tss.model.RegisterRequest;
 import com.bjit.tss.model.ValidationRequest;
 import com.bjit.tss.service.RegisterService;
@@ -26,6 +28,14 @@ public class RegisterController {
     public ResponseEntity<ApiResponse<?>> applicantRegistration(@RequestBody RegisterRequest registerRequest){
         return registerService.applicantRegistration(registerRequest);
     }
+    @PostMapping("/evaluator")
+    public ResponseEntity<ApiResponse<?>> evaluatorRegistration(@RequestBody EvaluatorRegisterRequest evaluatorRegisterRequest){
+
+
+        return registerService.evaluatorRegistration(evaluatorRegisterRequest);
+
+    }
+
 
     @PostMapping("/applicant/validation")
     public ResponseEntity<ApiResponse<?>> mailValidation(@RequestBody ValidationRequest validationRequest){

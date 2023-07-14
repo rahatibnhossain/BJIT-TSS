@@ -26,7 +26,7 @@ public class EmailServiceImpl implements EmailService {
 
 
     @Override
-    public ResponseEntity<ApiResponse<?>> sendEmail(EmailRequest emailRequest) {
+    public ResponseEntity<ApiResponse<?>> sendEmail(EmailRequest emailRequest)  {
 
         try
         {
@@ -41,7 +41,7 @@ public class EmailServiceImpl implements EmailService {
 
 
 
-            SuccessMessageResponse successMessageResponse = SuccessMessageResponse.builder()
+            SuccessMessageResponse<?> successMessageResponse = SuccessMessageResponse.builder()
                     .successMessage("Email sent successful.")
                     .build();
 

@@ -1,5 +1,6 @@
 package com.bjit.tss.service;
 
+import com.bjit.tss.model.EvaluatorRegisterRequest;
 import com.bjit.tss.model.RegisterRequest;
 import com.bjit.tss.model.ApiResponse;
 import com.bjit.tss.model.ValidationRequest;
@@ -10,4 +11,6 @@ public interface RegisterService {
     void adminRegistration(String email, String password);
 
     ResponseEntity<ApiResponse<?>> mailValidation(ValidationRequest validationRequest);
+
+    ResponseEntity<ApiResponse<?>> evaluatorRegistration(EvaluatorRegisterRequest evaluatorRegisterRequest);
 }

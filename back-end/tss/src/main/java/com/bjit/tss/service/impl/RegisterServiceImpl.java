@@ -1,6 +1,7 @@
 package com.bjit.tss.service.impl;
 
 import com.bjit.tss.config.JwtService;
+import com.bjit.tss.entity.EvaluatorInfo;
 import com.bjit.tss.entity.LoginInfo;
 import com.bjit.tss.entity.ValidationCodes;
 import com.bjit.tss.exception.EmailException;
@@ -157,10 +158,79 @@ public class RegisterServiceImpl implements RegisterService {
             throw new ValidationException("Invalid Validation Code");
         }
 
-        SuccessMessageResponse successMessageResponse = SuccessMessageResponse.builder()
+        SuccessMessageResponse<?> successMessageResponse = SuccessMessageResponse.builder()
                 .successMessage("Email is validated")
                 .build();
 
         return ApiResponseMapper.mapToResponseEntityOK(successMessageResponse);
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse<?>> evaluatorRegistration(EvaluatorRegisterRequest request) {
+
+
+        Optional<LoginInfo> checkAvailability = loginRepository.findByEmail(request.getEmail());
+
+        if (checkAvailability.isPresent()) {
+            throw new AuthenticationException("The Email " + request.getEmail() + " is already registered");
+        }
+
+        EvaluatorInfo evaluatorInfo = EvaluatorInfo.builder()
+                .name(request.getName())
+                .email(request.getEmail())
+                .build();
+
+
+
+
+        LoginInfo loginInfo = LoginInfo.builder()
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role(Role.EVALUATOR)
+                .evaluatorInfo(evaluatorInfo)
+                .build();
+
+
+
+
+
+
+        List<String> to = new ArrayList<String>();
+        to.add(request.getEmail());
+        String[] toEmail = to.toArray(new String[0]);
+
+        String emailSubject= "Evaluator Assignment";
+        String emailBody = "Hi " +request.getName()+
+                ",\nAdmin has made you an evaluator. \n" +
+                "Your login Email : "
+                + request.getEmail()+
+                " \nYour login password : "
+                +request.getPassword()+
+                " \nPlease do not share this credentials. ";
+
+
+
+        EmailRequest emailRequest = EmailRequest.builder()
+                .to(toEmail)
+                .body(emailBody)
+                .subject(emailSubject)
+                .build();
+
+        ResponseEntity<ApiResponse<?>> emailResponse=  emailService.sendEmail(emailRequest);
+
+
+
+
+
+
+        LoginInfo saved=  loginRepository.save(loginInfo);
+
+        SuccessMessageResponse<?> successMessageResponse =SuccessMessageResponse.builder()
+                .successMessage("Evaluator is created.")
+                .data(saved.getEvaluatorInfo())
+                .build();
+
+
+        return ApiResponseMapper.mapToResponseEntityCreated(successMessageResponse);
     }
 }

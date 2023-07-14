@@ -1,5 +1,6 @@
 package com.bjit.tss.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +14,8 @@ import java.nio.file.Path;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SuccessMessageResponse {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class SuccessMessageResponse<T> {
     private String successMessage;
+    private T data;
 }
