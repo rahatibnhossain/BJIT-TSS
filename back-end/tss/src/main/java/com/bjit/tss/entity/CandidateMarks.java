@@ -1,5 +1,6 @@
 package com.bjit.tss.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import jakarta.persistence.*;
@@ -10,6 +11,7 @@ import jakarta.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CandidateMarks {
 
     @Id
