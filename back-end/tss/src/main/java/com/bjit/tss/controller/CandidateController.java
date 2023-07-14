@@ -3,17 +3,16 @@ package com.bjit.tss.controller;
 import com.bjit.tss.entity.LoginInfo;
 import com.bjit.tss.model.AdmitCardRequest;
 import com.bjit.tss.model.ApiResponse;
+import com.bjit.tss.repository.ExamineeRepository;
 import com.bjit.tss.service.AdmitCardService;
+import com.bjit.tss.service.CandidateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -24,8 +23,18 @@ import java.io.InputStream;
 public class CandidateController {
     private final AdmitCardService admitCardService;
 
+    private final CandidateService candidateService;
 
-    @PostMapping("generate-admit")
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse<?>> allCandidates(){
+
+        return candidateService.allCandidates();
+
+
+    }
+
+
+    @PostMapping("/generate-admit")
     public ResponseEntity<InputStreamResource> generateAdmitCard(@RequestBody AdmitCardRequest admitCardRequest){
 
 

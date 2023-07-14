@@ -70,7 +70,8 @@ public class SecurityConfig {
                         "/api/approval/applicant",
                         "/api/email/send",
                         "api/auth/register/evaluator",
-                        "api/number-question/set"
+                        "api/number-question/set",
+                        "api/candidate/all"
 
                 )
                 .hasAuthority("ADMIN")

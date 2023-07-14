@@ -11,6 +11,7 @@ import com.bjit.tss.mapper.ApiResponseMapper;
 import com.bjit.tss.model.ApiResponse;
 import com.bjit.tss.model.ApplicationRequest;
 import com.bjit.tss.model.CourseRoleRequest;
+import com.bjit.tss.model.ListResponse;
 import com.bjit.tss.repository.CourseRepository;
 import com.bjit.tss.repository.ExamineeRepository;
 import com.bjit.tss.repository.UserRepository;
@@ -70,6 +71,11 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public ResponseEntity<ApiResponse<?>> allApplicationSpecific(CourseRoleRequest courseRoleRequest) {
         Optional<List<ExamineeInfo>> examineeInfos = examineeRepository.findByRoleAndCourseInfoIsAvailableAndCourseInfoBatchCode(courseRoleRequest.getRole(), true, courseRoleRequest.getBatchCode());
-        return ApiResponseMapper.mapToResponseEntityOK(examineeInfos);
+
+        ListResponse<?> listResponse = ListResponse.builder()
+                .dataLength((long) examineeInfos.get().size())
+                .listResponse(examineeInfos)
+                .build();
+        return ApiResponseMapper.mapToResponseEntityOK(listResponse);
     }
 }
