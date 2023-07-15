@@ -11,7 +11,6 @@ import java.util.Optional;
 
 @Repository
 public interface EvaluatorRepository extends JpaRepository<EvaluatorInfo, Long> {
-//    Optional<CourseInfo> findByBatchCode(String batchCode);
 
 }
 

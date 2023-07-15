@@ -1,9 +1,6 @@
 package com.bjit.tss.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import jakarta.persistence.*;
 
@@ -15,12 +12,16 @@ import jakarta.persistence.*;
 @Builder
 public class HiddenCodeInfo {
 
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_sequence")
+    @SequenceGenerator(name = "my_sequence", sequenceName = "my_sequence", initialValue = 17332)
     @Column(name = "hidden_code")
     private Long hiddenCode;
 
+
+
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "examinee_id")
-    private ExamineeInfo examineeInfo;
+    @JoinColumn(name = "candidate_id")
+    private CandidateMarks candidateMarks;
 }
