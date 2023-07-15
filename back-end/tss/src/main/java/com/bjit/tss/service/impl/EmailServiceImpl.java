@@ -4,7 +4,6 @@ import com.bjit.tss.exception.EmailException;
 import com.bjit.tss.mapper.ApiResponseMapper;
 import com.bjit.tss.model.ApiResponse;
 import com.bjit.tss.model.EmailRequest;
-import com.bjit.tss.model.SuccessMessageResponse;
 import com.bjit.tss.service.EmailService;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -40,11 +39,9 @@ public class EmailServiceImpl implements EmailService {
 //
 //
 //
-//            SuccessMessageResponse<?> successMessageResponse = SuccessMessageResponse.builder()
-//                    .successMessage("Email sent successful.")
-//                    .build();
 //
-//            return ApiResponseMapper.mapToResponseEntityOK(successMessageResponse);
+//
+//            return ApiResponseMapper.mapToResponseEntityOK(null,"Email sent successful.");
 //
 //        }
 //        catch (Exception ex){

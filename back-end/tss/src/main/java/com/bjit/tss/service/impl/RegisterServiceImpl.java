@@ -158,11 +158,8 @@ public class RegisterServiceImpl implements RegisterService {
             throw new ValidationException("Invalid Validation Code");
         }
 
-        SuccessMessageResponse<?> successMessageResponse = SuccessMessageResponse.builder()
-                .successMessage("Email is validated")
-                .build();
 
-        return ApiResponseMapper.mapToResponseEntityOK(successMessageResponse);
+        return ApiResponseMapper.mapToResponseEntityOK(null,"Email is validated");
     }
 
     @Override
@@ -225,12 +222,8 @@ public class RegisterServiceImpl implements RegisterService {
 
         LoginInfo saved=  loginRepository.save(loginInfo);
 
-        SuccessMessageResponse<?> successMessageResponse =SuccessMessageResponse.builder()
-                .successMessage("Evaluator is created.")
-                .data(saved.getEvaluatorInfo())
-                .build();
 
 
-        return ApiResponseMapper.mapToResponseEntityCreated(successMessageResponse);
+        return ApiResponseMapper.mapToResponseEntityCreated(saved.getEvaluatorInfo(),"Evaluator is created.");
     }
 }

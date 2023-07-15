@@ -62,7 +62,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         System.out.println(examineeInfo);
 
         ExamineeInfo savedApplication = examineeRepository.save(examineeInfo);
-        return ApiResponseMapper.mapToResponseEntityCreated(savedApplication);
+        return ApiResponseMapper.mapToResponseEntityCreated(savedApplication, "Application was successful");
     }
 
 

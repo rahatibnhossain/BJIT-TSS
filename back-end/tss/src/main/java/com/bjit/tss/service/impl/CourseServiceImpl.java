@@ -80,7 +80,7 @@ public class CourseServiceImpl implements CourseService {
         CourseInfo courseInfo = CourseMapper.mapToCourseInfo(courseModel);
         courseInfo.setCourseId(course.get().getCourseId());
         CourseInfo savedCourse= courseRepository.save(courseInfo);
-        return ApiResponseMapper.mapToResponseEntityOK(savedCourse);
+        return ApiResponseMapper.mapToResponseEntityOK(savedCourse,"Successfully Updated");
     }
 
 

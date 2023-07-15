@@ -16,7 +16,14 @@ public class ApiResponseMapper {
                 .data(object)
                 .build(), HttpStatus.OK);
     }
+    public static ResponseEntity<ApiResponse<?>> mapToResponseEntityOK(Object object, Object successMessage){
 
+        return new ResponseEntity<ApiResponse<?>>(ApiResponse
+                .builder()
+                .data(object)
+                .successMessage(successMessage)
+                .build(), HttpStatus.OK);
+    }
     public static ResponseEntity<ApiResponse<?>> mapToResponseEntityCreated(Object object){
 
         return new ResponseEntity<ApiResponse<?>>(ApiResponse
@@ -24,12 +31,20 @@ public class ApiResponseMapper {
                 .data(object)
                 .build(), HttpStatus.CREATED);
     }
+    public static ResponseEntity<ApiResponse<?>> mapToResponseEntityCreated(Object object, Object successMessage){
+
+        return new ResponseEntity<ApiResponse<?>>(ApiResponse
+                .builder()
+                .data(object)
+                .successMessage(successMessage)
+                .build(), HttpStatus.CREATED);
+    }
 
     public static ResponseEntity<ApiResponse<?>> mapToResponseEntityUnauthorized(Object object){
 
         return new ResponseEntity<ApiResponse<?>>(ApiResponse
                 .builder()
-                .error_message(object)
+                .errorMessage(object)
                 .build(), HttpStatus.UNAUTHORIZED);
     }
 
@@ -37,14 +52,14 @@ public class ApiResponseMapper {
 
         return new ResponseEntity<ApiResponse<?>>(ApiResponse
                 .builder()
-                .error_message(object)
+                .errorMessage(object)
                 .build(), HttpStatus.BAD_REQUEST);
     }
     public static ResponseEntity<ApiResponse<?>> mapToResponseEntityUnsupported(Object object){
 
         return new ResponseEntity<ApiResponse<?>>(ApiResponse
                 .builder()
-                .error_message(object)
+                .errorMessage(object)
                 .build(), HttpStatus.UNSUPPORTED_MEDIA_TYPE);
     }
 

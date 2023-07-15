@@ -71,7 +71,8 @@ public class SecurityConfig {
                         "/api/email/send",
                         "api/auth/register/evaluator",
                         "api/number-question/set",
-                        "api/candidate/all"
+                        "api/candidate/all",
+                        "/api/evaluation/assign-answer"
 
                 )
                 .hasAuthority("ADMIN")
