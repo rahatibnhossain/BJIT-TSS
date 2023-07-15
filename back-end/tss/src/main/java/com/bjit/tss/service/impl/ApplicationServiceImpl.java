@@ -39,7 +39,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public ResponseEntity<ApiResponse<?>> applyCourse(ApplicationRequest applicationRequest) {
         LoginInfo loginInfo = (LoginInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<CourseInfo> courseInfo = courseRepository.findByBatchCode(applicationRequest.getBatchCode());
-        if (courseInfo.isEmpty()) {
+        if (courseInfo.isEmpty() || !courseInfo.get().getIsAvailable()) {
             throw new CourseException("Invalid Batch Code : " + applicationRequest.getBatchCode());
         }
         Optional<ExamineeInfo> examinee = examineeRepository.findByUserInfoUserIdAndCourseInfoCourseId(loginInfo.getUserInfo().getUserId(), courseInfo.get().getCourseId());

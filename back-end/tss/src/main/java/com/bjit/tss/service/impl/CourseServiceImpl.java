@@ -6,6 +6,7 @@ import com.bjit.tss.mapper.ApiResponseMapper;
 import com.bjit.tss.mapper.CourseMapper;
 import com.bjit.tss.model.ApiResponse;
 import com.bjit.tss.model.CourseModel;
+import com.bjit.tss.model.ListResponse;
 import com.bjit.tss.repository.CourseRepository;
 import com.bjit.tss.service.CourseService;
 import lombok.RequiredArgsConstructor;
@@ -36,15 +37,21 @@ public class CourseServiceImpl implements CourseService {
 
         CourseInfo savedCourse= courseRepository.save(courseInfo);
 
+
+
         return ApiResponseMapper.mapToResponseEntityCreated(savedCourse);
 
     }
 
     @Override
     public ResponseEntity<ApiResponse<?>> allCourses() {
-        List<CourseInfo> courseInfoList= courseRepository.findAll();
+        List<CourseInfo> courseInfoList= courseRepository.findByIsAvailable(true);
 
-        return ApiResponseMapper.mapToResponseEntityOK(courseInfoList);
+        ListResponse listResponse = ListResponse.builder()
+                .dataLength((long) courseInfoList.size())
+                .listResponse(courseInfoList)
+                .build();
+        return ApiResponseMapper.mapToResponseEntityOK(listResponse);
 
     }
 

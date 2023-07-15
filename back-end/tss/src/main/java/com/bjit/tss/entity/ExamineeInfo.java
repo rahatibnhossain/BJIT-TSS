@@ -20,7 +20,14 @@ public class ExamineeInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "examinee_id")
-    private Long ExamineeId;
+    private Long examineeId;
+
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    private Date applicationTime;
+
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
@@ -30,10 +37,7 @@ public class ExamineeInfo {
     @JoinColumn(name = "course_id")
     private CourseInfo courseInfo;
 
-    private Date applicationTime;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
 
 
 

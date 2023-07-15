@@ -24,37 +24,36 @@ public class EmailServiceImpl implements EmailService {
     private String fromEmail;
 
 
-
     @Override
-    public ResponseEntity<ApiResponse<?>> sendEmail(EmailRequest emailRequest)  {
+    public ResponseEntity<ApiResponse<?>> sendEmail(EmailRequest emailRequest) {
 
-        try
-        {
-            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false);
-            mimeMessageHelper.setFrom(fromEmail);
-            mimeMessageHelper.setTo(emailRequest.getTo());
-            mimeMessageHelper.setText(emailRequest.getBody());
-            mimeMessageHelper.setSubject(emailRequest.getSubject());
-            javaMailSender.send(mimeMessage);
+//        try
+//        {
+//            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+//            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false);
+//            mimeMessageHelper.setFrom(fromEmail);
+//            mimeMessageHelper.setTo(emailRequest.getTo());
+//            mimeMessageHelper.setText(emailRequest.getBody());
+//            mimeMessageHelper.setSubject(emailRequest.getSubject());
+//            javaMailSender.send(mimeMessage);
+//
+//
+//
+//
+//            SuccessMessageResponse<?> successMessageResponse = SuccessMessageResponse.builder()
+//                    .successMessage("Email sent successful.")
+//                    .build();
+//
+//            return ApiResponseMapper.mapToResponseEntityOK(successMessageResponse);
+//
+//        }
+//        catch (Exception ex){
+//            throw new EmailException(ex.getMessage());
+//        }
+//
 
 
-
-
-            SuccessMessageResponse<?> successMessageResponse = SuccessMessageResponse.builder()
-                    .successMessage("Email sent successful.")
-                    .build();
-
-            return ApiResponseMapper.mapToResponseEntityOK(successMessageResponse);
-
-        }
-        catch (Exception ex){
-            throw new EmailException(ex.getMessage());
-        }
-
-
-
-
+        return null;
 
     }
 }

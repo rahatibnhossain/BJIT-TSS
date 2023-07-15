@@ -18,6 +18,7 @@ public class CandidateMarks {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "candidate_id")
     private Long candidateId;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "examinee_id")
     private ExamineeInfo examineeInfo;

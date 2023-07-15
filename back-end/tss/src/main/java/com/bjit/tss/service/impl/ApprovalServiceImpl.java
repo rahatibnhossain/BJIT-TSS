@@ -33,7 +33,9 @@ public class ApprovalServiceImpl implements ApprovalService {
         examineeInfo.get().setRole(request.getRole());
 
 
+
         Optional<CandidateMarks> candidate = candidateRepository.findByExamineeInfoExamineeId(examineeInfo.get().getExamineeId());
+
 
         if (candidate.isEmpty()){
             CandidateMarks candidateMarks = CandidateMarks.builder()

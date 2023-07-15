@@ -20,4 +20,6 @@ public class CourseModel {
     private String batchCode;
     private String courseDescription;
     private Boolean isAvailable;
+    private Date writtenExamTime;
+
 }
