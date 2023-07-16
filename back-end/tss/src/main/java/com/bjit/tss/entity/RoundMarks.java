@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*;
+
 import java.util.List;
 
 @Entity
@@ -27,5 +28,4 @@ public class RoundMarks {
     @OneToMany(targetEntity = QuestionMarks.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "round_id", referencedColumnName = "round_id")
     private List<QuestionMarks> questionMarksList;
-
 }

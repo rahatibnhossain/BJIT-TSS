@@ -6,11 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class QuestionNumberRequest {
+public class DataStorageRequest {
 
-    private String questionType;
-    private Long questionNumbers;
+    private String dataKey;
+    private String dataValue;
 }

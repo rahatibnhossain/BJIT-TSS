@@ -16,18 +16,16 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CandidateServiceImpl implements CandidateService {
+
     private final ExamineeRepository examineeRepository;
 
     @Override
     public ResponseEntity<ApiResponse<?>> allCandidates() {
         List<ExamineeInfo> examineeInfos = examineeRepository.findByRole(Role.CANDIDATE);
-
         ListResponse<?> listResponse = ListResponse.builder()
                 .listResponse(examineeInfos)
                 .dataLength((long) examineeInfos.size())
                 .build();
-
-
         return ApiResponseMapper.mapToResponseEntityOK(listResponse);
     }
 }

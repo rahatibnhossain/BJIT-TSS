@@ -24,8 +24,7 @@ public class ValidationCodes {
     private UserInfo userInfo;
 
     @Builder.Default
-    private String validationCode=generateRandomValidationCode();
-
+    private String validationCode = generateRandomValidationCode();
 
     private static String generateRandomValidationCode() {
         return String.format("%05d", (int) (Math.random() * 100000));

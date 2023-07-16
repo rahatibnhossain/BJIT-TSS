@@ -25,63 +25,53 @@ public class CourseServiceImpl implements CourseService {
 
     private final CourseRepository courseRepository;
 
-
     @Override
     public ResponseEntity<ApiResponse<?>> createCourse(CourseModel courseModel) {
         Optional<CourseInfo> course = courseRepository.findByBatchCode(courseModel.getBatchCode());
-        if (course.isPresent()){
-            throw new CourseException("A course already exists with the batch code "+ courseModel.getBatchCode());
+        if (course.isPresent()) {
+            throw new CourseException("A course already exists with the batch code " + courseModel.getBatchCode());
         }
 
         CourseInfo courseInfo = CourseMapper.mapToCourseInfo(courseModel);
-
-        CourseInfo savedCourse= courseRepository.save(courseInfo);
-
-
-
+        CourseInfo savedCourse = courseRepository.save(courseInfo);
         return ApiResponseMapper.mapToResponseEntityCreated(savedCourse);
-
     }
 
     @Override
     public ResponseEntity<ApiResponse<?>> allCourses() {
-        List<CourseInfo> courseInfoList= courseRepository.findByIsAvailable(true);
-
+        List<CourseInfo> courseInfoList = courseRepository.findByIsAvailable(true);
         ListResponse listResponse = ListResponse.builder()
                 .dataLength((long) courseInfoList.size())
                 .listResponse(courseInfoList)
                 .build();
         return ApiResponseMapper.mapToResponseEntityOK(listResponse);
-
     }
 
     @Override
     public ResponseEntity<ApiResponse<?>> getCourse(String batchCode) {
-
         Optional<CourseInfo> courseInfo = courseRepository.findByBatchCode(batchCode);
-        if (courseInfo.isEmpty()){
-            throw new CourseException("Invalid Batch Code : "+batchCode);
+        if (courseInfo.isEmpty()) {
+            throw new CourseException("Invalid Batch Code : " + batchCode);
         }
+
         return ApiResponseMapper.mapToResponseEntityOK(courseInfo);
     }
 
     @Override
     public ResponseEntity<ApiResponse<?>> updateCourse(String batchCode, CourseModel courseModel) {
         Optional<CourseInfo> course = courseRepository.findByBatchCode(batchCode);
-        if (course.isEmpty()){
-            throw new CourseException("Invalid Batch Code : "+batchCode);
+        if (course.isEmpty()) {
+            throw new CourseException("Invalid Batch Code : " + batchCode);
         }
-        Optional<CourseInfo> courseModelCode = courseRepository.findByBatchCode(courseModel.getBatchCode());
-        if (courseModelCode.isPresent() && !Objects.equals(batchCode.toUpperCase() , courseModel.getBatchCode().toUpperCase())){
 
-            throw new CourseException("This batch code : "+courseModel.getBatchCode()+ " you want to update to already exists");
+        Optional<CourseInfo> courseModelCode = courseRepository.findByBatchCode(courseModel.getBatchCode());
+        if (courseModelCode.isPresent() && !Objects.equals(batchCode.toUpperCase(), courseModel.getBatchCode().toUpperCase())) {
+            throw new CourseException("This batch code : " + courseModel.getBatchCode() + " you want to update to already exists");
         }
 
         CourseInfo courseInfo = CourseMapper.mapToCourseInfo(courseModel);
         courseInfo.setCourseId(course.get().getCourseId());
-        CourseInfo savedCourse= courseRepository.save(courseInfo);
-        return ApiResponseMapper.mapToResponseEntityOK(savedCourse,"Successfully Updated");
+        CourseInfo savedCourse = courseRepository.save(courseInfo);
+        return ApiResponseMapper.mapToResponseEntityOK(savedCourse, "Successfully Updated");
     }
-
-
 }

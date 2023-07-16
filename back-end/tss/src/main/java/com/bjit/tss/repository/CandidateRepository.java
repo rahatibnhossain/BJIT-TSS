@@ -6,10 +6,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-
 @Repository
 public interface CandidateRepository extends JpaRepository<CandidateMarks, Long> {
+
     Optional<CandidateMarks> findByExamineeInfoExamineeId(Long examineeId);
-
 }
-

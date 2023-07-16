@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import jakarta.persistence.*;
+
 import java.util.Date;
 
 @Entity
@@ -22,12 +22,9 @@ public class ExamineeInfo {
     @Column(name = "examinee_id")
     private Long examineeId;
 
-
     @Enumerated(EnumType.STRING)
     private Role role;
-
     private Date applicationTime;
-
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
@@ -36,9 +33,4 @@ public class ExamineeInfo {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "course_id")
     private CourseInfo courseInfo;
-
-
-
-
-
 }

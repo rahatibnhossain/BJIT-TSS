@@ -5,5 +5,6 @@ import com.bjit.tss.model.ApiResponse;
 import org.springframework.http.ResponseEntity;
 
 public interface LoginService {
-   ResponseEntity<ApiResponse<?>> login(LoginRequest loginRequest);
+
+    ResponseEntity<ApiResponse<?>> login(LoginRequest loginRequest);
 }

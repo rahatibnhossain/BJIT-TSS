@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/application")
 @RequiredArgsConstructor
 public class ApplicationController {
+
     private final ApplicationService applicationService;
 
     @PostMapping("/apply")
-    public ResponseEntity<ApiResponse<?>> applyCourse(@RequestBody ApplicationRequest applicationRequest){
+    public ResponseEntity<ApiResponse<?>> applyCourse(@RequestBody ApplicationRequest applicationRequest) {
         return applicationService.applyCourse(applicationRequest);
     }
 
     @PostMapping("/course")
-    public ResponseEntity<ApiResponse<?>> allApplicationSpecific(@RequestBody CourseRoleRequest courseRoleRequest){
+    public ResponseEntity<ApiResponse<?>> allApplicationSpecific(@RequestBody CourseRoleRequest courseRoleRequest) {
         return applicationService.allApplicationSpecific(courseRoleRequest);
     }
-
 }

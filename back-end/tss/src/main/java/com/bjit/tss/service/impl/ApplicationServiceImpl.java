@@ -34,7 +34,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final UserRepository userRepository;
     private final ExamineeRepository examineeRepository;
 
-
     @Override
     public ResponseEntity<ApiResponse<?>> applyCourse(ApplicationRequest applicationRequest) {
         LoginInfo loginInfo = (LoginInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -42,13 +41,14 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (courseInfo.isEmpty() || !courseInfo.get().getIsAvailable()) {
             throw new CourseException("Invalid Batch Code : " + applicationRequest.getBatchCode());
         }
+
         Optional<ExamineeInfo> examinee = examineeRepository.findByUserInfoUserIdAndCourseInfoCourseId(loginInfo.getUserInfo().getUserId(), courseInfo.get().getCourseId());
         if (examinee.isPresent()) {
             throw new ExamineeException("You are already registered for this course");
-
         }
+
         Optional<UserInfo> userInfo = userRepository.findById(loginInfo.getUserInfo().getUserId());
-        if (userInfo.isEmpty()){
+        if (userInfo.isEmpty()) {
             throw new UserException("No User Found");
         }
 
@@ -58,19 +58,16 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .applicationTime(new Date(System.currentTimeMillis()))
                 .role(Role.APPLICANT)
                 .build();
-
-        System.out.println(examineeInfo);
-
         ExamineeInfo savedApplication = examineeRepository.save(examineeInfo);
         return ApiResponseMapper.mapToResponseEntityCreated(savedApplication, "Application was successful");
     }
 
-
-
-
     @Override
     public ResponseEntity<ApiResponse<?>> allApplicationSpecific(CourseRoleRequest courseRoleRequest) {
         Optional<List<ExamineeInfo>> examineeInfos = examineeRepository.findByRoleAndCourseInfoIsAvailableAndCourseInfoBatchCode(courseRoleRequest.getRole(), true, courseRoleRequest.getBatchCode());
+        if (examineeInfos.isEmpty()) {
+            throw new UserException("User not found");
+        }
 
         ListResponse<?> listResponse = ListResponse.builder()
                 .dataLength((long) examineeInfos.get().size())

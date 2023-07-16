@@ -1,8 +1,6 @@
 package com.bjit.tss.config;
 
-import jakarta.servlet.Filter;
 import lombok.Data;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,34 +12,29 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 @Data
 public class SecurityConfig {
+
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authenticationProvider;
 
-
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-
         return config.getAuthenticationManager();
-
     }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http   .csrf()
+        http.csrf()
                 .disable()
                 .authorizeHttpRequests()
                 .requestMatchers(
                         "api/auth/login",
                         "api/auth/register/applicant"
-
-
                 )
                 .permitAll()
                 .requestMatchers(
@@ -55,25 +48,28 @@ public class SecurityConfig {
                         "api/upload/file-upload/image",
                         "api/upload/file-upload/resume",
                         "api/candidate/generate-admit"
-
                 )
                 .hasAuthority("APPLICANT")
                 .requestMatchers(
                         "/api/course",
                         "/api/course/batch_code/**"
                 )
-                .hasAnyAuthority("ADMIN","APPLICANT")
+                .hasAnyAuthority("ADMIN", "APPLICANT")
+                .requestMatchers(
+                        "/api/evaluation/upload-mark/written"
+                )
+                .hasAuthority("EVALUATOR")
                 .requestMatchers(
                         "/api/course/**",
-                        "/api/course/update/batch_code/**",
+                        "/api/course/update/batch-code/**",
                         "/api/application/course/**",
                         "/api/approval/applicant",
                         "/api/email/send",
                         "api/auth/register/evaluator",
                         "api/number-question/set",
                         "api/candidate/all",
-                        "/api/evaluation/assign-answer"
-
+                        "/api/evaluation/assign-answer",
+                        "/api/data-storage/set"
                 )
                 .hasAuthority("ADMIN")
                 .anyRequest()

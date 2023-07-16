@@ -9,14 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @RequiredArgsConstructor
 public class TssApplication implements CommandLineRunner {
-	private final RegisterService registerService;
 
-	public static void main(String[] args) {
-		SpringApplication.run(TssApplication.class, args);
-	}
+    private final RegisterService registerService;
 
-	@Override
-	public void run(String... args) throws Exception {
-		registerService.adminRegistration("rahatibnhossain@gmail.com","Rahat1234");
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(TssApplication.class, args);
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        registerService.adminRegistration("rahatibnhossain@gmail.com", "Rahat1234");
+    }
 }

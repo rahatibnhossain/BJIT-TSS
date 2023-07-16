@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*;
+
 import java.util.List;
 
 @Entity
@@ -27,10 +28,7 @@ public class WrittenMarks {
     @JoinColumn(name = "evaluator_id")
     private EvaluatorInfo evaluatorInfo;
 
-
-
     @OneToMany(targetEntity = WrittenQuestionMarks.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "written_mark_id", referencedColumnName = "written_mark_id")
     private List<WrittenQuestionMarks> writtenQuestionMarks;
-
 }

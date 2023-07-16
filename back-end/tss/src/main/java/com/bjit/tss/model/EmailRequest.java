@@ -1,6 +1,5 @@
 package com.bjit.tss.model;
 
-import com.bjit.tss.role.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class ApprovalRequest {
+
     private Long examineeId;
     private Role role;
 }

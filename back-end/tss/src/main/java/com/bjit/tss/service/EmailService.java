@@ -5,5 +5,6 @@ import com.bjit.tss.model.EmailRequest;
 import org.springframework.http.ResponseEntity;
 
 public interface EmailService {
+
     ResponseEntity<ApiResponse<?>> sendEmail(EmailRequest emailRequest);
 }

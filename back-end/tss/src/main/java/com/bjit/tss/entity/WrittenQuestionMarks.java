@@ -14,12 +14,11 @@ import jakarta.persistence.*;
 @AllArgsConstructor
 @Builder
 public class WrittenQuestionMarks {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "written_question_id")
     private Long writtenQuestionId;
     private Float writtenQuestionMark;
     private Integer questionNo;
-
-
 }

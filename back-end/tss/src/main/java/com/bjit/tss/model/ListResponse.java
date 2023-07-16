@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ListResponse<T> {
-    private Long  dataLength ;
+
+    private Long dataLength;
     private T listResponse;
 }

@@ -2,7 +2,6 @@ package com.bjit.tss.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
-
 import jakarta.persistence.*;
 
 @Entity
@@ -37,7 +36,6 @@ public class CandidateMarks {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "written_mark_id")
-    private WrittenMarks writtenVivaMarks;
-
+    private WrittenMarks writtenMarks;
     private Float fullMark;
 }

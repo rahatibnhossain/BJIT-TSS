@@ -1,8 +1,9 @@
 package com.bjit.tss.controller;
 
 import com.bjit.tss.model.ApiResponse;
-import com.bjit.tss.model.QuestionNumberRequest;
-import com.bjit.tss.service.QuestionNumberService;
+import com.bjit.tss.model.DataStorageRequest;
+import com.bjit.tss.repository.DataStorageRepository;
+import com.bjit.tss.service.DataStorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/number-question")
 @RequiredArgsConstructor
-public class QuestionNumberController {
+@RequestMapping("/api/data-storage")
+public class DataStorageController {
 
-    private final QuestionNumberService questionNumberService;
+    private final DataStorageService dataStorageService;
 
     @PostMapping("/set")
-    public ResponseEntity<ApiResponse<?>> setWrittenQuestionNumber(@RequestBody QuestionNumberRequest questionNumberRequest) {
-        return questionNumberService.setWrittenQuestionNumber(questionNumberRequest);
+    public ResponseEntity<ApiResponse<?>> setDataStorage(@RequestBody DataStorageRequest dataStorageRequest) {
+        return dataStorageService.setDataStorage(dataStorageRequest);
     }
 }

@@ -5,12 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class QuestionNumberRequest {
+public class UploadWrittenMarkRequest {
 
-    private String questionType;
-    private Long questionNumbers;
+    private Long hiddenCode;
+    private List<Float> marks;
 }

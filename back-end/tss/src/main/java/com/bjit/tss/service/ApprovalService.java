@@ -5,5 +5,6 @@ import com.bjit.tss.model.ApprovalRequest;
 import org.springframework.http.ResponseEntity;
 
 public interface ApprovalService {
+
     ResponseEntity<ApiResponse<?>> markAs(ApprovalRequest approvalRequest);
 }

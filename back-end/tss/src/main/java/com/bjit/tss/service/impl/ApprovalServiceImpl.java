@@ -20,45 +20,27 @@ import java.util.Optional;
 public class ApprovalServiceImpl implements ApprovalService {
 
     private final ExamineeRepository examineeRepository;
-
     private final CandidateRepository candidateRepository;
 
     @Override
     public ResponseEntity<ApiResponse<?>> markAs(ApprovalRequest request) {
-
         Optional<ExamineeInfo> examineeInfo = examineeRepository.findById(request.getExamineeId());
-        if (examineeInfo.isEmpty()){
+        if (examineeInfo.isEmpty()) {
             throw new UserException("User not found!!!");
         }
+
         examineeInfo.get().setRole(request.getRole());
-
-
-
         Optional<CandidateMarks> candidate = candidateRepository.findByExamineeInfoExamineeId(examineeInfo.get().getExamineeId());
-
-
-        if (candidate.isEmpty()){
+        if (candidate.isEmpty()) {
             CandidateMarks candidateMarks = CandidateMarks.builder()
                     .examineeInfo(examineeInfo.get())
                     .build();
-
             CandidateMarks saved = candidateRepository.save(candidateMarks);
             return ApiResponseMapper.mapToResponseEntityOK(saved);
-        }
-        else {
-
+        } else {
             candidate.get().setExamineeInfo(examineeInfo.get());
-
             CandidateMarks saved = candidateRepository.save(candidate.get());
             return ApiResponseMapper.mapToResponseEntityOK(saved);
-
         }
-
-
-
-
-
     }
-
-
 }

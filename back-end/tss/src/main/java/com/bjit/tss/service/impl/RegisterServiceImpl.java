@@ -17,7 +17,6 @@ import com.bjit.tss.service.EmailService;
 import com.bjit.tss.service.RegisterService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,7 +24,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -42,22 +40,18 @@ public class RegisterServiceImpl implements RegisterService {
     @Transactional
     @Override
     public ResponseEntity<ApiResponse<?>> applicantRegistration(RegisterRequest registerRequest) {
-
-        if (registerRequest.getEmail()== null || registerRequest.getEmail().isEmpty()){
+        if (registerRequest.getEmail() == null || registerRequest.getEmail().isEmpty()) {
             throw new AuthenticationException("Email is required.");
-
         }
+
         String emailRegex = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
                 + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
         Pattern pattern = Pattern.compile(emailRegex);
-
-        if (!pattern.matcher(registerRequest.getEmail()).matches()){
+        if (!pattern.matcher(registerRequest.getEmail()).matches()) {
             throw new EmailException("Invalid Email");
-
         }
 
         Optional<LoginInfo> checkAvailability = loginRepository.findByEmail(registerRequest.getEmail());
-
         if (checkAvailability.isPresent()) {
             throw new AuthenticationException("The Email " + registerRequest.getEmail() + " is already registered");
         }
@@ -77,57 +71,42 @@ public class RegisterServiceImpl implements RegisterService {
                 .photoUrl(registerRequest.getPhotoUrl())
                 .resumeUrl(registerRequest.getResumeUrl())
                 .build();
-
         LoginInfo loginInfo = LoginInfo.builder()
                 .email(registerRequest.getEmail())
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
                 .role(Role.USER)
                 .userInfo(userInfo)
                 .build();
-
         ValidationCodes validationCodes = ValidationCodes.builder()
                 .userInfo(userInfo)
                 .build();
 
-
-
         List<String> to = new ArrayList<String>();
         to.add(loginInfo.getEmail());
         String[] toEmail = to.toArray(new String[0]);
-
-        String emailSubject= "Email Verification";
-        String emailBody = "Your Verification Code is : "+validationCodes.getValidationCode();
-
+        String emailSubject = "Email Verification";
+        String emailBody = "Your Verification Code is : " + validationCodes.getValidationCode();
 
         EmailRequest emailRequest = EmailRequest.builder()
                 .to(toEmail)
                 .body(emailBody)
                 .subject(emailSubject)
                 .build();
-        ResponseEntity<ApiResponse<?>> emailResponse=  emailService.sendEmail(emailRequest);
+        ResponseEntity<ApiResponse<?>> emailResponse = emailService.sendEmail(emailRequest);
 
-
-
-         validationRepository.save(validationCodes);
-
-
-        LoginInfo saved=  loginRepository.save(loginInfo);
+        validationRepository.save(validationCodes);
+        LoginInfo saved = loginRepository.save(loginInfo);
         String jwtToken = jwtService.generateToken(loginInfo);
         AuthenticationResponse authenticationResponse = AuthenticationResponse.builder()
                 .token(jwtToken)
                 .userInfo(saved.getUserInfo())
                 .build();
-
         return ApiResponseMapper.mapToResponseEntityCreated(authenticationResponse);
-
     }
 
     @Override
     public void adminRegistration(String email, String password) {
-
-
         Optional<LoginInfo> checkAvailability = loginRepository.findByEmail(email);
-
         if (checkAvailability.isEmpty()) {
             LoginInfo loginInfo = LoginInfo.builder()
                     .email(email)
@@ -136,38 +115,29 @@ public class RegisterServiceImpl implements RegisterService {
                     .build();
             loginRepository.save(loginInfo);
         }
-
-
-        return;
     }
 
     @Override
     public ResponseEntity<ApiResponse<?>> mailValidation(ValidationRequest validationRequest) {
         LoginInfo loginInfo = (LoginInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         Optional<ValidationCodes> validationCodes = validationRepository.findByUserInfoUserId(loginInfo.getUserInfo().getUserId());
-
-        if (validationCodes.isEmpty()){
+        if (validationCodes.isEmpty()) {
             throw new ValidationException("Cannot be validated");
         }
-        if (validationRequest.getValidationCode().equals(validationCodes.get().getValidationCode())){
+
+        if (validationRequest.getValidationCode().equals(validationCodes.get().getValidationCode())) {
             loginInfo.setRole(Role.APPLICANT);
             loginRepository.save(loginInfo);
-        }
-        else {
+        } else {
             throw new ValidationException("Invalid Validation Code");
         }
 
-
-        return ApiResponseMapper.mapToResponseEntityOK(null,"Email is validated");
+        return ApiResponseMapper.mapToResponseEntityOK(null, "Email is validated");
     }
 
     @Override
     public ResponseEntity<ApiResponse<?>> evaluatorRegistration(EvaluatorRegisterRequest request) {
-
-
         Optional<LoginInfo> checkAvailability = loginRepository.findByEmail(request.getEmail());
-
         if (checkAvailability.isPresent()) {
             throw new AuthenticationException("The Email " + request.getEmail() + " is already registered");
         }
@@ -176,10 +146,6 @@ public class RegisterServiceImpl implements RegisterService {
                 .name(request.getName())
                 .email(request.getEmail())
                 .build();
-
-
-
-
         LoginInfo loginInfo = LoginInfo.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
@@ -187,43 +153,24 @@ public class RegisterServiceImpl implements RegisterService {
                 .evaluatorInfo(evaluatorInfo)
                 .build();
 
-
-
-
-
-
         List<String> to = new ArrayList<String>();
         to.add(request.getEmail());
         String[] toEmail = to.toArray(new String[0]);
-
-        String emailSubject= "Evaluator Assignment";
-        String emailBody = "Hi " +request.getName()+
+        String emailSubject = "Evaluator Assignment";
+        String emailBody = "Hi " + request.getName() +
                 ",\nAdmin has made you an evaluator. \n" +
                 "Your login Email : "
-                + request.getEmail()+
+                + request.getEmail() +
                 " \nYour login password : "
-                +request.getPassword()+
+                + request.getPassword() +
                 " \nPlease do not share this credentials. ";
-
-
-
         EmailRequest emailRequest = EmailRequest.builder()
                 .to(toEmail)
                 .body(emailBody)
                 .subject(emailSubject)
                 .build();
-
-        ResponseEntity<ApiResponse<?>> emailResponse=  emailService.sendEmail(emailRequest);
-
-
-
-
-
-
-        LoginInfo saved=  loginRepository.save(loginInfo);
-
-
-
-        return ApiResponseMapper.mapToResponseEntityCreated(saved.getEvaluatorInfo(),"Evaluator is created.");
+        ResponseEntity<ApiResponse<?>> emailResponse = emailService.sendEmail(emailRequest);
+        LoginInfo saved = loginRepository.save(loginInfo);
+        return ApiResponseMapper.mapToResponseEntityCreated(saved.getEvaluatorInfo(), "Evaluator is created.");
     }
 }

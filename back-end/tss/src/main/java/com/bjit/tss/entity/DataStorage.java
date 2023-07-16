@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-
 @Entity
 @Table(name = "data_storage")
 @Data
@@ -22,5 +20,4 @@ public class DataStorage {
     private Long dataId;
     private String dataKey;
     private String dataValue;
-
 }

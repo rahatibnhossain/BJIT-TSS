@@ -15,6 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class UserInfo {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;

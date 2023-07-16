@@ -4,10 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import jakarta.persistence.*;
+
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "course_info")
@@ -16,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class CourseInfo {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "course_id")
@@ -28,5 +28,4 @@ public class CourseInfo {
     private String batchCode;
     private String courseDescription;
     private Boolean isAvailable;
-
 }

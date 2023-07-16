@@ -1,6 +1,5 @@
 package com.bjit.tss.controller;
 
-import com.bjit.tss.mapper.ApiResponseMapper;
 import com.bjit.tss.model.ApiResponse;
 import com.bjit.tss.service.FileService;
 import lombok.RequiredArgsConstructor;
@@ -12,14 +11,16 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @RequestMapping("api/upload/file-upload")
 public class FileUploadController {
+
     private final FileService fileService;
 
     @PostMapping("/image")
-    public ResponseEntity<ApiResponse<?>> uploadImage(@RequestParam("profile-picture") MultipartFile image ){
-        return fileService.uploadImage(image );
+    public ResponseEntity<ApiResponse<?>> uploadImage(@RequestParam("profile-picture") MultipartFile image) {
+        return fileService.uploadImage(image);
     }
+
     @PostMapping("/resume")
-    public ResponseEntity<ApiResponse<?>> uploadResume(@RequestParam("resume") MultipartFile resume ){
-        return fileService.uploadResume(resume );
+    public ResponseEntity<ApiResponse<?>> uploadResume(@RequestParam("resume") MultipartFile resume) {
+        return fileService.uploadResume(resume);
     }
 }

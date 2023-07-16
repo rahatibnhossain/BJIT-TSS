@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import jakarta.persistence.*;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -20,20 +20,18 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class LoginInfo implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "login_id")
     private Long loginId;
     private String email;
     private String password;
-
     @Enumerated(EnumType.STRING)
     private Role role;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private UserInfo userInfo;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "evaluator_id")
     private EvaluatorInfo evaluatorInfo;
