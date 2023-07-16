@@ -3,6 +3,7 @@ package com.bjit.tss.controller;
 import com.bjit.tss.model.AdmitCardRequest;
 import com.bjit.tss.model.ApiResponse;
 import com.bjit.tss.service.AdmitCardService;
+import com.bjit.tss.service.ApplicantDashboardService;
 import com.bjit.tss.service.CandidateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
@@ -20,6 +21,7 @@ public class CandidateController {
 
     private final AdmitCardService admitCardService;
     private final CandidateService candidateService;
+    private final ApplicantDashboardService applicantDashboardService;
 
     @GetMapping("/all")
     public ResponseEntity<ApiResponse<?>> allCandidates() {
@@ -37,4 +39,11 @@ public class CandidateController {
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(new InputStreamResource(pdf));
     }
+
+    @GetMapping("/dashboard")
+    public ResponseEntity<ApiResponse<?>> getApplicantDashboardData(){
+        return applicantDashboardService.getApplicantDashboardData();
+    }
+
+
 }

@@ -51,6 +51,7 @@ public class EvaluationServiceImpl implements EvaluationService {
                 candidate.setWrittenMarks(writtenMarks);
             } else {
                 WrittenMarks writtenMarks = candidate.getWrittenMarks();
+                writtenMarks.setEvaluatorInfo(evaluatorInfo.get());
                 candidate.setWrittenMarks(writtenMarks);
             }
 
@@ -76,10 +77,9 @@ public class EvaluationServiceImpl implements EvaluationService {
     @Override
     public ResponseEntity<ApiResponse<?>> uploadWrittenMark(UploadWrittenMarkRequest request) {
         Optional<HiddenCodeInfo> hiddenCodeInfo = hiddenCodeRepository.findById(request.getHiddenCode());
-        if (hiddenCodeInfo.isEmpty()) {
+        if (hiddenCodeInfo.isEmpty() || hiddenCodeInfo.get().getCandidateMarks().getWrittenMarks().getEvaluatorInfo() == null) {
             throw new HiddenCodeException("Invalid hidden code");
         }
-
         LoginInfo loginInfo = (LoginInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (!Objects.equals(hiddenCodeInfo.get().getCandidateMarks().getWrittenMarks().getEvaluatorInfo().getEvaluatorId(), loginInfo.getEvaluatorInfo().getEvaluatorId())) {
             throw new HiddenCodeException("Invalid hidden code");

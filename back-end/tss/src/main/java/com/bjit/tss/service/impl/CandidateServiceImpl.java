@@ -24,7 +24,7 @@ public class CandidateServiceImpl implements CandidateService {
         List<ExamineeInfo> examineeInfos = examineeRepository.findByRole(Role.CANDIDATE);
         ListResponse<?> listResponse = ListResponse.builder()
                 .listResponse(examineeInfos)
-                .dataLength((long) examineeInfos.size())
+                .dataLength( examineeInfos.size())
                 .build();
         return ApiResponseMapper.mapToResponseEntityOK(listResponse);
     }

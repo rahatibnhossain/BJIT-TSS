@@ -16,4 +16,6 @@ public interface ExamineeRepository extends JpaRepository<ExamineeInfo, Long> {
     Optional<List<ExamineeInfo>> findByRoleAndCourseInfoIsAvailableAndCourseInfoBatchCode(Role role, Boolean isAvailable, String batchCode);
 
     List<ExamineeInfo> findByRole(Role role);
+
+    List<ExamineeInfo> findAllByUserInfoUserIdAndCourseInfoIsAvailable(Long userId, boolean isAvailable);
 }

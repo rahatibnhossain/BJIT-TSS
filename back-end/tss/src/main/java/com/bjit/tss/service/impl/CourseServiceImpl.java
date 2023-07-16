@@ -41,7 +41,7 @@ public class CourseServiceImpl implements CourseService {
     public ResponseEntity<ApiResponse<?>> allCourses() {
         List<CourseInfo> courseInfoList = courseRepository.findByIsAvailable(true);
         ListResponse listResponse = ListResponse.builder()
-                .dataLength((long) courseInfoList.size())
+                .dataLength(courseInfoList.size())
                 .listResponse(courseInfoList)
                 .build();
         return ApiResponseMapper.mapToResponseEntityOK(listResponse);

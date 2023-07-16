@@ -2,6 +2,8 @@ package com.bjit.tss.service.impl;
 
 import com.bjit.tss.entity.CandidateMarks;
 import com.bjit.tss.entity.ExamineeInfo;
+import com.bjit.tss.entity.RoundMarks;
+import com.bjit.tss.entity.WrittenMarks;
 import com.bjit.tss.exception.UserException;
 import com.bjit.tss.mapper.ApiResponseMapper;
 import com.bjit.tss.model.ApiResponse;
@@ -34,6 +36,10 @@ public class ApprovalServiceImpl implements ApprovalService {
         if (candidate.isEmpty()) {
             CandidateMarks candidateMarks = CandidateMarks.builder()
                     .examineeInfo(examineeInfo.get())
+                    .writtenMarks(new WrittenMarks())
+                    .technicalViva(new RoundMarks())
+                    .aptitudeTest(new RoundMarks())
+                    .hrViva(new RoundMarks())
                     .build();
             CandidateMarks saved = candidateRepository.save(candidateMarks);
             return ApiResponseMapper.mapToResponseEntityOK(saved);

@@ -70,7 +70,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
 
         ListResponse<?> listResponse = ListResponse.builder()
-                .dataLength((long) examineeInfos.get().size())
+                .dataLength(examineeInfos.get().size())
                 .listResponse(examineeInfos)
                 .build();
         return ApiResponseMapper.mapToResponseEntityOK(listResponse);

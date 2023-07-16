@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ListResponse<T> {
+public class ApplicantDashboardMessage {
 
-    private int dataLength;
-    private T listResponse;
+    private String dashboardMessage;
 }
