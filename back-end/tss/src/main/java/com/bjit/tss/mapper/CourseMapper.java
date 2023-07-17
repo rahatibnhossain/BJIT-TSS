@@ -14,6 +14,7 @@ public class CourseMapper {
                 .batchCode(courseModel.getBatchCode())
                 .courseDescription(courseModel.getCourseDescription())
                 .isAvailable(courseModel.getIsAvailable())
+                .vacancy(courseModel.getVacancy())
                 .writtenExamTime(courseModel.getWrittenExamTime())
                 .applicantDashboardMessage(courseModel.getApplicantDashboardMessage())
                 .writtenShortlistedDashboardMessage(courseModel.getWrittenShortlistedDashboardMessage())

@@ -1,6 +1,7 @@
 package com.bjit.tss.repository;
 
 import com.bjit.tss.entity.CandidateMarks;
+import com.bjit.tss.enums.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,9 +15,7 @@ public interface CandidateRepository extends JpaRepository<CandidateMarks, Long>
 
     List<CandidateMarks> findAllByExamineeInfoUserInfoUserIdAndExamineeInfoCourseInfoIsAvailable(Long userId, boolean b);
 
-    List<CandidateMarks> findAllByHrVivaPassed(boolean b);
-
-    List<CandidateMarks> findAllByHrVivaPassedAndTechnicalVivaPassedAndAptitudeTestPassedAndWrittenMarksPassed(boolean b, boolean b1, boolean b2, boolean b3);
-
     List<CandidateMarks> findAllByHrVivaPassedAndTechnicalVivaPassedAndAptitudeTestPassedAndWrittenMarksPassedAndExamineeInfoCourseInfoBatchCode(boolean b, boolean b1, boolean b2, boolean b3, String batchCode);
+
+    List<CandidateMarks> findAllByExamineeInfoRoleAndExamineeInfoCourseInfoBatchCode(Role role, String batchCode);
 }

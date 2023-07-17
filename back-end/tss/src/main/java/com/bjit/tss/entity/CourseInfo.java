@@ -28,6 +28,7 @@ public class CourseInfo {
     private String batchCode;
     private String courseDescription;
     private Boolean isAvailable;
+    private Long vacancy;
     private String applicantDashboardMessage;
     private String writtenShortlistedDashboardMessage;
     private String writtenPassedDashboardMessage;

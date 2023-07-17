@@ -74,7 +74,9 @@ public class SecurityConfig {
                         "/api/evaluation/upload-mark/aptitude",
                         "/api/evaluation/upload-mark/technical",
                         "/api/evaluation/upload-mark/hr-viva",
-                        "/api/select-final-trainee/all-passed/**"
+                        "/api/final-trainee/all-passed/**",
+                        "/api/final-trainee/all-passed/"
+
                 )
                 .hasAuthority("ADMIN")
                 .anyRequest()

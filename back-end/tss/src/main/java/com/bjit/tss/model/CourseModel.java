@@ -20,6 +20,7 @@ public class CourseModel {
     private String batchCode;
     private String courseDescription;
     private Boolean isAvailable;
+    private Long vacancy;
     private Date writtenExamTime;
     private String applicantDashboardMessage;
     private String writtenShortlistedDashboardMessage;
