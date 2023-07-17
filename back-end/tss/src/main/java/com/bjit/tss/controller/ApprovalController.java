@@ -19,6 +19,6 @@ public class ApprovalController {
 
     @PostMapping("/applicant")
     public ResponseEntity<ApiResponse<?>> markAs(@RequestBody ApprovalRequest approvalRequest) {
-        return approvalService.markAs(approvalRequest);
+        return approvalService.approveApplicant(approvalRequest);
     }
 }

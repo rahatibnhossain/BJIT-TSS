@@ -1,5 +1,8 @@
 package com.bjit.tss.entity;
 
+import com.bjit.tss.entity.QuestionMarks;
+import com.bjit.tss.enums.Role;
+import com.bjit.tss.enums.Round;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,10 +24,13 @@ public class RoundMarks {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "round_id")
     private Long roundId;
-    private String roundName;
+
+    @Enumerated(EnumType.STRING)
+    private Round roundName;
     private Float roundMark;
     private Boolean passed;
 
+    @ElementCollection
     @OneToMany(targetEntity = QuestionMarks.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "round_id", referencedColumnName = "round_id")
     private List<QuestionMarks> questionMarksList;

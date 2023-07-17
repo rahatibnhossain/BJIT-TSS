@@ -6,7 +6,7 @@ import com.bjit.tss.exception.AdmitGenerationException;
 import com.bjit.tss.exception.UserException;
 import com.bjit.tss.model.AdmitCardRequest;
 import com.bjit.tss.repository.ExamineeRepository;
-import com.bjit.tss.role.Role;
+import com.bjit.tss.enums.Role;
 import com.bjit.tss.service.AdmitCardService;
 import com.lowagie.text.*;
 import com.lowagie.text.Font;

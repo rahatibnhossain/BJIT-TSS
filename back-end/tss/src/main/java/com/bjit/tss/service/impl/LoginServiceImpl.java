@@ -53,6 +53,6 @@ public class LoginServiceImpl implements LoginService {
                     .build();
         }
 
-        return ApiResponseMapper.mapToResponseEntityOK(authenticationResponse);
+        return ApiResponseMapper.mapToResponseEntityOK(authenticationResponse,"Login successfully done.");
     }
 }

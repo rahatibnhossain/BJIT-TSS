@@ -1,6 +1,7 @@
 package com.bjit.tss.service.impl;
 
 import com.bjit.tss.entity.CourseInfo;
+import com.bjit.tss.entity.LoginInfo;
 import com.bjit.tss.exception.CourseException;
 import com.bjit.tss.mapper.ApiResponseMapper;
 import com.bjit.tss.mapper.CourseMapper;
@@ -8,10 +9,11 @@ import com.bjit.tss.model.ApiResponse;
 import com.bjit.tss.model.CourseModel;
 import com.bjit.tss.model.ListResponse;
 import com.bjit.tss.repository.CourseRepository;
+import com.bjit.tss.enums.Role;
 import com.bjit.tss.service.CourseService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,7 +36,7 @@ public class CourseServiceImpl implements CourseService {
 
         CourseInfo courseInfo = CourseMapper.mapToCourseInfo(courseModel);
         CourseInfo savedCourse = courseRepository.save(courseInfo);
-        return ApiResponseMapper.mapToResponseEntityCreated(savedCourse);
+        return ApiResponseMapper.mapToResponseEntityCreated(savedCourse, "Course created successfully.");
     }
 
     @Override
@@ -49,7 +51,15 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public ResponseEntity<ApiResponse<?>> getCourse(String batchCode) {
-        Optional<CourseInfo> courseInfo = courseRepository.findByBatchCode(batchCode);
+        LoginInfo loginInfo = (LoginInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<CourseInfo> courseInfo= Optional.of(new CourseInfo());
+
+        if (loginInfo.getRole()== Role.ADMIN){
+            courseInfo = courseRepository.findByBatchCode(batchCode);
+        } else {
+            courseInfo = courseRepository.findByBatchCodeAndIsAvailable(batchCode, true);
+        }
+
         if (courseInfo.isEmpty()) {
             throw new CourseException("Invalid Batch Code : " + batchCode);
         }

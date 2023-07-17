@@ -13,4 +13,6 @@ public interface CourseRepository extends JpaRepository<CourseInfo, Long> {
     Optional<CourseInfo> findByBatchCode(String batchCode);
 
     List<CourseInfo> findByIsAvailable(Boolean b);
+
+    Optional<CourseInfo> findByBatchCodeAndIsAvailable(String batchCode, boolean b);
 }

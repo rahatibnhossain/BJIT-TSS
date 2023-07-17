@@ -1,12 +1,14 @@
 package com.bjit.tss.service.impl;
 
 import com.bjit.tss.entity.*;
+import com.bjit.tss.enums.Round;
 import com.bjit.tss.exception.EvaluationException;
 import com.bjit.tss.exception.HiddenCodeException;
 import com.bjit.tss.exception.UserException;
 import com.bjit.tss.mapper.ApiResponseMapper;
 import com.bjit.tss.model.ApiResponse;
 import com.bjit.tss.model.AssignAnswerSheetRequest;
+import com.bjit.tss.model.UploadMarkRequest;
 import com.bjit.tss.model.UploadWrittenMarkRequest;
 import com.bjit.tss.repository.*;
 import com.bjit.tss.service.EvaluationService;
@@ -31,6 +33,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     private final DataStorageRepository dataStorageRepository;
     private final WrittenMarksRepository writtenMarksRepository;
     private final WrittenQuestionMarksRepository writtenQuestionMarksRepository;
+    private final QuestionMarksRepository questionMarksRepository;
 
     @Override
     public ResponseEntity<ApiResponse<?>> assignAnswerSheet(AssignAnswerSheetRequest request) {
@@ -44,16 +47,16 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
         List<HiddenCodeInfo> result = candidateMarks.stream().map(candidate -> {
             HiddenCodeInfo hiddenCode = null;
+            WrittenMarks writtenMarks;
             if (candidate.getWrittenMarks() == null || candidate.getWrittenMarks().getWrittenMarkId() == null) {
-                WrittenMarks writtenMarks = WrittenMarks.builder()
+                writtenMarks = WrittenMarks.builder()
                         .evaluatorInfo(evaluatorInfo.get())
                         .build();
-                candidate.setWrittenMarks(writtenMarks);
             } else {
-                WrittenMarks writtenMarks = candidate.getWrittenMarks();
+                writtenMarks = candidate.getWrittenMarks();
                 writtenMarks.setEvaluatorInfo(evaluatorInfo.get());
-                candidate.setWrittenMarks(writtenMarks);
             }
+            candidate.setWrittenMarks(writtenMarks);
 
             Optional<HiddenCodeInfo> codeInfo = hiddenCodeRepository.findByCandidateMarksCandidateId(candidate.getCandidateId());
             if (codeInfo.isPresent()) {
@@ -168,5 +171,247 @@ public class EvaluationServiceImpl implements EvaluationService {
 
         WrittenMarks savedMarks = writtenMarksRepository.save(writtenMarks);
         return ApiResponseMapper.mapToResponseEntityOK(savedMarks, "Mark updated successfully");
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse<?>> uploadAptitudeMark(UploadMarkRequest request) {
+        Optional<CandidateMarks> candidateMarks = candidateRepository.findById(request.getCandidateId());
+        if (candidateMarks.isEmpty()) {
+            throw new UserException("Candidate id is invalid");
+        }
+
+        if (!candidateMarks.get().getWrittenMarks().getPassed()) {
+            throw new EvaluationException("Invalid Request");
+        }
+
+        Optional<DataStorage> aptitudeQuestionNumber = dataStorageRepository.findByDataKey("AptitudeQuestionNumber");
+        if (aptitudeQuestionNumber.isEmpty()) {
+            throw new EvaluationException("Please set the number of questions in aptitude test");
+
+        }
+
+        if (Integer.parseInt(aptitudeQuestionNumber.get().getDataValue()) < (Integer) request.getMarks().size()) {
+            throw new EvaluationException("Maximum number of questions in aptitude test is : " + aptitudeQuestionNumber.get().getDataValue());
+        }
+        AtomicReference<Integer> questionNo = new AtomicReference<>(0);
+        AtomicReference<Float> totalMark = new AtomicReference<>(0.0f);
+        List<QuestionMarks> questionMarks;
+        if (candidateMarks.get().getAptitudeTest().getQuestionMarksList().size() == 0) {
+            questionMarks = request.getMarks().stream().map(question -> {
+                questionNo.set(questionNo.get() + 1);
+                if (question < 0) {
+                    throw new EvaluationException("Mark cannot be negative");
+                }
+                totalMark.set(totalMark.get() + question);
+
+                return QuestionMarks.builder()
+                        .questionMark(question)
+                        .questionNo(Integer.parseInt(String.valueOf(questionNo)))
+                        .build();
+            }).toList();
+        } else {
+            questionMarks = IntStream.range(0, candidateMarks.get().getAptitudeTest().getQuestionMarksList().size())
+                    .mapToObj(index -> {
+                        QuestionMarks candidate = candidateMarks.get().getAptitudeTest().getQuestionMarksList().get(index);
+
+                        if (request.getMarks().get(index) < 0) {
+                            throw new EvaluationException("Mark cannot be negative");
+                        }
+                        candidate.setQuestionMark(request.getMarks().get(index));
+                        totalMark.set(totalMark.get() + request.getMarks().get(index));
+
+                        return candidate;
+                    })
+                    .toList();
+        }
+        Optional<DataStorage> maximumMark = dataStorageRepository.findByDataKey("TotalMarkAptitude");
+        Optional<DataStorage> passingMark = dataStorageRepository.findByDataKey("PassingMarkAptitude");
+        if (maximumMark.isEmpty()) {
+            throw new EvaluationException("Please set total mark of aptitude test.");
+        }
+
+        if (passingMark.isEmpty()) {
+            throw new EvaluationException("Please set passing mark of aptitude test.");
+        }
+
+        if (totalMark.get() > Float.parseFloat(maximumMark.get().getDataValue())) {
+            throw new EvaluationException("Total aptitude test mark cannot be greater than " + maximumMark.get().getDataValue());
+        }
+
+        boolean isPassed = totalMark.get() >= Float.parseFloat(passingMark.get().getDataValue());
+
+        List<QuestionMarks> questionMarksList = questionMarksRepository.saveAll(questionMarks);
+        candidateMarks.get().getAptitudeTest().setQuestionMarksList(questionMarksList);
+        candidateMarks.get().getAptitudeTest().setRoundMark(totalMark.get());
+        candidateMarks.get().getAptitudeTest().setPassed(isPassed);
+        candidateMarks.get().getAptitudeTest().setRoundName(Round.APTITUDE);
+
+        questionNo.set(0);
+        totalMark.set(0.0f);
+
+        CandidateMarks saved = candidateRepository.save(candidateMarks.get());
+        return ApiResponseMapper.mapToResponseEntityOK(saved, "Aptitude test mark uploaded successfully.");
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse<?>> uploadTechnicalMark(UploadMarkRequest request) {
+        Optional<CandidateMarks> candidateMarks = candidateRepository.findById(request.getCandidateId());
+        if (candidateMarks.isEmpty()) {
+            throw new UserException("Candidate id is invalid");
+        }
+
+        if (!candidateMarks.get().getAptitudeTest().getPassed()) {
+            throw new EvaluationException("Invalid Request");
+        }
+
+        Optional<DataStorage> technicalQuestionNumber = dataStorageRepository.findByDataKey("TechnicalQuestionNumber");
+        if (technicalQuestionNumber.isEmpty()) {
+            throw new EvaluationException("Please set the number of questions in technical viva");
+
+        }
+        if (Integer.parseInt(technicalQuestionNumber.get().getDataValue()) < (Integer) request.getMarks().size()) {
+            throw new EvaluationException("Maximum number of questions in technical viva is : " + technicalQuestionNumber.get().getDataValue());
+        }
+        AtomicReference<Integer> questionNo = new AtomicReference<>(0);
+        AtomicReference<Float> totalMark = new AtomicReference<>(0.0f);
+        List<QuestionMarks> questionMarks;
+        if (candidateMarks.get().getTechnicalViva().getQuestionMarksList().size() == 0) {
+            questionMarks = request.getMarks().stream().map(question -> {
+                questionNo.set(questionNo.get() + 1);
+                if (question < 0) {
+                    throw new EvaluationException("Mark cannot be negative");
+                }
+                totalMark.set(totalMark.get() + question);
+
+                return QuestionMarks.builder()
+                        .questionMark(question)
+                        .questionNo(Integer.parseInt(String.valueOf(questionNo)))
+                        .build();
+            }).toList();
+        } else {
+            questionMarks = IntStream.range(0, candidateMarks.get().getTechnicalViva().getQuestionMarksList().size())
+                    .mapToObj(index -> {
+                        QuestionMarks questionMark = candidateMarks.get().getTechnicalViva().getQuestionMarksList().get(index);
+
+                        if (request.getMarks().get(index) < 0) {
+                            throw new EvaluationException("Mark cannot be negative");
+                        }
+                        questionMark.setQuestionMark(request.getMarks().get(index));
+                        totalMark.set(totalMark.get() + request.getMarks().get(index));
+
+                        return questionMark;
+                    })
+                    .toList();
+        }
+        Optional<DataStorage> maximumMark = dataStorageRepository.findByDataKey("TotalMarkTechnical");
+        Optional<DataStorage> passingMark = dataStorageRepository.findByDataKey("PassingMarkTechnical");
+        if (maximumMark.isEmpty()) {
+            throw new EvaluationException("Please set total mark of technical viva.");
+        }
+
+        if (passingMark.isEmpty()) {
+            throw new EvaluationException("Please set passing mark of technical viva.");
+        }
+
+        if (totalMark.get() > Float.parseFloat(maximumMark.get().getDataValue())) {
+            throw new EvaluationException("Total technical viva mark cannot be greater than " + maximumMark.get().getDataValue());
+        }
+
+        boolean isPassed = totalMark.get() >= Float.parseFloat(passingMark.get().getDataValue());
+
+        List<QuestionMarks> questionMarksList = questionMarksRepository.saveAll(questionMarks);
+        candidateMarks.get().getTechnicalViva().setQuestionMarksList(questionMarksList);
+        candidateMarks.get().getTechnicalViva().setRoundMark(totalMark.get());
+        candidateMarks.get().getTechnicalViva().setPassed(isPassed);
+        candidateMarks.get().getTechnicalViva().setRoundName(Round.TECHNICAL);
+
+        questionNo.set(0);
+        totalMark.set(0.0f);
+
+        CandidateMarks saved = candidateRepository.save(candidateMarks.get());
+        return ApiResponseMapper.mapToResponseEntityOK(saved, "Technical viva mark uploaded successfully.");
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse<?>> uploadHrVivaMark(UploadMarkRequest request) {
+        Optional<CandidateMarks> candidateMarks = candidateRepository.findById(request.getCandidateId());
+        if (candidateMarks.isEmpty()) {
+            throw new UserException("Candidate id is invalid");
+        }
+
+        if (!candidateMarks.get().getTechnicalViva().getPassed()) {
+            throw new EvaluationException("Invalid Request");
+        }
+
+        Optional<DataStorage> hrVivaQuestionNumber = dataStorageRepository.findByDataKey("HrVivaQuestionNumber");
+        if (hrVivaQuestionNumber.isEmpty()) {
+            throw new EvaluationException("Please set the number of questions in hr viva");
+        }
+
+        if (Integer.parseInt(hrVivaQuestionNumber.get().getDataValue()) < (Integer) request.getMarks().size()) {
+            throw new EvaluationException("Maximum number of questions in hr viva is : " + hrVivaQuestionNumber.get().getDataValue());
+        }
+
+        AtomicReference<Integer> questionNo = new AtomicReference<>(0);
+        AtomicReference<Float> totalMark = new AtomicReference<>(0.0f);
+        List<QuestionMarks> questionMarks;
+        if (candidateMarks.get().getHrViva().getQuestionMarksList().size() == 0) {
+            questionMarks = request.getMarks().stream().map(question -> {
+                questionNo.set(questionNo.get() + 1);
+                if (question < 0) {
+                    throw new EvaluationException("Mark cannot be negative");
+                }
+                totalMark.set(totalMark.get() + question);
+
+                return QuestionMarks.builder()
+                        .questionMark(question)
+                        .questionNo(Integer.parseInt(String.valueOf(questionNo)))
+                        .build();
+            }).toList();
+        } else {
+            questionMarks = IntStream.range(0, candidateMarks.get().getHrViva().getQuestionMarksList().size())
+                    .mapToObj(index -> {
+                        QuestionMarks questionMark = candidateMarks.get().getHrViva().getQuestionMarksList().get(index);
+
+                        if (request.getMarks().get(index) < 0) {
+                            throw new EvaluationException("Mark cannot be negative");
+                        }
+                        questionMark.setQuestionMark(request.getMarks().get(index));
+                        totalMark.set(totalMark.get() + request.getMarks().get(index));
+
+                        return questionMark;
+                    })
+                    .toList();
+        }
+
+        Optional<DataStorage> maximumMark = dataStorageRepository.findByDataKey("TotalMarkHrViva");
+        Optional<DataStorage> passingMark = dataStorageRepository.findByDataKey("PassingMarkHrViva");
+        if (maximumMark.isEmpty()) {
+            throw new EvaluationException("Please set total mark of hr viva.");
+        }
+
+        if (passingMark.isEmpty()) {
+            throw new EvaluationException("Please set passing mark of hr viva.");
+        }
+
+        if (totalMark.get() > Float.parseFloat(maximumMark.get().getDataValue())) {
+            throw new EvaluationException("Total hr viva mark cannot be greater than " + maximumMark.get().getDataValue());
+        }
+
+        boolean isPassed = totalMark.get() >= Float.parseFloat(passingMark.get().getDataValue());
+
+        List<QuestionMarks> questionMarksList = questionMarksRepository.saveAll(questionMarks);
+        candidateMarks.get().getHrViva().setQuestionMarksList(questionMarksList);
+        candidateMarks.get().getHrViva().setRoundMark(totalMark.get());
+        candidateMarks.get().getHrViva().setPassed(isPassed);
+        candidateMarks.get().getHrViva().setRoundName(Round.HR);
+
+        Float fullMark = candidateMarks.get().getWrittenMarks().getWrittenMark()+candidateMarks.get().getAptitudeTest().getRoundMark()+ candidateMarks.get().getTechnicalViva().getRoundMark()+candidateMarks.get().getHrViva().getRoundMark();
+        candidateMarks.get().setFullMark(fullMark);
+
+        questionNo.set(0);
+        totalMark.set(0.0f);
+        CandidateMarks saved = candidateRepository.save(candidateMarks.get());
+        return ApiResponseMapper.mapToResponseEntityOK(saved, "HR viva mark uploaded successfully.");
     }
 }

@@ -15,6 +15,13 @@ public class CourseMapper {
                 .courseDescription(courseModel.getCourseDescription())
                 .isAvailable(courseModel.getIsAvailable())
                 .writtenExamTime(courseModel.getWrittenExamTime())
+                .applicantDashboardMessage(courseModel.getApplicantDashboardMessage())
+                .writtenShortlistedDashboardMessage(courseModel.getWrittenShortlistedDashboardMessage())
+                .writtenPassedDashboardMessage(courseModel.getWrittenPassedDashboardMessage())
+                .aptitudeTestPassedDashboardMessage(courseModel.getAptitudeTestPassedDashboardMessage())
+                .technicalVivaPassedDashboardMessage(courseModel.getTechnicalVivaPassedDashboardMessage())
+                .traineeDashboardMessage(courseModel.getTraineeDashboardMessage())
+                .hrVivaPassedDashboardMessage(courseModel.getHrVivaPassedDashboardMessage())
                 .build();
         return courseInfo;
     }

@@ -1,15 +1,13 @@
 package com.bjit.tss.service.impl;
 
-import com.bjit.tss.entity.CandidateMarks;
-import com.bjit.tss.entity.ExamineeInfo;
-import com.bjit.tss.entity.RoundMarks;
-import com.bjit.tss.entity.WrittenMarks;
+import com.bjit.tss.entity.*;
 import com.bjit.tss.exception.UserException;
 import com.bjit.tss.mapper.ApiResponseMapper;
 import com.bjit.tss.model.ApiResponse;
 import com.bjit.tss.model.ApprovalRequest;
 import com.bjit.tss.repository.CandidateRepository;
 import com.bjit.tss.repository.ExamineeRepository;
+import com.bjit.tss.enums.Role;
 import com.bjit.tss.service.ApprovalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,13 +23,13 @@ public class ApprovalServiceImpl implements ApprovalService {
     private final CandidateRepository candidateRepository;
 
     @Override
-    public ResponseEntity<ApiResponse<?>> markAs(ApprovalRequest request) {
+    public ResponseEntity<ApiResponse<?>> approveApplicant(ApprovalRequest request) {
         Optional<ExamineeInfo> examineeInfo = examineeRepository.findById(request.getExamineeId());
         if (examineeInfo.isEmpty()) {
             throw new UserException("User not found!!!");
         }
 
-        examineeInfo.get().setRole(request.getRole());
+        examineeInfo.get().setRole(Role.CANDIDATE);
         Optional<CandidateMarks> candidate = candidateRepository.findByExamineeInfoExamineeId(examineeInfo.get().getExamineeId());
         if (candidate.isEmpty()) {
             CandidateMarks candidateMarks = CandidateMarks.builder()
@@ -46,7 +44,8 @@ public class ApprovalServiceImpl implements ApprovalService {
         } else {
             candidate.get().setExamineeInfo(examineeInfo.get());
             CandidateMarks saved = candidateRepository.save(candidate.get());
-            return ApiResponseMapper.mapToResponseEntityOK(saved);
+
+            return ApiResponseMapper.mapToResponseEntityOK(candidate.get());
         }
     }
 }

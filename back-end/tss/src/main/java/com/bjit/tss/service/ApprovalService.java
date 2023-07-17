@@ -6,5 +6,5 @@ import org.springframework.http.ResponseEntity;
 
 public interface ApprovalService {
 
-    ResponseEntity<ApiResponse<?>> markAs(ApprovalRequest approvalRequest);
+    ResponseEntity<ApiResponse<?>> approveApplicant(ApprovalRequest approvalRequest);
 }

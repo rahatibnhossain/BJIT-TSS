@@ -5,11 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ApprovalRequest {
+public class UploadMarkRequest {
 
-    private Long examineeId;
+    private Long candidateId;
+    private List<Float> marks;
 }

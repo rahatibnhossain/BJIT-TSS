@@ -32,6 +32,9 @@ spring:
           starttls:
             enable: true
           auth: true
+  admin:
+    email: rahatibnhossain@gmail.com
+    password: Rahat1234
 logging:
   level:
     org:

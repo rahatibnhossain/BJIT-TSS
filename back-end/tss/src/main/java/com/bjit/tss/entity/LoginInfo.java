@@ -1,6 +1,6 @@
 package com.bjit.tss.entity;
 
-import com.bjit.tss.role.Role;
+import com.bjit.tss.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

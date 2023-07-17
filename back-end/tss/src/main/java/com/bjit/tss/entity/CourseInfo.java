@@ -28,11 +28,12 @@ public class CourseInfo {
     private String batchCode;
     private String courseDescription;
     private Boolean isAvailable;
-    private String ApplicantDashboardMessage;
-    private String WrittenShortlistedDashboardMessage;
-    private String WrittenPassedDashboardMessage;
-    private String TechnicalVivaPassedDashboardMessage;
-    private String AptitudeTestPassedDashboardMessage;
-    private String TraineeDashboardMessage;
+    private String applicantDashboardMessage;
+    private String writtenShortlistedDashboardMessage;
+    private String writtenPassedDashboardMessage;
+    private String technicalVivaPassedDashboardMessage;
+    private String aptitudeTestPassedDashboardMessage;
+    private String hrVivaPassedDashboardMessage;
+    private String traineeDashboardMessage;
 
 }

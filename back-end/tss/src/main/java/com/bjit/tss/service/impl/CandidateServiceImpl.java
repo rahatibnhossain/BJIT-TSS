@@ -5,7 +5,7 @@ import com.bjit.tss.mapper.ApiResponseMapper;
 import com.bjit.tss.model.ApiResponse;
 import com.bjit.tss.model.ListResponse;
 import com.bjit.tss.repository.ExamineeRepository;
-import com.bjit.tss.role.Role;
+import com.bjit.tss.enums.Role;
 import com.bjit.tss.service.CandidateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

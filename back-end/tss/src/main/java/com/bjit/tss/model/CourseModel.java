@@ -21,4 +21,11 @@ public class CourseModel {
     private String courseDescription;
     private Boolean isAvailable;
     private Date writtenExamTime;
+    private String applicantDashboardMessage;
+    private String writtenShortlistedDashboardMessage;
+    private String writtenPassedDashboardMessage;
+    private String aptitudeTestPassedDashboardMessage;
+    private String technicalVivaPassedDashboardMessage;
+    private String hrVivaPassedDashboardMessage;
+    private String traineeDashboardMessage;
 }

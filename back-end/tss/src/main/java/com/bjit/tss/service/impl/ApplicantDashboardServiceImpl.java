@@ -10,7 +10,7 @@ import com.bjit.tss.model.ApplicantDashboardMessage;
 import com.bjit.tss.model.ListResponse;
 import com.bjit.tss.repository.CandidateRepository;
 import com.bjit.tss.repository.ExamineeRepository;
-import com.bjit.tss.role.Role;
+import com.bjit.tss.enums.Role;
 import com.bjit.tss.service.ApplicantDashboardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +38,7 @@ public class ApplicantDashboardServiceImpl implements ApplicantDashboardService 
         List<ApplicantDashboardMessage> dashboardMessage;
 
         if (candidateMarks.size() == 0) {
-           dashboardMessage = examineeInfo.stream().map(examinee -> {
+            dashboardMessage = examineeInfo.stream().map(examinee -> {
                 ApplicantDashboardMessage applicantDashboardMessage = new ApplicantDashboardMessage();
                 applicantDashboardMessage.setDashboardMessage(examinee.getCourseInfo().getApplicantDashboardMessage());
 
@@ -46,25 +46,47 @@ public class ApplicantDashboardServiceImpl implements ApplicantDashboardService 
             }).toList();
 
         } else {
-          dashboardMessage = candidateMarks.stream().map(candidate -> {
+            dashboardMessage = candidateMarks.stream().map(candidate -> {
                 ApplicantDashboardMessage applicantDashboardMessage = new ApplicantDashboardMessage();
                 if (candidate.getExamineeInfo().getRole() == Role.CANDIDATE) {
 
-                    if (candidate.getAptitudeTest().getPassed() != null && candidate.getAptitudeTest().getPassed()) {
-                        applicantDashboardMessage.setDashboardMessage(candidate.getExamineeInfo().getCourseInfo().getAptitudeTestPassedDashboardMessage());
+                    if (candidate.getHrViva().getPassed() != null ) {
+                        if (candidate.getHrViva().getPassed()){
+                            applicantDashboardMessage.setDashboardMessage(candidate.getExamineeInfo().getCourseInfo().getHrVivaPassedDashboardMessage());
 
-                    } else if (candidate.getTechnicalViva().getPassed() != null && candidate.getTechnicalViva().getPassed()) {
-                        applicantDashboardMessage.setDashboardMessage(candidate.getExamineeInfo().getCourseInfo().getTechnicalVivaPassedDashboardMessage());
+                        } else {
+                            applicantDashboardMessage.setDashboardMessage("Sorry you did not qualify HR viva. Best of luck.");
 
-                    } else if (candidate.getWrittenMarks().getPassed() != null && candidate.getWrittenMarks().getPassed()) {
-                        applicantDashboardMessage.setDashboardMessage(candidate.getExamineeInfo().getCourseInfo().getWrittenPassedDashboardMessage());
+                        }
 
-                    } else if(candidate.getWrittenMarks().getPassed() == null ) {
-                        applicantDashboardMessage.setDashboardMessage(candidate.getExamineeInfo().getCourseInfo().getWrittenShortlistedDashboardMessage());
+                    } else if (candidate.getTechnicalViva().getPassed() != null) {
+
+                        if (candidate.getTechnicalViva().getPassed()) {
+                            applicantDashboardMessage.setDashboardMessage(candidate.getExamineeInfo().getCourseInfo().getTechnicalVivaPassedDashboardMessage());
+                        } else {
+                            applicantDashboardMessage.setDashboardMessage("Sorry you did not qualify technical viva. Best of luck.");
+                        }
+
+                    } else if (candidate.getAptitudeTest().getPassed() != null) {
+
+                        if (candidate.getAptitudeTest().getPassed()) {
+                            applicantDashboardMessage.setDashboardMessage(candidate.getExamineeInfo().getCourseInfo().getAptitudeTestPassedDashboardMessage());
+                        } else {
+                            applicantDashboardMessage.setDashboardMessage("Sorry you did not qualify aptitude test. Best of luck.");
+                        }
+
+                    } else if (candidate.getWrittenMarks().getPassed() != null) {
+
+                        if (candidate.getWrittenMarks().getPassed()) {
+                            applicantDashboardMessage.setDashboardMessage(candidate.getExamineeInfo().getCourseInfo().getWrittenPassedDashboardMessage());
+                        } else {
+                            applicantDashboardMessage.setDashboardMessage("Sorry you did not qualify written test. Best of luck.");
+                        }
 
                     } else {
-                        applicantDashboardMessage.setDashboardMessage("Sorry you did not qualify the process. Best of luck for you.");
+                        applicantDashboardMessage.setDashboardMessage(candidate.getExamineeInfo().getCourseInfo().getWrittenShortlistedDashboardMessage());
                     }
+
                 } else if (candidate.getExamineeInfo().getRole() == Role.TRAINEE) {
                     applicantDashboardMessage.setDashboardMessage(candidate.getExamineeInfo().getCourseInfo().getTraineeDashboardMessage());
                 } else {
@@ -72,10 +94,19 @@ public class ApplicantDashboardServiceImpl implements ApplicantDashboardService 
                 }
                 return applicantDashboardMessage;
             }).toList();
-
         }
 
-      ListResponse<?>  listResponse = ListResponse.builder()
+        if (dashboardMessage.size() == 0) {
+            ApplicantDashboardMessage applicantDashboardMessage = new ApplicantDashboardMessage();
+            applicantDashboardMessage.setDashboardMessage("You have not been applied to any course");
+            ListResponse<?> listResponse = ListResponse.builder()
+                    .dataLength(0)
+                    .listResponse(applicantDashboardMessage)
+                    .build();
+            return ApiResponseMapper.mapToResponseEntityOK(listResponse, "Applicant Dashboard");
+        }
+
+        ListResponse<?> listResponse = ListResponse.builder()
                 .dataLength(dashboardMessage.size())
                 .listResponse(dashboardMessage)
                 .build();

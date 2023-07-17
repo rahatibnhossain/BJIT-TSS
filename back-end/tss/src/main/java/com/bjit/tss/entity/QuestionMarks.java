@@ -18,7 +18,7 @@ public class QuestionMarks {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "question_id")
-    private Long writtenQuestionId;
-    private Float writtenQuestionMark;
+    private Long questionId;
+    private Float questionMark;
     private Integer questionNo;
 }

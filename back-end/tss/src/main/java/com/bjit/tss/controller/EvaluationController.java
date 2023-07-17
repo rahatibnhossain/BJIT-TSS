@@ -2,6 +2,7 @@ package com.bjit.tss.controller;
 
 import com.bjit.tss.model.ApiResponse;
 import com.bjit.tss.model.AssignAnswerSheetRequest;
+import com.bjit.tss.model.UploadMarkRequest;
 import com.bjit.tss.model.UploadWrittenMarkRequest;
 import com.bjit.tss.service.EvaluationService;
 import lombok.RequiredArgsConstructor;
@@ -26,5 +27,20 @@ public class EvaluationController {
     @PostMapping("/upload-mark/written")
     public ResponseEntity<ApiResponse<?>> uploadWrittenMark(@RequestBody UploadWrittenMarkRequest uploadWrittenMarkRequest) {
         return evaluationService.uploadWrittenMark(uploadWrittenMarkRequest);
+    }
+
+    @PostMapping("/upload-mark/aptitude")
+    public ResponseEntity<ApiResponse<?>> uploadAptitudeMark(@RequestBody UploadMarkRequest UploadMarkRequest) {
+        return evaluationService.uploadAptitudeMark(UploadMarkRequest);
+    }
+
+    @PostMapping("upload-mark/technical")
+    public ResponseEntity<ApiResponse<?>> uploadTechnicalMark(@RequestBody UploadMarkRequest UploadMarkRequest) {
+        return evaluationService.uploadTechnicalMark(UploadMarkRequest);
+    }
+
+    @PostMapping("/upload-mark/hr-viva")
+    public ResponseEntity<ApiResponse<?>> uploadHrVivaMark(@RequestBody UploadMarkRequest UploadMarkRequest) {
+        return evaluationService.uploadHrVivaMark(UploadMarkRequest);
     }
 }

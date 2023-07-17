@@ -9,7 +9,7 @@ import com.bjit.tss.exception.ValidationException;
 import com.bjit.tss.mapper.ApiResponseMapper;
 import com.bjit.tss.model.*;
 import com.bjit.tss.repository.ValidationRepository;
-import com.bjit.tss.role.Role;
+import com.bjit.tss.enums.Role;
 import com.bjit.tss.entity.UserInfo;
 import com.bjit.tss.exception.AuthenticationException;
 import com.bjit.tss.repository.LoginRepository;

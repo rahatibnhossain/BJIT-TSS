@@ -1,4 +1,4 @@
-package com.bjit.tss.role;
+package com.bjit.tss.enums;
 
 public enum Role {
 

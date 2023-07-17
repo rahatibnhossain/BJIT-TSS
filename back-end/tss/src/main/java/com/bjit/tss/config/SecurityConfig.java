@@ -53,7 +53,7 @@ public class SecurityConfig {
                 .hasAuthority("APPLICANT")
                 .requestMatchers(
                         "/api/course",
-                        "/api/course/batch_code/**"
+                        "/api/course/batch-code/**"
                 )
                 .hasAnyAuthority("ADMIN", "APPLICANT")
                 .requestMatchers(
@@ -61,7 +61,7 @@ public class SecurityConfig {
                 )
                 .hasAuthority("EVALUATOR")
                 .requestMatchers(
-                        "/api/course/**",
+                        "api/course/create",
                         "/api/course/update/batch-code/**",
                         "/api/application/course/**",
                         "/api/approval/applicant",
@@ -70,7 +70,10 @@ public class SecurityConfig {
                         "api/number-question/set",
                         "api/candidate/all",
                         "/api/evaluation/assign-answer",
-                        "/api/data-storage/set"
+                        "/api/data-storage/set",
+                        "/api/evaluation/upload-mark/aptitude",
+                        "/api/evaluation/upload-mark/technical",
+                        "/api/evaluation/upload-mark/hr-viva"
                 )
                 .hasAuthority("ADMIN")
                 .anyRequest()

@@ -15,7 +15,7 @@ import com.bjit.tss.model.ListResponse;
 import com.bjit.tss.repository.CourseRepository;
 import com.bjit.tss.repository.ExamineeRepository;
 import com.bjit.tss.repository.UserRepository;
-import com.bjit.tss.role.Role;
+import com.bjit.tss.enums.Role;
 import com.bjit.tss.service.ApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
