@@ -58,6 +58,11 @@ useEffect(() => {
 
 }, [userData])
 
+useEffect(() => {
+console.log(role);
+}, [role])
+
+
 
   
   useEffect(() => {

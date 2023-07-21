@@ -133,6 +133,7 @@ const CourseDescriptionComponent = () => {
 
     return (
         <Box mt={4}>
+            
             <CourseTitle variant="h1">{course.courseName || 'N/A'}</CourseTitle>
             <CourseDetails variant="body1">
                 <strong>Batch Code:</strong> {course.batchCode || 'N/A'}

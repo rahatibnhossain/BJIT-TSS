@@ -20,7 +20,7 @@ const Feed = ({ data, loading, close }) => {
 
 
   return (
-    <Box flex={4} sx={{ margin: 5, display: { xs: close ? "block" : "none" } }}>
+    <Box flex={5} sx={{ margin: 5, display: { xs: close ? "block" : "none" } }}>
 
 
       <Routes>

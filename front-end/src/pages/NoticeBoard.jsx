@@ -139,8 +139,8 @@ const NoticeBoardPage = () => {
                             <CourseCard>
 
                                 <CourseContent>
-                                    <CourseTitle variant="h6">{dashboard.courseName}</CourseTitle>
-                                    <CourseDescription variant="body2">{dashboard.dashboardMessage}</CourseDescription>
+                                    <CourseTitle align="center" variant="h6">Course : {dashboard.courseName}</CourseTitle>
+                                    <CourseDescription align="center" variant="body2">{dashboard.dashboardMessage}</CourseDescription>
                                 </CourseContent>
 
                             </CourseCard>

@@ -21,7 +21,7 @@ const Sidebar = ({ close }) => {
 
 
 
-  const {setappliedCoursesGlobal, userData, role, loggedIn, setLoggedIn, setRole } = useContext(LoginContext);
+  const {setappliedCoursesGlobal, userData,setUserData, role, loggedIn, setLoggedIn, setRole } = useContext(LoginContext);
 
   
 
@@ -41,13 +41,19 @@ const Sidebar = ({ close }) => {
     setLoggedIn(false);
     setRole("");
     setappliedCoursesGlobal(0)
+    setUserData(null);
 
   }
 
 
   const isActiveLink = (path) => {
-    if (location.pathname === path) {
-      return "red";
+
+
+    let extracted= location.pathname.split("/");
+    let final = "/"+ extracted[1];
+    console.log(extracted);
+    if (location.pathname === path || final===path) {
+      return "#9c27b0";
     }
 
 
@@ -90,7 +96,7 @@ const Sidebar = ({ close }) => {
 
 
           <ListItem disablePadding>
-            <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/course") }} component={ReactRouterLink} to="/course" variant="ListItemButton" >
+            <Link flex={1.5} style={{ textDecoration: 'none', color: isActiveLink("/course") }} component={ReactRouterLink} to="/course" variant="ListItemButton" >
               <ListItemButton >
                 <ListItemIcon>
                   <School />

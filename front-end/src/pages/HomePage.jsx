@@ -30,7 +30,7 @@ const HomePage = ({ data }) => {
       </CardContent>
       <CardActions>
         <Link to="/course" >
-          <Typography color="royalblue"  variant="Button" size="small" >See Avaialable Courses</Typography>
+          <Typography color="primary"  variant="Button" size="small" >See Avaialable Courses</Typography>
         </Link>
       </CardActions>
     </Card>

@@ -48,6 +48,34 @@ const Navbar = ({ courseNumber, onClose }) => {
     setLoggedIn(false);
 
   }
+  useEffect(() => {
+    if (role === "ADMIN") {
+      setName("ADMIN")
+    }
+  }, [])
+
+
+
+  useEffect(() => {
+    if (!loggedIn) {
+      setName("User")
+    }
+    else {
+      console.log(role);
+      if (role === "ADMIN") {
+        setName("ADMIN")
+      }else if(role === "EVALUATOR"){
+        setName(userData?.name)
+
+      }
+      else {
+        setName(userData?.firstName)
+      }
+    }
+
+
+  }, [loggedIn])
+
 
   const [open, setOpen] = useState(false);
 
@@ -55,10 +83,22 @@ const Navbar = ({ courseNumber, onClose }) => {
 
   const [name, setName] = useState("User");
 
+
+
   useEffect(() => {
     if (userData && role === "APPLICANT") {
       setName(userData.firstName)
     }
+    if (role === "ADMIN") {
+      setName("ADMIN")
+
+    }
+    if (role === "EVALUATOR") {
+            setName(userData.name)
+
+    }
+
+
   }, [userData]);
 
 

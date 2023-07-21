@@ -10,7 +10,7 @@ const LoginForm = () => {
   const navigate = useNavigate();
 
 
-  const { loggedIn, setLoggedIn , setRole } = useContext(LoginContext);
+  const { loggedIn, setLoggedIn , setRole, setUserData } = useContext(LoginContext);
 
   if (loggedIn) {
     console.log("Your are logged in redirecting to home ");
@@ -64,12 +64,19 @@ const LoginForm = () => {
       if (data.status === 200) {
         setSuccessMessage(data.data.successMessage)
 
+        console.log(data.data);
+
         window.localStorage.setItem("tss-token", data.data.data.token)
 
         setTimeout(() => {
           setSuccessMessage(null);
           setLoggedIn(true)
+          console.log(data.data.data.role);
           setRole(data.data.data.role)
+
+          if (data?.data?.data?.role=="APPLICANT") {
+            setUserData(data.data.data.userInfo);
+          }
           navigate("/");
 
         }, 1000);
