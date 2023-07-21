@@ -74,7 +74,12 @@ const Navbar = ({ courseNumber, onClose }) => {
         <Search><InputBase placeholder='Search..' /></Search>
         <Icons>
 
-          <Tooltip title={`You have applied ${appliedCoursesGlobal} courses`}>
+          <Tooltip title={
+            loggedIn ?
+              `You have applied ${appliedCoursesGlobal} courses`
+              :
+              "You are not logged in"
+          }>
 
             <Badge badgeContent={appliedCoursesGlobal} color="error">
               <Mail />

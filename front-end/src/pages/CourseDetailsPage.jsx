@@ -5,6 +5,7 @@ import { useNavigate, useParams } from '../../node_modules/react-router-dom/dist
 import useFetch from '../hooks/useFetch';
 import axios from '../api/axios';
 import { Alert } from 'react-bootstrap';
+import { LoginContext } from '../context/LoginContex';
 
 
 const CourseTitle = styled(Typography)(({ theme }) => ({
@@ -24,6 +25,7 @@ const ApplyButton = styled(Button)(({ theme }) => ({
 }));
 
 const CourseDescriptionComponent = () => {
+    const {loggedIn} = useContext(LoginContext)
     const { data, loading, error } = useFetch("api/course");
     const [courses, setCourses] = useState(null);
 
@@ -73,6 +75,10 @@ const CourseDescriptionComponent = () => {
 
 
     const applyForCourse = async () => {
+
+        if(!loggedIn){
+            navigate("/login")
+        }
 
         const data = {
             batchCode: batchCode,

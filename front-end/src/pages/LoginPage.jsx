@@ -72,7 +72,7 @@ const LoginForm = () => {
           setRole(data.data.data.role)
           navigate("/");
 
-        }, 2000);
+        }, 1000);
       }
       else {
         console.log(data);

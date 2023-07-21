@@ -49,7 +49,7 @@ const EnrollButton = styled(Button)(({ theme }) => ({
 const AllCourses = ({ courses }) => {
   return (
     <Box mt={4}>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} justifyContent="center">
         {courses?.data.data.listResponse.map((course) => (
           <Grid item key={course.courseId} xs={12} sm={6} md={4}>
             <Link to={`/course/${course.courseId}`}>

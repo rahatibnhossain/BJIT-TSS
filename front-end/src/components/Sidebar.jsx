@@ -21,7 +21,7 @@ const Sidebar = ({ close }) => {
 
 
 
-  const { userData, role, loggedIn, setLoggedIn, setRole } = useContext(LoginContext);
+  const {setappliedCoursesGlobal, userData, role, loggedIn, setLoggedIn, setRole } = useContext(LoginContext);
 
   
 
@@ -40,6 +40,7 @@ const Sidebar = ({ close }) => {
 
     setLoggedIn(false);
     setRole("");
+    setappliedCoursesGlobal(0)
 
   }
 
@@ -67,7 +68,7 @@ const Sidebar = ({ close }) => {
                 <ListItemIcon>
                   <Home />
                 </ListItemIcon>
-                <ListItemText primary="Home Page" />
+                <ListItemText primary={role==="APPLICANT"? "Notice Board": "Home Page"} />
               </ListItemButton>
             </Link>
 
