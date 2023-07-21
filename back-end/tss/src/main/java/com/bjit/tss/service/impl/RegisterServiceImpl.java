@@ -5,6 +5,7 @@ import com.bjit.tss.entity.EvaluatorInfo;
 import com.bjit.tss.entity.LoginInfo;
 import com.bjit.tss.entity.ValidationCodes;
 import com.bjit.tss.exception.EmailException;
+import com.bjit.tss.exception.UserException;
 import com.bjit.tss.exception.ValidationException;
 import com.bjit.tss.mapper.ApiResponseMapper;
 import com.bjit.tss.model.*;
@@ -81,18 +82,6 @@ public class RegisterServiceImpl implements RegisterService {
                 .userInfo(userInfo)
                 .build();
 
-        List<String> to = new ArrayList<String>();
-        to.add(loginInfo.getEmail());
-        String[] toEmail = to.toArray(new String[0]);
-        String emailSubject = "Email Verification";
-        String emailBody = "Your Verification Code is : " + validationCodes.getValidationCode();
-
-        EmailRequest emailRequest = EmailRequest.builder()
-                .to(toEmail)
-                .body(emailBody)
-                .subject(emailSubject)
-                .build();
-        ResponseEntity<ApiResponse<?>> emailResponse = emailService.sendEmail(emailRequest);
 
         validationRepository.save(validationCodes);
         LoginInfo saved = loginRepository.save(loginInfo);
@@ -172,5 +161,32 @@ public class RegisterServiceImpl implements RegisterService {
         ResponseEntity<ApiResponse<?>> emailResponse = emailService.sendEmail(emailRequest);
         LoginInfo saved = loginRepository.save(loginInfo);
         return ApiResponseMapper.mapToResponseEntityCreated(saved.getEvaluatorInfo(), "Evaluator is created.");
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse<?>> sendEmailVerification() {
+
+        LoginInfo loginInfo = (LoginInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+
+        Optional<ValidationCodes> validationCodes = validationRepository.findByUserInfoUserId(loginInfo.getUserInfo().getUserId());
+        if(validationCodes.isEmpty()){
+            throw new UserException("No user found");
+        }
+
+        List<String> to = new ArrayList<String>();
+        to.add(loginInfo.getEmail());
+        String[] toEmail = to.toArray(new String[0]);
+        String emailSubject = "Email Verification";
+        String emailBody = "Your Verification Code is : " + validationCodes.get().getValidationCode();
+
+        EmailRequest emailRequest = EmailRequest.builder()
+                .to(toEmail)
+                .body(emailBody)
+                .subject(emailSubject)
+                .build();
+        ResponseEntity<ApiResponse<?>> emailResponse = emailService.sendEmail(emailRequest);
+
+        return ApiResponseMapper.mapToResponseEntityOK(emailResponse,"Successfully send the verification code");
     }
 }

@@ -1,11 +1,16 @@
 package com.bjit.tss.service.impl;
 
 import com.bjit.tss.entity.LoginInfo;
+import com.bjit.tss.entity.ValidationCodes;
 import com.bjit.tss.exception.FileUploadException;
+import com.bjit.tss.exception.UserException;
 import com.bjit.tss.mapper.ApiResponseMapper;
 import com.bjit.tss.model.ApiResponse;
+import com.bjit.tss.model.EmailRequest;
 import com.bjit.tss.model.FileUploadResponse;
 import com.bjit.tss.repository.LoginRepository;
+import com.bjit.tss.repository.ValidationRepository;
+import com.bjit.tss.service.EmailService;
 import com.bjit.tss.service.FileService;
 import com.bjit.tss.utils.FileUploaderUtils;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +20,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,12 +31,17 @@ public class FileServiceImpl implements FileService {
 
     private final FileUploaderUtils fileUploaderUtils;
     private final LoginRepository loginRepository;
+    private final ValidationRepository validationRepository;
+    private final EmailService emailService;
+
     @Override
     public ResponseEntity<ApiResponse<?>> uploadImage(MultipartFile image) {
         if (image.isEmpty()){
+
             throw new FileUploadException("No image is uploaded. Try again");
         }
         if (!Objects.equals(image.getContentType(), "image/jpeg")){
+
             throw new FileUploadException("Only jpeg type image can be uploaded.");
         }
         LoginInfo loginInfo = (LoginInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -54,6 +67,8 @@ public class FileServiceImpl implements FileService {
         LoginInfo loginInfo = (LoginInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Path path= fileUploaderUtils.uploadFile(resume, false, String.valueOf(loginInfo.getUserInfo().getUserId()));
         loginInfo.getUserInfo().setResumeUrl(String.valueOf(path));
+
+
 
         loginRepository.save(loginInfo);
         FileUploadResponse fileUploadResponse = FileUploadResponse.builder()

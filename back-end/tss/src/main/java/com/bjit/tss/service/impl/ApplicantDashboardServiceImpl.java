@@ -41,6 +41,7 @@ public class ApplicantDashboardServiceImpl implements ApplicantDashboardService 
             dashboardMessage = examineeInfo.stream().map(examinee -> {
                 ApplicantDashboardMessage applicantDashboardMessage = new ApplicantDashboardMessage();
                 applicantDashboardMessage.setDashboardMessage(examinee.getCourseInfo().getApplicantDashboardMessage());
+                applicantDashboardMessage.setCourseName(examinee.getCourseInfo().getCourseName());
 
                 return applicantDashboardMessage;
             }).toList();
@@ -92,6 +93,7 @@ public class ApplicantDashboardServiceImpl implements ApplicantDashboardService 
                 } else {
                     throw new UserException("Invalid Request");
                 }
+                applicantDashboardMessage.setCourseName(candidate.getExamineeInfo().getCourseInfo().getCourseName());
                 return applicantDashboardMessage;
             }).toList();
         }

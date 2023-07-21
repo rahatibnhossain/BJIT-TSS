@@ -29,18 +29,28 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf()
+        http
+                .cors()
+                .and()
+                .csrf()
                 .disable()
                 .authorizeHttpRequests()
                 .requestMatchers(
                         "api/auth/login",
-                        "api/auth/register/applicant"
-                )
+                        "api/auth/register/applicant",
+                        "/api/course",
+                        "/api/validation"
+                        )
                 .permitAll()
+                .requestMatchers(
+                        "/api/auth/validation"
+                )
+                .hasAnyAuthority("USER","ADMIN", "APPLICANT","EVALUATOR")
                 .requestMatchers(
                         "api/upload/file-upload/image",
                         "api/upload/file-upload/resume",
-                        "/api/auth/register/applicant/validation"
+                        "/api/auth/register/applicant/validation",
+                        "api/auth/register/send-email-verification"
                 )
                 .hasAuthority("USER")
                 .requestMatchers(
@@ -52,7 +62,6 @@ public class SecurityConfig {
                 )
                 .hasAuthority("APPLICANT")
                 .requestMatchers(
-                        "/api/course",
                         "/api/course/batch-code/**"
                 )
                 .hasAnyAuthority("ADMIN", "APPLICANT")

@@ -15,4 +15,6 @@ public interface RegisterService {
     ResponseEntity<ApiResponse<?>> mailValidation(ValidationRequest validationRequest);
 
     ResponseEntity<ApiResponse<?>> evaluatorRegistration(EvaluatorRegisterRequest evaluatorRegisterRequest);
+
+    ResponseEntity<ApiResponse<?>> sendEmailVerification();
 }

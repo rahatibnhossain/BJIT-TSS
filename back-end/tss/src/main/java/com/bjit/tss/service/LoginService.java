@@ -7,4 +7,6 @@ import org.springframework.http.ResponseEntity;
 public interface LoginService {
 
     ResponseEntity<ApiResponse<?>> login(LoginRequest loginRequest);
+
+    ResponseEntity<ApiResponse<?>> validation();
 }

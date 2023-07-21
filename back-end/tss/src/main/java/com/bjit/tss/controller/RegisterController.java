@@ -7,10 +7,7 @@ import com.bjit.tss.service.RegisterService;
 import com.bjit.tss.model.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/auth/register")
@@ -27,6 +24,11 @@ public class RegisterController {
     @PostMapping("/evaluator")
     public ResponseEntity<ApiResponse<?>> evaluatorRegistration(@RequestBody EvaluatorRegisterRequest evaluatorRegisterRequest) {
         return registerService.evaluatorRegistration(evaluatorRegisterRequest);
+    }
+
+    @GetMapping("/send-email-verification")
+    public ResponseEntity<ApiResponse<?>> sendEmailVerification(){
+        return registerService.sendEmailVerification();
     }
 
     @PostMapping("/applicant/validation")

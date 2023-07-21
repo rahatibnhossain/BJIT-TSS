@@ -14,6 +14,11 @@ public class LoginController {
 
     private final LoginService loginService;
 
+
+    @GetMapping("/validation")
+    public ResponseEntity<ApiResponse<?>> validation() {
+        return loginService.validation();
+    }
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<?>> login(@RequestBody LoginRequest loginRequest) {
         return loginService.login(loginRequest);
