@@ -40,12 +40,12 @@ public class SecurityConfig {
                         "api/auth/register/applicant",
                         "/api/course",
                         "/api/validation"
-                        )
+                )
                 .permitAll()
                 .requestMatchers(
                         "/api/auth/validation"
                 )
-                .hasAnyAuthority("USER","ADMIN", "APPLICANT","EVALUATOR")
+                .hasAnyAuthority("USER", "ADMIN", "APPLICANT", "EVALUATOR")
                 .requestMatchers(
                         "api/upload/file-upload/image",
                         "api/upload/file-upload/resume",
@@ -84,8 +84,8 @@ public class SecurityConfig {
                         "/api/evaluation/upload-mark/technical",
                         "/api/evaluation/upload-mark/hr-viva",
                         "/api/final-trainee/all-passed/**",
-                        "/api/final-trainee/all-passed/"
-
+                        "/api/final-trainee/all-passed/",
+                        "/api/course/unavailable"
                 )
                 .hasAuthority("ADMIN")
                 .anyRequest()

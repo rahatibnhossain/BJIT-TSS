@@ -84,4 +84,14 @@ public class CourseServiceImpl implements CourseService {
         CourseInfo savedCourse = courseRepository.save(courseInfo);
         return ApiResponseMapper.mapToResponseEntityOK(savedCourse, "Successfully Updated");
     }
+
+    @Override
+    public ResponseEntity<ApiResponse<?>> getUnavailableCourses() {
+        List<CourseInfo> courseInfoList = courseRepository.findByIsAvailable(false);
+        ListResponse listResponse = ListResponse.builder()
+                .dataLength(courseInfoList.size())
+                .listResponse(courseInfoList)
+                .build();
+        return ApiResponseMapper.mapToResponseEntityOK(listResponse);
+    }
 }

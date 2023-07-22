@@ -20,6 +20,11 @@ public class CourseController {
         return courseService.allCourses();
     }
 
+    @GetMapping("/unavailable")
+    public ResponseEntity<ApiResponse<?>> getUnavailableCourses() {
+        return courseService.getUnavailableCourses();
+    }
+
     @GetMapping("/batch-code/{batchCode}")
     public ResponseEntity<ApiResponse<?>> getCourse(@PathVariable String batchCode) {
         return courseService.getCourse(batchCode);

@@ -13,4 +13,6 @@ public interface CourseService {
     ResponseEntity<ApiResponse<?>> getCourse(String batchCode);
 
     ResponseEntity<ApiResponse<?>> updateCourse(String batchCode, CourseModel courseModel);
+
+    ResponseEntity<ApiResponse<?>> getUnavailableCourses();
 }
