@@ -53,6 +53,12 @@ const Feed = ({ data, loading, close }) => {
 
         }
 
+        {
+          role === "ADMIN" &&
+          <Route path="/evaluator_management" element={<CoursesPage courses={data} />} />
+
+        }
+
 
 
         <Route path="*" element={<NotFound />} />

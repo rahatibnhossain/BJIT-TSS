@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 
 import { LoginContext } from "./context/LoginContex";
 import axios from "./api/axios";
+import JSON2Message from "./services/JSON2Message";
 
 
 
@@ -17,8 +18,68 @@ function App() {
 
   const [role, setRole] = useState("");
   const [courses, setCourses] = useState([]);
+  const [unavailableCourses, setUnavailableCourses] = useState([]);
 
-  const [appliedCoursesGlobal  , setappliedCoursesGlobal  ] = useState(0)
+  const [appliedCoursesGlobal, setappliedCoursesGlobal] = useState(0)
+
+  
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("")
+
+  useEffect(() => {
+    if (role === 'ADMIN') {
+
+      console.log("Admin logged in.");
+
+      const token = window.localStorage.getItem("tss-token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      axios.get('/api/course/unavailable', config)
+        .then((response) => {
+          console.log(response?.data?.data?.listResponse);
+
+          if (response.status === 200) {
+            setShowSuccessMessage(true)
+            setSuccessMessage(response.data.successMessage)
+            setUnavailableCourses(response?.data?.data?.listResponse)
+
+            setTimeout(() => {
+              setShowSuccessMessage(false)
+              setSuccessMessage("")
+
+
+            }, 2000);
+          }
+        })
+        .catch((error) => {
+          console.error('Error uploading files:', error);
+          setShowErrorMessage(true)
+          setErrorMessage(JSON2Message(JSON.stringify(error.response.data.errorMessage)))
+         
+          setTimeout(() => {
+            setShowErrorMessage(false)
+            setErrorMessage("")
+
+          }, 1000);
+
+
+        });
+
+
+
+
+
+    }
+
+
+  }, [role])
+
 
   useEffect(() => {
     if (data?.data?.data) {
@@ -29,13 +90,13 @@ function App() {
   }, [data])
 
 
-  
-useEffect(() => {
-  console.log(courses);
-}, [courses])
 
-  
- 
+  useEffect(() => {
+    console.log(courses);
+  }, [courses])
+
+
+
 
   const [loggedIn, setLoggedIn] = useState(false);
 
@@ -45,31 +106,31 @@ useEffect(() => {
 
 
   useEffect(() => {
-    if (window.localStorage.getItem("uploadedfortss")==null) {
+    if (window.localStorage.getItem("uploadedfortss") == null) {
       setUploaded(false)
-      
+
     }
-    else{
+    else {
       setUploaded(true)
 
     }
 
   }, [])
-  
-useEffect(() => {
-  console.log("The userData is :");
-  console.log(userData);
+
+  useEffect(() => {
+    console.log("The userData is :");
+    console.log(userData);
 
 
-}, [userData])
+  }, [userData])
 
-useEffect(() => {
-console.log(role);
-}, [role])
+  useEffect(() => {
+    console.log(role);
+  }, [role])
 
 
 
-  
+
   useEffect(() => {
     const token = window.localStorage.getItem("tss-token")
     axios.get('/api/auth/validation', {
@@ -81,11 +142,11 @@ console.log(role);
 
       console.log("Response is :");
       console.log(response);
-      if (response.status==200) {
+      if (response.status == 200) {
 
         setRole(response.data.data.role)
         setLoggedIn(true);
-        
+
       }
     }).catch((err) => {
       setError(err);
@@ -98,9 +159,9 @@ console.log(role);
   }, [])
 
 
- 
+
   useEffect(() => {
-    if ( userData) {
+    if (userData) {
       // console.log(userData);
 
     }
@@ -139,7 +200,7 @@ console.log(role);
   return (
 
     <Box >
-      <LoginContext.Provider value={{appliedCoursesGlobal  , setappliedCoursesGlobal ,courses, setUserData, userData, uploaded , setUploaded, loggedIn, setLoggedIn ,role, setRole, setCourses}}>
+      <LoginContext.Provider value={{ appliedCoursesGlobal, setappliedCoursesGlobal, courses, setUserData, userData, uploaded, setUploaded, loggedIn, setLoggedIn, role, setRole, setCourses, unavailableCourses, setUnavailableCourses }}>
 
         <Navbar courseNumber={data?.data.data.dataLength} onClose={toggleSideBar} />
         <Stack direction="row" spacing={2} justifyContent="space-between">

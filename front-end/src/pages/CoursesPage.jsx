@@ -6,6 +6,8 @@ import { LoginContext } from '../context/LoginContex';
 import axios from '../api/axios';
 import CourseComponent from '../components/CourseComponent';
 import { format } from 'date-fns';
+import CourseCards from '../components/CourseCards';
+import JSON2Message from '../services/JSON2Message';
 
 
 
@@ -56,17 +58,7 @@ const EnrollButton = styled(Button)(({ theme }) => ({
 
 const AllCourses = () => {
 
-  const JSON2Message = (jsonstr) => {
-    const object1 = JSON.parse(jsonstr);
 
-    const object2 = Object.values(object1);
-
-    const message = object2.map((value) => {
-      return value;
-    }).join('\n');
-
-    return message;
-  };
 
 
 
@@ -104,7 +96,7 @@ const AllCourses = () => {
     setTraineeDashboardMessage('Congratulations. You have been selected as a Trainee.');
   };
 
-  const { role, loggedIn, setCourses, courses } = useContext(LoginContext);
+  const { role, loggedIn, setCourses, courses, unavailableCourses, setUnavailableCourses } = useContext(LoginContext);
 
   const [value, setValue] = useState('available-courses');
 
@@ -201,8 +193,6 @@ const AllCourses = () => {
 
           setSingleCourse(response?.data?.data)
           const courseId = response?.data?.data?.courseId
-
-       
 
           if (response.status === 200) {
             setShowSuccessMessage(true)
@@ -415,7 +405,9 @@ const AllCourses = () => {
         <CourseComponent formHeader={"Add New Course"} buttonText={"Add Course"} handleSubmit={handleSubmit} courseName={courseName} setCourseName={setCourseName} batchCode={batchCode} setBatchCode={setBatchCode} isAvailable={isAvailable} setIsAvailable={setIsAvailable} showSuccessMessage={showSuccessMessage} successMessage={successMessage} showErrorMessage={showErrorMessage} errorMessage={errorMessage} courseDescription={courseDescription} setCourseDescription={setCourseDescription} vacancy={vacancy} setVacancy={setVacancy} applicationDeadline={applicationDeadline} setApplicationDeadline={setApplicationDeadline} writtenExamTime={writtenExamTime} setWrittenExamTime={setWrittenExamTime} startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} applicantDashboardMessage={applicantDashboardMessage} setApplicantDashboardMessage={setApplicantDashboardMessage} writtenShortlistedDashboardMessage={writtenShortlistedDashboardMessage} setWrittenShortlistedDashboardMessage={setWrittenShortlistedDashboardMessage} writtenPassedDashboardMessage={writtenPassedDashboardMessage} setWrittenPassedDashboardMessage={setWrittenPassedDashboardMessage} technicalVivaPassedDashboardMessage={technicalVivaPassedDashboardMessage} setTechnicalVivaPassedDashboardMessage={setTechnicalVivaPassedDashboardMessage} aptitudeTestPassedDashboardMessage={aptitudeTestPassedDashboardMessage} setAptitudeTestPassedDashboardMessage={setAptitudeTestPassedDashboardMessage} hrVivaPassedDashboardMessage={hrVivaPassedDashboardMessage} setHrVivaPassedDashboardMessage={setHrVivaPassedDashboardMessage} traineeDashboardMessage={traineeDashboardMessage} setTraineeDashboardMessage={setTraineeDashboardMessage} />
       }
       {value === "unavailable-courses" && role === "ADMIN" &&
-        <CourseComponent formHeader={"Add New Course"} buttonText={"Add Course"} handleSubmit={handleSubmit} courseName={courseName} setCourseName={setCourseName} batchCode={batchCode} setBatchCode={setBatchCode} isAvailable={isAvailable} setIsAvailable={setIsAvailable} showSuccessMessage={showSuccessMessage} successMessage={successMessage} showErrorMessage={showErrorMessage} errorMessage={errorMessage} courseDescription={courseDescription} setCourseDescription={setCourseDescription} vacancy={vacancy} setVacancy={setVacancy} applicationDeadline={applicationDeadline} setApplicationDeadline={setApplicationDeadline} writtenExamTime={writtenExamTime} setWrittenExamTime={setWrittenExamTime} startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} applicantDashboardMessage={applicantDashboardMessage} setApplicantDashboardMessage={setApplicantDashboardMessage} writtenShortlistedDashboardMessage={writtenShortlistedDashboardMessage} setWrittenShortlistedDashboardMessage={setWrittenShortlistedDashboardMessage} writtenPassedDashboardMessage={writtenPassedDashboardMessage} setWrittenPassedDashboardMessage={setWrittenPassedDashboardMessage} technicalVivaPassedDashboardMessage={technicalVivaPassedDashboardMessage} setTechnicalVivaPassedDashboardMessage={setTechnicalVivaPassedDashboardMessage} aptitudeTestPassedDashboardMessage={aptitudeTestPassedDashboardMessage} setAptitudeTestPassedDashboardMessage={setAptitudeTestPassedDashboardMessage} hrVivaPassedDashboardMessage={hrVivaPassedDashboardMessage} setHrVivaPassedDashboardMessage={setHrVivaPassedDashboardMessage} traineeDashboardMessage={traineeDashboardMessage} setTraineeDashboardMessage={setTraineeDashboardMessage} />
+
+      <CourseCards courses={unavailableCourses} setValue={setValue} setSingleCourse={setSingleCourse}/>
+
       }
 
 
