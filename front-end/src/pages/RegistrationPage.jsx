@@ -3,15 +3,19 @@ import { Container, Row, Col, Form, Button, Alert } from 'react-bootstrap';
 import axios from '../api/axios';
 import { useNavigate } from 'react-router-dom/dist/index';
 import { LoginContext } from '../context/LoginContex';
+import JSON2Message from '../services/JSON2Message';
 
 
 const RegistrationForm = () => {
+
+ 
+    
     const [pageNumber, setPageNumber] = useState(1);
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
         gender: '',
-        dob: '',
+        dateOfBirth: '',
         email: '',
         contactNumber: '',
         degreeName: '',
@@ -21,20 +25,33 @@ const RegistrationForm = () => {
         presentAddress: '',
         password: '',
     });
+    const [errorMessage, setErrorMessage] = useState("");
     const [apiResponse, setApiResponse] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState(null);
-    const [successMessage, setSuccessMessage] = useState(null)
+    const [successMessage, setSuccessMessage] = useState("")
     const { setLoggedIn, setRole } = useContext(LoginContext);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (successMessage!=="") {
+            console.log(successMessage);
+        }
+        if (errorMessage !== "") {
+            console.log(errorMessage);
+            
+        }
+     
+    }, [successMessage, errorMessage])
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
     };
 
     const handleDateChange = (date) => {
-        setFormData((prevFormData) => ({ ...prevFormData, dob: date }));
+        setFormData((prevFormData) => ({ ...prevFormData, dateOfBirth: date }));
     };
 
     const handlePassingYearChange = (e) => {
@@ -53,7 +70,7 @@ const RegistrationForm = () => {
         passingYears.push(currentYear + i - 8);
     };
     const isPageOneValid = () => {
-        return formData.firstName !== '' && formData.lastName !== '' && formData.gender !== '' && formData.dob !== '';
+        return formData.firstName !== '' && formData.lastName !== '' && formData.gender !== '' && formData.dateOfBirth !== '';
     };
 
     const isPageTwoValid = () => {
@@ -63,7 +80,6 @@ const RegistrationForm = () => {
     const isPageThreeValid = () => {
         return formData.cgpa !== '' && formData.passingYear !== '' && formData.presentAddress !== '' && formData.educationalInstitute !== '';
     };
-    const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
         if (data && data.status === 201) {
@@ -80,7 +96,7 @@ const RegistrationForm = () => {
     
             }, 2000);
         } else if (error) {
-            setErrorMessage(error.response.data.errorMessage);
+            setErrorMessage(JSON2Message(JSON.stringify(error.response.data.errorMessage)) );
             setPageNumber(1);
     
             setTimeout(() => {
@@ -117,7 +133,7 @@ const RegistrationForm = () => {
             firstName: '',
             lastName: '',
             gender: '',
-            dob: '',
+            dateOfBirth: '',
             email: '',
             contactNumber: '',
             degreeName: '',
@@ -201,13 +217,13 @@ const RegistrationForm = () => {
                                         <option value="other">Other</option>
                                     </Form.Select>
                                 </Form.Group>
-                                <Form.Group className="mb-3" controlId="dob">
+                                <Form.Group className="mb-3" controlId="dateOfBirth">
                                     <Form.Label>Date of Birth</Form.Label>
                                     <Form.Control
                                         required
                                         type="date"
-                                        name="dob"
-                                        value={formData.dob}
+                                        name="dateOfBirth"
+                                        value={formData.dateOfBirth}
                                         onChange={handleChange}
                                     />
                                 </Form.Group>
