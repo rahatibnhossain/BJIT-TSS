@@ -5,6 +5,8 @@ import axios from '../api/axios';
 import Alert from 'react-bootstrap/Alert';
 import { useNavigate } from 'react-router-dom/dist/index';
 import { LoginContext } from '../context/LoginContex';
+import JSON2Message from '../services/JSON2Message'
+
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -86,10 +88,10 @@ const LoginForm = () => {
       }
     }
     if (error) {
-      setErrorMessage(error.response.data.errorMessage);
+      setErrorMessage(JSON2Message(JSON.stringify(error?.response?.data?.errorMessage))
+      );
       setTimeout(() => {
         setErrorMessage("");
-
 
       }, 2000);
 

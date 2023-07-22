@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -99,8 +100,11 @@ public class ApplicantDashboardServiceImpl implements ApplicantDashboardService 
         }
 
         if (dashboardMessage.size() == 0) {
-            ApplicantDashboardMessage applicantDashboardMessage = new ApplicantDashboardMessage();
-            applicantDashboardMessage.setDashboardMessage("You have not been applied to any course");
+            List<ApplicantDashboardMessage> applicantDashboardMessage = new ArrayList<>(); // Initialize a list
+
+            ApplicantDashboardMessage applicantDashboardMessage1 = new ApplicantDashboardMessage();
+            applicantDashboardMessage1.setDashboardMessage("You have not been applied to any course");
+            applicantDashboardMessage.add(applicantDashboardMessage1);
             ListResponse<?> listResponse = ListResponse.builder()
                     .dataLength(0)
                     .listResponse(applicantDashboardMessage)

@@ -27,7 +27,7 @@ const CourseCard = styled(Card)(({ theme }) => ({
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
     transition: 'transform 0.2s ease-in-out',
     backgroundColor: "#0437f136",
-    alignItem:"center",
+    alignItem: "center",
     justifyContent: "center",
 
     '&:hover': {
@@ -49,6 +49,8 @@ const NoticeBoardPage = () => {
 
     const [appliedCourse, setAppliedCourse] = useState(0);
 
+    const [loading, setLoading] = useState(false);
+
 
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [showErrorMessage, setShowErrorMessage] = useState(false);
@@ -57,7 +59,7 @@ const NoticeBoardPage = () => {
 
     const { appliedCoursesGlobal, setappliedCoursesGlobal } = useContext(LoginContext);
 
-    const [dashboardData, setdashboardData] = useState(null);
+    const [dashboardData, setdashboardData] = useState([]);
 
     useEffect(() => {
 
@@ -67,6 +69,7 @@ const NoticeBoardPage = () => {
                 Authorization: `Bearer ${token}`,
             },
         };
+        setLoading(true);
         axios.get('/api/candidate/dashboard', config)
             .then((response) => {
                 console.log(response.data.data.listResponse);
@@ -78,7 +81,7 @@ const NoticeBoardPage = () => {
                     setAppliedCourse(response.data.data.dataLength);
                     setappliedCoursesGlobal(response.data.data.dataLength)
                     setSuccessMessage(response.data.successMessage)
-                    setdashboardData(response.data.data.listResponse)
+                    setdashboardData(response?.data?.data?.listResponse)
 
                     setTimeout(() => {
                         setShowSuccessMessage(false)
@@ -104,12 +107,16 @@ const NoticeBoardPage = () => {
                 }, 2000);
 
 
-            });
+            }).finally(() => {
+                setLoading(false)
+            })
 
     }, [])
 
 
-
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
 
     return (
@@ -130,8 +137,8 @@ const NoticeBoardPage = () => {
             </Card>
 
             <Box mt={4}>
-                <Grid container spacing={2}   justifyContent="center"
- >
+                <Grid container spacing={2} justifyContent="center"
+                >
                     {dashboardData?.map((dashboard, index) =>
 
                         <Grid item key={index} xs={12} sm={6} md={4}>
@@ -139,7 +146,10 @@ const NoticeBoardPage = () => {
                             <CourseCard>
 
                                 <CourseContent>
+                                    {dashboard.courseName &&
                                     <CourseTitle align="center" variant="h6">Course : {dashboard.courseName}</CourseTitle>
+                                    }
+                                    
                                     <CourseDescription align="center" variant="body2">{dashboard.dashboardMessage}</CourseDescription>
                                 </CourseContent>
 

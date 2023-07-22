@@ -13,6 +13,7 @@ import EmailVerification from '../pages/EmailVerification';
 import ProfilePage from '../pages/ProfilePage';
 import CourseDescriptionComponent from '../pages/CourseDetailsPage';
 import NoticeBoardPage from '../pages/NoticeBoard';
+import EvaluatorManagement from '../pages/EvaluatorManagement';
 
 const Feed = ({ data, loading, close }) => {
 
@@ -55,7 +56,7 @@ const Feed = ({ data, loading, close }) => {
 
         {
           role === "ADMIN" &&
-          <Route path="/evaluator_management" element={<CoursesPage courses={data} />} />
+          <Route path="/evaluator_management" element={<EvaluatorManagement courses={data} />} />
 
         }
 

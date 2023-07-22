@@ -55,9 +55,7 @@ public class RegisterRequest {
     @NotEmpty(message = "Present address cannot be empty")
     private String presentAddress;
 
-    @NotEmpty(message = "Photo URL cannot be empty")
     private String photoUrl;
 
-    @NotEmpty(message = "Resume URL cannot be empty")
     private String resumeUrl;
 }

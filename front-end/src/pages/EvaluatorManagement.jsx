@@ -1,57 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Tab, Tabs, Box, Card, CardContent, CardMedia, Typography, Button, Grid } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { Link } from 'react-router-dom';
+
 import { LoginContext } from '../context/LoginContex';
 import axios from '../api/axios';
 import CourseComponent from '../components/CourseComponent';
-import { format } from 'date-fns';
 import CourseCards from '../components/CourseCards';
 import JSON2Message from '../services/JSON2Message';
+import AddEvaluatorForm from '../components/AddEvaluatorForm';
 
 
 
 
-const CourseCard = styled(Card)(({ theme, role, loggedIn }) => ({
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-    borderRadius: theme.spacing(1),
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-    transition: 'transform 0.2s ease-in-out',
-    cursor: (role === 'ADMIN' || loggedIn) ? 'pointer' : 'default',
-    '&:hover': {
-        transform: (role === 'ADMIN' || loggedIn) ? 'scale(1.03)' : 'none',
-    },
-}));
-
-const CourseMedia = styled(CardMedia)(({ theme }) => ({
-    height: 100,
-    objectFit: 'cover',
-    borderTopLeftRadius: theme.spacing(1),
-    borderTopRightRadius: theme.spacing(1),
-}));
-
-const CourseContent = styled(CardContent)(({ theme }) => ({
-    flexGrow: 1,
-    padding: theme.spacing(2),
-}));
-
-const CourseTitle = styled(Typography)(({ theme }) => ({
-    fontWeight: 600,
-    fontSize: '1.2rem',
-}));
-
-const CourseDescription = styled(Typography)(({ theme }) => ({
-    marginTop: theme.spacing(1),
-    color: theme.palette.text.secondary,
-}));
-
-const EnrollButton = styled(Button)(({ theme }) => ({
-    marginTop: 'auto',
-    borderRadius: theme.spacing(0),
-    fontWeight: 600,
-}));
 
 
 
@@ -79,26 +38,11 @@ const EvaluatorManagement = () => {
 
 
     const resetFormFields = () => {
-        setIsAvailable(true);
-        setCourseName('');
-        setCourseDescription('');
-        setStartDate('');
-        setEndDate('');
-        setBatchCode('');
-        setVacancy('');
-        setWrittenExamTime('');
-        setApplicantDashboardMessage('You have successfully applied for this course');
-        setWrittenShortlistedDashboardMessage('Congratulations. You have shortlisted for the written exam. Your written exam will be held soon');
-        setWrittenPassedDashboardMessage('Congratulations. You have passed the written exam. Your aptitude test will be held soon');
-        setTechnicalVivaPassedDashboardMessage('Congratulations. You have passed the technical viva. Your HR viva will be held soon');
-        setAptitudeTestPassedDashboardMessage('Congratulations. You have passed the aptitude test. Your technical viva will be held soon.');
-        setHrVivaPassedDashboardMessage('Congratulations. You have passed the HR viva. Please wait for the final selection');
-        setTraineeDashboardMessage('Congratulations. You have been selected as a Trainee.');
     };
 
     const { role, loggedIn, setCourses, courses, unavailableCourses, setUnavailableCourses } = useContext(LoginContext);
 
-    const [value, setValue] = useState('available-courses');
+    const [value, setValue] = useState('all-evaluators');
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -108,47 +52,7 @@ const EvaluatorManagement = () => {
 
 
 
-    const [courseName, setCourseName] = useState('');
-    const [courseDescription, setCourseDescription] = useState('');
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
-    const [batchCode, setBatchCode] = useState('');
-    const [vacancy, setVacancy] = useState('');
-    const [applicationDeadline, setApplicationDeadline] = useState('');
-    const [writtenExamTime, setWrittenExamTime] = useState('');
-    const [applicantDashboardMessage, setApplicantDashboardMessage] = useState('You have successfully applied for this course');
-    const [writtenShortlistedDashboardMessage, setWrittenShortlistedDashboardMessage] = useState('Congratulations. You have shortlisted for the written exam. Your written exam will held soon');
-    const [writtenPassedDashboardMessage, setWrittenPassedDashboardMessage] = useState('Congratulations. You have passed the written exam. Your aptitude test will held soon');
-    const [technicalVivaPassedDashboardMessage, setTechnicalVivaPassedDashboardMessage] = useState('Congratulations. You have passed the technical viva. Your HR viva will held soon');
-    const [aptitudeTestPassedDashboardMessage, setAptitudeTestPassedDashboardMessage] = useState('Congratulations. You have passed the aptitude test. Your technical viva will held soon.');
-    const [hrVivaPassedDashboardMessage, setHrVivaPassedDashboardMessage] = useState('Congratulations. You have passed the HR viva. Please wait for the final selection');
-    const [traineeDashboardMessage, setTraineeDashboardMessage] = useState('Congratulations. You have been selected as a Trainee.');
-    const [isAvailable, setIsAvailable] = useState(true);
 
-
-    const setSingleCourse = (c) => {
-        setCourseName(c.courseName)
-        setIsAvailable(c.isAvailable);
-        setCourseDescription(c.courseDescription);
-
-
-        setStartDate(format(new Date(c.startDate), 'yyyy-MM-dd'));
-        setEndDate(format(new Date(c.endDate), 'yyyy-MM-dd'));
-        setWrittenExamTime(format(new Date(c.writtenExamTime), 'yyyy-MM-dd\'T\'HH:mm'));
-        setApplicationDeadline(format(new Date(c.applicationDeadline), 'yyyy-MM-dd'));
-
-
-        setBatchCode(c.batchCode);
-        setVacancy(c.vacancy);
-        setApplicantDashboardMessage(c.applicantDashboardMessage);
-        setWrittenShortlistedDashboardMessage(c.writtenShortlistedDashboardMessage);
-        setWrittenPassedDashboardMessage(c.writtenPassedDashboardMessage);
-        setTechnicalVivaPassedDashboardMessage(c.technicalVivaPassedDashboardMessage);
-        setAptitudeTestPassedDashboardMessage(c.traineeDashboardMessage);
-        setHrVivaPassedDashboardMessage(c.hrVivaPassedDashboardMessage);
-        setTraineeDashboardMessage(c.traineeDashboardMessage);
-
-    }
 
 
     const handleSubmit = (event) => {
@@ -302,7 +206,7 @@ const EvaluatorManagement = () => {
 
 
     return (
-        <Box mt={role === "ADMIN" ? 1 : 4}>
+        <Box mt={1}>
             <Box sx={{
                 width: '100%',
             }} >
@@ -325,12 +229,20 @@ const EvaluatorManagement = () => {
             </Box>
 
 
+            {value === "all-evaluators" &&
+                <AddEvaluatorForm />
+
+            }
 
 
 
-            {value === "single-course" && role === "ADMIN" &&
+            {value === "add-evaluator" &&
+                <AddEvaluatorForm />
 
-                <CourseComponent formHeader={"Update Course"} buttonText={"Update Course"} handleSubmit={handleSubmit} courseName={courseName} setCourseName={setCourseName} batchCode={batchCode} setBatchCode={setBatchCode} isAvailable={isAvailable} setIsAvailable={setIsAvailable} showSuccessMessage={showSuccessMessage} successMessage={successMessage} showErrorMessage={showErrorMessage} errorMessage={errorMessage} courseDescription={courseDescription} setCourseDescription={setCourseDescription} vacancy={vacancy} setVacancy={setVacancy} applicationDeadline={applicationDeadline} setApplicationDeadline={setApplicationDeadline} writtenExamTime={writtenExamTime} setWrittenExamTime={setWrittenExamTime} startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} applicantDashboardMessage={applicantDashboardMessage} setApplicantDashboardMessage={setApplicantDashboardMessage} writtenShortlistedDashboardMessage={writtenShortlistedDashboardMessage} setWrittenShortlistedDashboardMessage={setWrittenShortlistedDashboardMessage} writtenPassedDashboardMessage={writtenPassedDashboardMessage} setWrittenPassedDashboardMessage={setWrittenPassedDashboardMessage} technicalVivaPassedDashboardMessage={technicalVivaPassedDashboardMessage} setTechnicalVivaPassedDashboardMessage={setTechnicalVivaPassedDashboardMessage} aptitudeTestPassedDashboardMessage={aptitudeTestPassedDashboardMessage} setAptitudeTestPassedDashboardMessage={setAptitudeTestPassedDashboardMessage} hrVivaPassedDashboardMessage={hrVivaPassedDashboardMessage} setHrVivaPassedDashboardMessage={setHrVivaPassedDashboardMessage} traineeDashboardMessage={traineeDashboardMessage} setTraineeDashboardMessage={setTraineeDashboardMessage} />
+            }
+
+            {value === "assign-evaluator" &&
+                <AddEvaluatorForm />
 
             }
 
