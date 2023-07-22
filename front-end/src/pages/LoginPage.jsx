@@ -3,7 +3,7 @@ import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 // import usePost from '../hooks/usePost';
 import axios from '../api/axios';
 import Alert from 'react-bootstrap/Alert';
-import { useNavigate } from '../../node_modules/react-router-dom/dist/index';
+import { useNavigate } from 'react-router-dom/dist/index';
 import { LoginContext } from '../context/LoginContex';
 
 const LoginForm = () => {

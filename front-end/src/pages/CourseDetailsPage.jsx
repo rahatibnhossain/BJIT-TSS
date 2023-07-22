@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { useNavigate, useParams } from '../../node_modules/react-router-dom/dist/index';
+import { useNavigate, useParams } from 'react-router-dom/dist/index';
 import useFetch from '../hooks/useFetch';
 import axios from '../api/axios';
 import { Alert } from 'react-bootstrap';

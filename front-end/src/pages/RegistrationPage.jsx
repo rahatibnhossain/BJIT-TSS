@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Container, Row, Col, Form, Button, Alert } from 'react-bootstrap';
 import axios from '../api/axios';
-import { useNavigate } from '../../node_modules/react-router-dom/dist/index';
+import { useNavigate } from 'react-router-dom/dist/index';
 import { LoginContext } from '../context/LoginContex';
 
 

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Typography, Box } from '@mui/material';
 import { LoginContext } from '../context/LoginContex';
-import { useNavigate } from '../../node_modules/react-router-dom/dist/index';
+import { useNavigate } from 'react-router-dom/dist/index';
 
 const ProfileComponent = () => {
   const navigate = useNavigate();

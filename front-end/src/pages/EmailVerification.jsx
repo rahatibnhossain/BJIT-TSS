@@ -3,7 +3,7 @@ import { Button, TextField, Box } from '@mui/material';
 import axios from '../api/axios';
 import { Alert } from 'react-bootstrap';
 import { LoginContext } from '../context/LoginContex';
-import { useNavigate } from '../../node_modules/react-router-dom/dist/index';
+import { useNavigate } from 'react-router-dom/dist/index';
 
 const EmailVerificationComponent = () => {
   const [isCodeSent, setIsCodeSent] = useState(false);

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Box } from "@mui/material";
 
-import { Route, Routes } from '../../node_modules/react-router-dom/dist/index';
+import { Route, Routes } from 'react-router-dom/dist/index';
 import HomePage from '../pages/HomePage';
 import CoursesPage from '../pages/CoursesPage';
 import LoginPage from '../pages/LoginPage';

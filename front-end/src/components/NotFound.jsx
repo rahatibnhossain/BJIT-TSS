@@ -2,7 +2,7 @@ import React from 'react';
 import { Box } from '@mui/material';
 
 import NotFoundIllustration from '../assets/not_found.svg';
-import { useNavigate } from '../../node_modules/react-router-dom/dist/index';
+import { useNavigate } from 'react-router-dom/dist/index';
 
 const PageNotFound = () => {
     const navigate = useNavigate();

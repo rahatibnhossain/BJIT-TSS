@@ -2,9 +2,9 @@ import React, { useContext, useEffect, useState } from 'react'
 import { theme } from "../theme/theme";
 import { Menu, Tooltip, MenuItem, Badge, Box, InputBase, Container, Stack, AppBar, Toolbar, Typography, styled } from "@mui/material";
 import { Mail, Notifications } from "@mui/icons-material";
-import { Avatar } from '../../node_modules/@mui/material/index';
+import { Avatar } from '@mui/material/index';
 import { LoginContext } from '../context/LoginContex';
-import { useNavigate } from '../../node_modules/react-router-dom/dist/index';
+import { useNavigate } from 'react-router-dom/dist/index';
 const StyledToolbar = styled(Toolbar)({
   display: "flex",
   justifyContent: "space-between"

@@ -13,7 +13,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import Link from '@mui/material/Link';
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { LoginContext } from '../context/LoginContex';
-import { Logout } from '../../node_modules/@mui/icons-material/index';
+import { Logout } from '@mui/icons-material/index';
 
 
 const Sidebar = ({ close }) => {
