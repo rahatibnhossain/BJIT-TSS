@@ -5,6 +5,7 @@ import com.bjit.tss.model.AssignAnswerSheetRequest;
 import com.bjit.tss.model.UploadMarkRequest;
 import com.bjit.tss.model.UploadWrittenMarkRequest;
 import com.bjit.tss.service.EvaluationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,12 +21,12 @@ public class EvaluationController {
     private final EvaluationService evaluationService;
 
     @PostMapping("/assign-answer")
-    public ResponseEntity<ApiResponse<?>> assignAnswerSheet(@RequestBody AssignAnswerSheetRequest assignAnswerSheetRequest) {
+    public ResponseEntity<ApiResponse<?>> assignAnswerSheet(@Valid @RequestBody AssignAnswerSheetRequest assignAnswerSheetRequest) {
         return evaluationService.assignAnswerSheet(assignAnswerSheetRequest);
     }
 
     @PostMapping("/upload-mark/written")
-    public ResponseEntity<ApiResponse<?>> uploadWrittenMark(@RequestBody UploadWrittenMarkRequest uploadWrittenMarkRequest) {
+    public ResponseEntity<ApiResponse<?>> uploadWrittenMark(@Valid @RequestBody UploadWrittenMarkRequest uploadWrittenMarkRequest) {
         return evaluationService.uploadWrittenMark(uploadWrittenMarkRequest);
     }
 

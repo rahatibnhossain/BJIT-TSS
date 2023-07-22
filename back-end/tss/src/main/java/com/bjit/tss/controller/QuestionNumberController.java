@@ -3,6 +3,7 @@ package com.bjit.tss.controller;
 import com.bjit.tss.model.ApiResponse;
 import com.bjit.tss.model.QuestionNumberRequest;
 import com.bjit.tss.service.QuestionNumberService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,7 @@ public class QuestionNumberController {
     private final QuestionNumberService questionNumberService;
 
     @PostMapping("/set")
-    public ResponseEntity<ApiResponse<?>> setWrittenQuestionNumber(@RequestBody QuestionNumberRequest questionNumberRequest) {
+    public ResponseEntity<ApiResponse<?>> setWrittenQuestionNumber(@Valid @RequestBody QuestionNumberRequest questionNumberRequest) {
         return questionNumberService.setWrittenQuestionNumber(questionNumberRequest);
     }
 }

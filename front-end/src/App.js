@@ -16,15 +16,20 @@ function App() {
   const { data, loading, error } = useFetch("api/course");
 
   const [role, setRole] = useState("");
-  const [courses, setCourses] = useState({});
+  const [courses, setCourses] = useState([]);
 
   const [appliedCoursesGlobal  , setappliedCoursesGlobal  ] = useState(0)
 
   useEffect(() => {
-    setCourses(data?.data?.data?.listResponse)
- 
+    if (data?.data?.data) {
+      setCourses(data?.data?.data?.listResponse)
+      console.log(data?.data?.data?.listResponse);
+    }
+
   }, [data])
 
+
+  
 useEffect(() => {
   console.log(courses);
 }, [courses])
@@ -134,7 +139,7 @@ console.log(role);
   return (
 
     <Box >
-      <LoginContext.Provider value={{appliedCoursesGlobal  , setappliedCoursesGlobal ,courses, setUserData, userData, uploaded , setUploaded, userData, setUserData, loggedIn, setLoggedIn ,role, setRole}}>
+      <LoginContext.Provider value={{appliedCoursesGlobal  , setappliedCoursesGlobal ,courses, setUserData, userData, uploaded , setUploaded, loggedIn, setLoggedIn ,role, setRole, setCourses}}>
 
         <Navbar courseNumber={data?.data.data.dataLength} onClose={toggleSideBar} />
         <Stack direction="row" spacing={2} justifyContent="space-between">

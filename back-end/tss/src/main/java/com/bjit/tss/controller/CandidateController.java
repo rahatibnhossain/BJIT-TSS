@@ -5,6 +5,7 @@ import com.bjit.tss.model.ApiResponse;
 import com.bjit.tss.service.AdmitCardService;
 import com.bjit.tss.service.ApplicantDashboardService;
 import com.bjit.tss.service.CandidateService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -29,7 +30,7 @@ public class CandidateController {
     }
 
     @PostMapping("/generate-admit")
-    public ResponseEntity<InputStreamResource> generateAdmitCard(@RequestBody AdmitCardRequest admitCardRequest) {
+    public ResponseEntity<InputStreamResource> generateAdmitCard(@Valid @RequestBody AdmitCardRequest admitCardRequest) {
         ByteArrayInputStream pdf = admitCardService.generateAdmit(admitCardRequest);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Content-Description", "inline;file=AdmitCard.pdf");

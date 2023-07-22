@@ -5,6 +5,7 @@ import com.bjit.tss.model.RegisterRequest;
 import com.bjit.tss.model.ValidationRequest;
 import com.bjit.tss.service.RegisterService;
 import com.bjit.tss.model.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,12 +18,12 @@ public class RegisterController {
     private final RegisterService registerService;
 
     @PostMapping("/applicant")
-    public ResponseEntity<ApiResponse<?>> applicantRegistration(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<ApiResponse<?>> applicantRegistration(@Valid @RequestBody RegisterRequest registerRequest) {
         return registerService.applicantRegistration(registerRequest);
     }
 
     @PostMapping("/evaluator")
-    public ResponseEntity<ApiResponse<?>> evaluatorRegistration(@RequestBody EvaluatorRegisterRequest evaluatorRegisterRequest) {
+    public ResponseEntity<ApiResponse<?>> evaluatorRegistration(@Valid @RequestBody EvaluatorRegisterRequest evaluatorRegisterRequest) {
         return registerService.evaluatorRegistration(evaluatorRegisterRequest);
     }
 
@@ -32,7 +33,7 @@ public class RegisterController {
     }
 
     @PostMapping("/applicant/validation")
-    public ResponseEntity<ApiResponse<?>> mailValidation(@RequestBody ValidationRequest validationRequest) {
+    public ResponseEntity<ApiResponse<?>> mailValidation(@Valid @RequestBody ValidationRequest validationRequest) {
         return registerService.mailValidation(validationRequest);
     }
 }

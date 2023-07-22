@@ -1,5 +1,7 @@
 package com.bjit.tss.model;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,5 +13,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AdmitCardRequest {
 
+    @Valid
+
+    @NotNull(message = "examineeId is required")
     private Long examineeId;
 }

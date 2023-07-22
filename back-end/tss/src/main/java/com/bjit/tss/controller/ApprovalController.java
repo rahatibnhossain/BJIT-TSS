@@ -3,6 +3,7 @@ package com.bjit.tss.controller;
 import com.bjit.tss.model.ApiResponse;
 import com.bjit.tss.model.ApprovalRequest;
 import com.bjit.tss.service.ApprovalService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,7 @@ public class ApprovalController {
     private final ApprovalService approvalService;
 
     @PostMapping("/applicant")
-    public ResponseEntity<ApiResponse<?>> markAs(@RequestBody ApprovalRequest approvalRequest) {
+    public ResponseEntity<ApiResponse<?>> markAs(@Valid @RequestBody ApprovalRequest approvalRequest) {
         return approvalService.approveApplicant(approvalRequest);
     }
 }

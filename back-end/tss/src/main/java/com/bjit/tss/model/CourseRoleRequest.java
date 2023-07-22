@@ -1,6 +1,9 @@
 package com.bjit.tss.model;
 
 import com.bjit.tss.enums.Role;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,6 +15,11 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CourseRoleRequest {
 
+    @Valid
+
+    @NotNull(message = "Role is required")
     private Role role;
+
+    @NotEmpty(message = "Batch Code is required")
     private String batchCode;
 }

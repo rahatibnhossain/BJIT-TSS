@@ -51,7 +51,6 @@ const Sidebar = ({ close }) => {
 
     let extracted= location.pathname.split("/");
     let final = "/"+ extracted[1];
-    console.log(extracted);
     if (location.pathname === path || final===path) {
       return "#9c27b0";
     }

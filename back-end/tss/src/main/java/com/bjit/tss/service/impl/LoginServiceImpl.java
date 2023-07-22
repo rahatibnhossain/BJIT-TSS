@@ -49,21 +49,28 @@ public class LoginServiceImpl implements LoginService {
         String jwtToken = jwtService.generateToken(loginInfo);
         AuthenticationResponse authenticationResponse = null;
         switch (loginInfo.getRole()) {
-            case ADMIN -> authenticationResponse = AuthenticationResponse.builder()
+            case ADMIN -> {authenticationResponse = AuthenticationResponse.builder()
                     .token(jwtToken)
                     .role(loginInfo.getRole())
                     .build();
-            case EVALUATOR -> authenticationResponse = AuthenticationResponse.builder()
+                System.out.println(loginInfo.getRole()+" with the email "+loginInfo.getEmail()+" logged in to the system successfully.");
+            }
+            case EVALUATOR -> {authenticationResponse = AuthenticationResponse.builder()
                     .token(jwtToken)
                     .role(loginInfo.getRole())
                     .evaluatorInfo(loginInfo.getEvaluatorInfo())
                     .build();
-            default -> authenticationResponse = AuthenticationResponse.builder()
+                System.out.println(loginInfo.getRole()+" with the email "+loginInfo.getEmail()+ " logged in successfully." );
+            }
+            default -> {authenticationResponse = AuthenticationResponse.builder()
                     .token(jwtToken)
                     .role(loginInfo.getRole())
                     .userInfo(loginInfo.getUserInfo())
                     .build();
+            System.out.println(loginInfo.getRole()+" with the email "+loginInfo.getEmail()+ " logged in successfully." );}
+
         }
+
 
         return ApiResponseMapper.mapToResponseEntityOK(authenticationResponse,"Login successfully done.");
     }
@@ -72,6 +79,21 @@ public class LoginServiceImpl implements LoginService {
     public ResponseEntity<ApiResponse<?>> validation() {
 
         LoginInfo loginInfo= (LoginInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+
+
+
+        System.out.println("An "+loginInfo.getRole()+" automatically logged in to the system.");
+
+        if (loginInfo.getRole()== Role.ADMIN){
+            ValidationResponse<?> validationResponse = ValidationResponse.builder()
+                    .data(null)
+                    .role(loginInfo.getRole())
+                    .build();
+
+            System.out.println("An "+loginInfo.getRole()+" automatically logged in to the system.");
+            return ApiResponseMapper.mapToResponseEntityOK(validationResponse, "Valid User");
+        }
 
         if (loginInfo.getRole()== Role.APPLICANT){
             Optional<UserInfo> userInfo = userRepository.findById(loginInfo.getUserInfo().getUserId());
@@ -82,6 +104,7 @@ public class LoginServiceImpl implements LoginService {
                     .data(userInfo)
                     .role(loginInfo.getRole())
                     .build();
+            System.out.println("An "+loginInfo.getRole()+" automatically logged in to the system.");
             return ApiResponseMapper.mapToResponseEntityOK(validationResponse, "Valid User");
         }
         if (loginInfo.getRole()== Role.USER){
@@ -89,6 +112,7 @@ public class LoginServiceImpl implements LoginService {
                     .data(loginInfo.getEmail())
                     .role(loginInfo.getRole())
                     .build();
+            System.out.println("An "+loginInfo.getRole()+" automatically logged in to the system.");
             return ApiResponseMapper.mapToResponseEntityOK(validationResponse, "Valid User");
 
         }

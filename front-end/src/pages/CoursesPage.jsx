@@ -1,49 +1,30 @@
-import React, { useContext, useState } from 'react';
-import { TextField, Tab, Tabs, Box, Card, CardContent, CardMedia, Typography, Button, Grid } from '@mui/material';
-import { styled } from '@mui/material/styles'; // Import the styled function from Emotion
+import React, { useContext, useEffect, useState } from 'react';
+import {  Tab, Tabs, Box, Card, CardContent, CardMedia, Typography, Button, Grid } from '@mui/material';
+import { styled } from '@mui/material/styles'; 
 import { Link } from 'react-router-dom';
 import { LoginContext } from '../context/LoginContex';
-
-const FormContainer = styled(Box)(({ theme }) => ({
-  // maxWidth: 90 %,
-  margin: '0 auto',
-  padding: theme.spacing(4),
-  borderRadius: theme.spacing(2),
-  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-}));
-
-const FormTitle = styled(Typography)(({ theme }) => ({
-  fontWeight: 600,
-  fontSize: '1.8rem',
-  marginBottom: theme.spacing(2),
-}));
-
-const FormField = styled(TextField)(({ theme }) => ({
-  marginBottom: theme.spacing(2),
-}));
-
-const SubmitButton = styled(Button)(({ theme }) => ({
-  marginTop: theme.spacing(2),
-  borderRadius: theme.spacing(0),
-  fontWeight: 600,
-}));
+import axios from '../api/axios';
+import CourseComponent from '../components/CourseComponent';
+import { format } from 'date-fns';
 
 
-const CourseCard = styled(Card)(({ theme, role }) => ({
+
+
+const CourseCard = styled(Card)(({ theme, role, loggedIn }) => ({
   display: 'flex',
   flexDirection: 'column',
   height: '100%',
   borderRadius: theme.spacing(1),
   boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
   transition: 'transform 0.2s ease-in-out',
-  cursor: role === 'ADMIN' ? 'pointer' : 'default',
+  cursor: (role === 'ADMIN' || loggedIn) ? 'pointer' : 'default',
   '&:hover': {
-    transform: role === 'ADMIN' ? 'scale(1.03)' : 'none',
+    transform: (role === 'ADMIN' || loggedIn) ? 'scale(1.03)' : 'none',
   },
 }));
 
 const CourseMedia = styled(CardMedia)(({ theme }) => ({
-  height: 180,
+  height: 100,
   objectFit: 'cover',
   borderTopLeftRadius: theme.spacing(1),
   borderTopRightRadius: theme.spacing(1),
@@ -73,9 +54,57 @@ const EnrollButton = styled(Button)(({ theme }) => ({
 
 
 
-const AllCourses = ({ courses }) => {
+const AllCourses = () => {
 
-  const { role } = useContext(LoginContext);
+  const JSON2Message = (jsonstr) => {
+    const object1 = JSON.parse(jsonstr);
+
+    const object2 = Object.values(object1);
+
+    const message = object2.map((value) => {
+      return value;
+    }).join('\n');
+
+    return message;
+  };
+
+
+
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("")
+
+  useEffect(() => {
+
+    if (showSuccessMessage) {
+      console.log(successMessage);
+    }
+    if (showErrorMessage) {
+      console.log(errorMessage);
+    }
+  }, [showErrorMessage, showSuccessMessage])
+
+
+  const resetFormFields = () => {
+    setIsAvailable(true);
+    setCourseName('');
+    setCourseDescription('');
+    setStartDate('');
+    setEndDate('');
+    setBatchCode('');
+    setVacancy('');
+    setWrittenExamTime('');
+    setApplicantDashboardMessage('You have successfully applied for this course');
+    setWrittenShortlistedDashboardMessage('Congratulations. You have shortlisted for the written exam. Your written exam will be held soon');
+    setWrittenPassedDashboardMessage('Congratulations. You have passed the written exam. Your aptitude test will be held soon');
+    setTechnicalVivaPassedDashboardMessage('Congratulations. You have passed the technical viva. Your HR viva will be held soon');
+    setAptitudeTestPassedDashboardMessage('Congratulations. You have passed the aptitude test. Your technical viva will be held soon.');
+    setHrVivaPassedDashboardMessage('Congratulations. You have passed the HR viva. Please wait for the final selection');
+    setTraineeDashboardMessage('Congratulations. You have been selected as a Trainee.');
+  };
+
+  const { role, loggedIn, setCourses, courses } = useContext(LoginContext);
 
   const [value, setValue] = useState('available-courses');
 
@@ -85,12 +114,15 @@ const AllCourses = ({ courses }) => {
 
 
 
+
+
   const [courseName, setCourseName] = useState('');
   const [courseDescription, setCourseDescription] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [batchCode, setBatchCode] = useState('');
   const [vacancy, setVacancy] = useState('');
+  const [applicationDeadline, setApplicationDeadline] = useState('');
   const [writtenExamTime, setWrittenExamTime] = useState('');
   const [applicantDashboardMessage, setApplicantDashboardMessage] = useState('You have successfully applied for this course');
   const [writtenShortlistedDashboardMessage, setWrittenShortlistedDashboardMessage] = useState('Congratulations. You have shortlisted for the written exam. Your written exam will held soon');
@@ -99,31 +131,184 @@ const AllCourses = ({ courses }) => {
   const [aptitudeTestPassedDashboardMessage, setAptitudeTestPassedDashboardMessage] = useState('Congratulations. You have passed the aptitude test. Your technical viva will held soon.');
   const [hrVivaPassedDashboardMessage, setHrVivaPassedDashboardMessage] = useState('Congratulations. You have passed the HR viva. Please wait for the final selection');
   const [traineeDashboardMessage, setTraineeDashboardMessage] = useState('Congratulations. You have been selected as a Trainee.');
+  const [isAvailable, setIsAvailable] = useState(true);
+
+
+  const setSingleCourse = (c) => {
+    setCourseName(c.courseName)
+    setIsAvailable(c.isAvailable);
+    setCourseDescription(c.courseDescription);
+
+
+    setStartDate(format(new Date(c.startDate), 'yyyy-MM-dd'));
+    setEndDate(format(new Date(c.endDate), 'yyyy-MM-dd'));
+    setWrittenExamTime(format(new Date(c.writtenExamTime), 'yyyy-MM-dd\'T\'HH:mm'));
+    setApplicationDeadline(format(new Date(c.applicationDeadline), 'yyyy-MM-dd'));
+
+
+    setBatchCode(c.batchCode);
+    setVacancy(c.vacancy);
+    setApplicantDashboardMessage(c.applicantDashboardMessage);
+    setWrittenShortlistedDashboardMessage(c.writtenShortlistedDashboardMessage);
+    setWrittenPassedDashboardMessage(c.writtenPassedDashboardMessage);
+    setTechnicalVivaPassedDashboardMessage(c.technicalVivaPassedDashboardMessage);
+    setAptitudeTestPassedDashboardMessage(c.traineeDashboardMessage);
+    setHrVivaPassedDashboardMessage(c.hrVivaPassedDashboardMessage);
+    setTraineeDashboardMessage(c.traineeDashboardMessage);
+
+  }
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // Perform form submission or API call here with the form data
-    // For example:
     const formData = {
       courseName,
       courseDescription,
       startDate,
       endDate,
       batchCode,
+      applicationDeadline,
       vacancy,
+      writtenExamTime,
+      applicantDashboardMessage,
+      writtenShortlistedDashboardMessage,
+      writtenPassedDashboardMessage,
+      technicalVivaPassedDashboardMessage,
+      aptitudeTestPassedDashboardMessage,
+      hrVivaPassedDashboardMessage,
+      traineeDashboardMessage,
+      isAvailable
     };
     console.log(formData);
 
-    // Reset form fields after submission
-    setCourseName('');
-    setCourseDescription('');
-    setStartDate('');
-    setEndDate('');
-    setBatchCode('');
-    setVacancy('');
+    const token = window.localStorage.getItem("tss-token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+
+
+
+    if (value === "single-course" && role === "ADMIN") {
+
+      axios.post(`/api/course/update/batch_code/${formData.batchCode}`, formData, config)
+        .then((response) => {
+          console.log(response);
+          console.log(response?.data?.data);
+
+          setSingleCourse(response?.data?.data)
+          const courseId = response?.data?.data?.courseId
+
+       
+
+          if (response.status === 200) {
+            setShowSuccessMessage(true)
+            setSuccessMessage(response.data.successMessage)
+
+            const updatedCourse = {...formData,courseId}
+
+
+            const updatedCourseIndex = courses.findIndex((course) => course.courseId === response?.data?.data?.courseId);
+
+            // If the course is found in the array, replace it with the updatedCourse
+            if (updatedCourseIndex !== -1) {
+              setCourses((prevCourses) => [
+                ...prevCourses.slice(0, updatedCourseIndex),
+                updatedCourse,
+                ...prevCourses.slice(updatedCourseIndex + 1),
+              ]);
+            }
+
+
+
+            setTimeout(() => {
+              setShowSuccessMessage(false)
+              setSuccessMessage("")
+
+              if (isAvailable == true) {
+                setValue("available-courses")
+              } else {
+                setValue("unavailable-courses")
+              }
+              resetFormFields();
+            }, 2000);
+          }
+        })
+        .catch((error) => {
+          console.error('Error uploading files:', error);
+          setShowErrorMessage(true)
+          setErrorMessage(JSON2Message(JSON.stringify(error.response.data.errorMessage)))
+          setTimeout(() => {
+            setShowErrorMessage(false)
+            setErrorMessage("")
+
+          }, 5000);
+
+
+        });
+
+
+    } else {
+
+      axios.post('/api/course/create', formData, config)
+        .then((response) => {
+          console.log(response);
+
+          if (response.status === 201) {
+            setShowSuccessMessage(true)
+            setSuccessMessage(response.data.successMessage)
+            setCourses((prevCourses) => [...prevCourses, response.data.data]);
+
+            setTimeout(() => {
+              setShowSuccessMessage(false)
+              setSuccessMessage("")
+
+              if (isAvailable == true) {
+                setValue("available-courses")
+              } else {
+                setValue("unavailable-courses")
+              }
+              resetFormFields();
+            }, 2000);
+          }
+        })
+        .catch((error) => {
+          console.error('Error uploading files:', error);
+          setShowErrorMessage(true)
+          setErrorMessage(JSON2Message(JSON.stringify(error.response.data.errorMessage)))
+          setTimeout(() => {
+            setShowErrorMessage(false)
+            setErrorMessage("")
+
+          }, 5000);
+
+
+        });
+    }
+
+
+
+
   };
 
+  console.log(role);
+
+  useEffect(() => {
+
+    if (value === "single-course" && role === "ADMIN") {
+
+
+    } else {
+      resetFormFields();
+    }
+
+    console.log(value);
+
+  }, [value])
+    ;
 
 
   return (
@@ -133,10 +318,8 @@ const AllCourses = ({ courses }) => {
 
         <Box sx={{
           width: '100%',
-          backgroundColor: 'white',
-
         }} >
-          <Box position="fixed">
+          <Box position="fixed" >
 
             <Tabs
               value={value}
@@ -146,36 +329,41 @@ const AllCourses = ({ courses }) => {
               aria-label="secondary tabs example"
             >
               <Tab value="available-courses" label="Available Courses" />
+
               <Tab value="add-course" label="Add Course" />
-              <Tab value="three" label="Unavailable Courses" />
+              <Tab value="unavailable-courses" label="Unavailable Courses" />
             </Tabs>
           </Box>
 
         </Box>
       }
 
-      {role !== "ADMIN" &&
+      {(role !== "ADMIN" || !loggedIn) &&
         <Box pt={role === "ADMIN" ? 7 : 0}>
 
           <Grid container spacing={2} justifyContent="center">
-            {courses?.data.data.listResponse.map((course) => (
-              <Grid item key={course.courseId} xs={12} sm={6} md={4}>
-                <Link to={`/course/${course.courseId}`}>
+            {/* {courses?.data.data.listResponse.map((course) => ( */}
 
-                  <CourseCard>
-                    <CourseMedia component="img" image={course.imageUrl} alt={course.title} />
-                    <CourseContent>
-                      <CourseTitle variant="h6">{course.courseName}</CourseTitle>
-                      <CourseDescription variant="body2">{course.courseDescription}</CourseDescription>
-                    </CourseContent>
-                    <EnrollButton variant="contained" color="primary" size="small">
-                      Enroll Now
-                    </EnrollButton>
-                  </CourseCard>
-                </Link>
 
-              </Grid>
-            ))}
+            {courses &&
+              courses?.map((course) => (
+                <Grid item key={course.courseId} xs={12} sm={6} md={4}>
+                  <Link to={`/course/${course.courseId}`}>
+
+                    <CourseCard>
+                      <CourseMedia component="img" image={course.imageUrl} alt={course.title} />
+                      <CourseContent>
+                        <CourseTitle variant="h6">{course.courseName}</CourseTitle>
+                        <CourseDescription variant="body2">{course.courseDescription}</CourseDescription>
+                      </CourseContent>
+                      <EnrollButton variant="contained" color="primary" size="small">
+                        Enroll Now
+                      </EnrollButton>
+                    </CourseCard>
+                  </Link>
+
+                </Grid>
+              ))}
           </Grid>
 
         </Box>
@@ -183,18 +371,26 @@ const AllCourses = ({ courses }) => {
       }
 
 
+      {value === "single-course" && role === "ADMIN" &&
+
+        <CourseComponent formHeader={"Update Course"} buttonText={"Update Course"} handleSubmit={handleSubmit} courseName={courseName} setCourseName={setCourseName} batchCode={batchCode} setBatchCode={setBatchCode} isAvailable={isAvailable} setIsAvailable={setIsAvailable} showSuccessMessage={showSuccessMessage} successMessage={successMessage} showErrorMessage={showErrorMessage} errorMessage={errorMessage} courseDescription={courseDescription} setCourseDescription={setCourseDescription} vacancy={vacancy} setVacancy={setVacancy} applicationDeadline={applicationDeadline} setApplicationDeadline={setApplicationDeadline} writtenExamTime={writtenExamTime} setWrittenExamTime={setWrittenExamTime} startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} applicantDashboardMessage={applicantDashboardMessage} setApplicantDashboardMessage={setApplicantDashboardMessage} writtenShortlistedDashboardMessage={writtenShortlistedDashboardMessage} setWrittenShortlistedDashboardMessage={setWrittenShortlistedDashboardMessage} writtenPassedDashboardMessage={writtenPassedDashboardMessage} setWrittenPassedDashboardMessage={setWrittenPassedDashboardMessage} technicalVivaPassedDashboardMessage={technicalVivaPassedDashboardMessage} setTechnicalVivaPassedDashboardMessage={setTechnicalVivaPassedDashboardMessage} aptitudeTestPassedDashboardMessage={aptitudeTestPassedDashboardMessage} setAptitudeTestPassedDashboardMessage={setAptitudeTestPassedDashboardMessage} hrVivaPassedDashboardMessage={hrVivaPassedDashboardMessage} setHrVivaPassedDashboardMessage={setHrVivaPassedDashboardMessage} traineeDashboardMessage={traineeDashboardMessage} setTraineeDashboardMessage={setTraineeDashboardMessage} />
+
+      }
 
       {
-
-
         value === "available-courses" && role === "ADMIN" &&
 
         <Box pt={role === "ADMIN" ? 7 : 0}>
 
           <Grid container spacing={2} justifyContent="center">
-            {courses?.data.data.listResponse.map((course) => (
+            {/* {courses?.data.data.listResponse.map((course) => ( */}
+
+            {courses?.map((course) => (
               <Grid item key={course.courseId} xs={12} sm={6} md={4}>
-                <Link to={`/course/${course.courseId}`}>
+                <Box onClick={() => {
+                  setValue("single-course");
+                  setSingleCourse(course)
+                }}>
 
                   <CourseCard>
                     <CourseMedia component="img" image={course.imageUrl} alt={course.title} />
@@ -206,7 +402,7 @@ const AllCourses = ({ courses }) => {
                       Edit Course Details
                     </EnrollButton>
                   </CourseCard>
-                </Link>
+                </Box>
 
               </Grid>
             ))}
@@ -216,209 +412,10 @@ const AllCourses = ({ courses }) => {
       }
 
       {value === "add-course" && role === "ADMIN" &&
-        <Box pt={role === "ADMIN" ? 7 : 0} pb={2}>
-          <Grid container spacing={2} justifyContent="center">
-
-            <FormContainer>
-              <FormTitle variant="h2">Add New Course</FormTitle>
-              <form onSubmit={handleSubmit}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>
-                    <FormField
-                      label="Course Name"
-                      variant="outlined"
-                      fullWidth
-                      value={courseName}
-                      onChange={(e) => setCourseName(e.target.value)}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <FormField
-                      label="Batch Code"
-                      variant="outlined"
-                      fullWidth
-                      value={batchCode}
-                      onChange={(e) => setBatchCode(e.target.value)}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormField
-                      label="Course Description"
-                      variant="outlined"
-                      fullWidth
-                      multiline
-                      rows={4}
-                      value={courseDescription}
-                      onChange={(e) => setCourseDescription(e.target.value)}
-                    />
-                  </Grid>
-                  <Grid item xs={6} sm={6} >
-                    <Typography variant="h5" color="initial">Vacancy</Typography>
-                  </Grid>
-
-                  <Grid item xs={6} sm={6}>
-                    <FormField
-                      label="Vacancy"
-                      variant="outlined"
-                      type="number"
-                      fullWidth
-                      value={vacancy}
-                      onChange={(e) => setVacancy(e.target.value)}
-                    />
-                  </Grid>
-                  <Grid item xs={6} sm={6} >
-                    <Typography variant="h5" color="initial">Application Deadline</Typography>
-                  </Grid>
-                  <Grid item xs={6} sm={6}>
-                    <FormField
-                      type="date"
-                      variant="outlined"
-                      fullWidth
-                      value={endDate}
-                      onChange={(e) => setEndDate(e.target.value)}
-                    />
-                  </Grid>
-
-                  <Grid item xs={6} sm={6}>
-                    <Typography variant="h5" color="initial">Written Exam Time</Typography>
-                  </Grid>
-                  <Grid item xs={6} sm={6}>
-                    <FormField
-                      type="datetime-local"
-                      variant="outlined"
-                      fullWidth
-                      value={writtenExamTime}
-                      onChange={(e) => setWrittenExamTime(e.target.value)}
-                    />
-                  </Grid>
-
-                  <Grid item xs={6} sm={6}>
-
-                    <Typography variant="h5" color="initial">Start Date</Typography>
-                  </Grid>
-                  <Grid item xs={6} sm={6}>
-
-                    <FormField
-                      type="date"
-                      variant="outlined"
-                      fullWidth
-                      value={startDate}
-                      onChange={(e) => setStartDate(e.target.value)}
-                    />
-                  </Grid>
-
-                  <Grid item xs={6} sm={6} >
-
-                    <Typography variant="h5" color="initial">End Date</Typography>
-                  </Grid>
-
-                  <Grid item xs={6} sm={6}>
-                    <FormField
-                      type="date"
-                      variant="outlined"
-                      fullWidth
-                      value={endDate}
-                      onChange={(e) => setEndDate(e.target.value)}
-                    />
-                  </Grid>
-
-
-
-
-                  <Grid item xs={12}>
-                    <FormField
-                      label="Applicant Dashboard Message"
-                      variant="outlined"
-                      fullWidth
-                      multiline
-                      rows={4}
-                      value={applicantDashboardMessage}
-                      onChange={(e) => setApplicantDashboardMessage(e.target.value)}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormField
-                      label="Written Shortlisted Dashboard Message"
-                      variant="outlined"
-                      fullWidth
-                      multiline
-                      rows={4}
-                      value={writtenShortlistedDashboardMessage}
-                      onChange={(e) => setWrittenShortlistedDashboardMessage(e.target.value)}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormField
-                      label="Written Passed Dashboard Message"
-                      variant="outlined"
-                      fullWidth
-                      multiline
-                      rows={4}
-                      value={writtenPassedDashboardMessage}
-                      onChange={(e) => setWrittenPassedDashboardMessage(e.target.value)}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormField
-                      label="Technical Viva Passed Dashboard Message"
-                      variant="outlined"
-                      fullWidth
-                      multiline
-                      rows={4}
-                      value={technicalVivaPassedDashboardMessage}
-                      onChange={(e) => setTechnicalVivaPassedDashboardMessage(e.target.value)}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormField
-                      label="Aptitude Test Passed Dashboard Message"
-                      variant="outlined"
-                      fullWidth
-                      multiline
-                      rows={4}
-                      value={aptitudeTestPassedDashboardMessage}
-                      onChange={(e) => setAptitudeTestPassedDashboardMessage(e.target.value)}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormField
-                      label="HR Viva Passed Dashboard Message"
-                      variant="outlined"
-                      fullWidth
-                      multiline
-                      rows={4}
-                      value={hrVivaPassedDashboardMessage}
-                      onChange={(e) => setHrVivaPassedDashboardMessage(e.target.value)}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormField
-                      label="Trainee Dashboard Message"
-                      variant="outlined"
-                      fullWidth
-                      multiline
-                      rows={4}
-                      value={traineeDashboardMessage}
-                      onChange={(e) => setTraineeDashboardMessage(e.target.value)}
-                    />
-                  </Grid>
-
-                </Grid>
-                <Grid container justifyContent="center">
-
-                  <Grid item xs={6} sm={6} justifyContent="center">
-                    <SubmitButton variant="contained" color="primary" size="large" type="submit" fullWidth>
-                      Add Course
-                    </SubmitButton>
-                  </Grid>
-                </Grid>
-
-              </form>
-            </FormContainer>
-          </Grid>
-
-        </Box >
-
+        <CourseComponent formHeader={"Add New Course"} buttonText={"Add Course"} handleSubmit={handleSubmit} courseName={courseName} setCourseName={setCourseName} batchCode={batchCode} setBatchCode={setBatchCode} isAvailable={isAvailable} setIsAvailable={setIsAvailable} showSuccessMessage={showSuccessMessage} successMessage={successMessage} showErrorMessage={showErrorMessage} errorMessage={errorMessage} courseDescription={courseDescription} setCourseDescription={setCourseDescription} vacancy={vacancy} setVacancy={setVacancy} applicationDeadline={applicationDeadline} setApplicationDeadline={setApplicationDeadline} writtenExamTime={writtenExamTime} setWrittenExamTime={setWrittenExamTime} startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} applicantDashboardMessage={applicantDashboardMessage} setApplicantDashboardMessage={setApplicantDashboardMessage} writtenShortlistedDashboardMessage={writtenShortlistedDashboardMessage} setWrittenShortlistedDashboardMessage={setWrittenShortlistedDashboardMessage} writtenPassedDashboardMessage={writtenPassedDashboardMessage} setWrittenPassedDashboardMessage={setWrittenPassedDashboardMessage} technicalVivaPassedDashboardMessage={technicalVivaPassedDashboardMessage} setTechnicalVivaPassedDashboardMessage={setTechnicalVivaPassedDashboardMessage} aptitudeTestPassedDashboardMessage={aptitudeTestPassedDashboardMessage} setAptitudeTestPassedDashboardMessage={setAptitudeTestPassedDashboardMessage} hrVivaPassedDashboardMessage={hrVivaPassedDashboardMessage} setHrVivaPassedDashboardMessage={setHrVivaPassedDashboardMessage} traineeDashboardMessage={traineeDashboardMessage} setTraineeDashboardMessage={setTraineeDashboardMessage} />
+      }
+      {value === "unavailable-courses" && role === "ADMIN" &&
+        <CourseComponent formHeader={"Add New Course"} buttonText={"Add Course"} handleSubmit={handleSubmit} courseName={courseName} setCourseName={setCourseName} batchCode={batchCode} setBatchCode={setBatchCode} isAvailable={isAvailable} setIsAvailable={setIsAvailable} showSuccessMessage={showSuccessMessage} successMessage={successMessage} showErrorMessage={showErrorMessage} errorMessage={errorMessage} courseDescription={courseDescription} setCourseDescription={setCourseDescription} vacancy={vacancy} setVacancy={setVacancy} applicationDeadline={applicationDeadline} setApplicationDeadline={setApplicationDeadline} writtenExamTime={writtenExamTime} setWrittenExamTime={setWrittenExamTime} startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} applicantDashboardMessage={applicantDashboardMessage} setApplicantDashboardMessage={setApplicantDashboardMessage} writtenShortlistedDashboardMessage={writtenShortlistedDashboardMessage} setWrittenShortlistedDashboardMessage={setWrittenShortlistedDashboardMessage} writtenPassedDashboardMessage={writtenPassedDashboardMessage} setWrittenPassedDashboardMessage={setWrittenPassedDashboardMessage} technicalVivaPassedDashboardMessage={technicalVivaPassedDashboardMessage} setTechnicalVivaPassedDashboardMessage={setTechnicalVivaPassedDashboardMessage} aptitudeTestPassedDashboardMessage={aptitudeTestPassedDashboardMessage} setAptitudeTestPassedDashboardMessage={setAptitudeTestPassedDashboardMessage} hrVivaPassedDashboardMessage={hrVivaPassedDashboardMessage} setHrVivaPassedDashboardMessage={setHrVivaPassedDashboardMessage} traineeDashboardMessage={traineeDashboardMessage} setTraineeDashboardMessage={setTraineeDashboardMessage} />
       }
 
 

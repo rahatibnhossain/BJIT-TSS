@@ -3,6 +3,7 @@ package com.bjit.tss.controller;
 import com.bjit.tss.model.ApiResponse;
 import com.bjit.tss.model.CourseModel;
 import com.bjit.tss.service.CourseService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,12 +26,12 @@ public class CourseController {
     }
 
     @PostMapping("/update/batch_code/{batchCode}")
-    public ResponseEntity<ApiResponse<?>> updateCourse(@PathVariable String batchCode, @RequestBody CourseModel courseModel) {
+    public ResponseEntity<ApiResponse<?>> updateCourse(@Valid @PathVariable String batchCode, @RequestBody CourseModel courseModel) {
         return courseService.updateCourse(batchCode, courseModel);
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse<?>> createCourse(@RequestBody CourseModel courseModel) {
+    public ResponseEntity<ApiResponse<?>> createCourse(@Valid @RequestBody CourseModel courseModel) {
         return courseService.createCourse(courseModel);
     }
 }

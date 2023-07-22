@@ -24,7 +24,7 @@ const Feed = ({ data, loading, close }) => {
 
 
       <Routes>
-        {role === "USER" || role ==="APPLICANT" ? (
+        {role === "USER" || role === "APPLICANT" ? (
           <Route path="/" element={!loading ? <NoticeBoardPage /> : <h1>Loading</h1>} />
         ) :
           (
@@ -46,7 +46,12 @@ const Feed = ({ data, loading, close }) => {
             role === "USER" ? (!uploaded ? <UploadFilePage /> : <EmailVerification />) : <RegistrationPage />
           }
         />
-        <Route path="/profile" element={<ProfilePage />} />
+
+        {
+          role === "APPLICANT" &&
+          <Route path="/profile" element={<ProfilePage />} />
+
+        }
 
 
 

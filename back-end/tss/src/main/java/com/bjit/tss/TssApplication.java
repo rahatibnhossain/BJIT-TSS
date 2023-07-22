@@ -27,5 +27,6 @@ public class TssApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         registerService.adminRegistration(adminEmail, adminPassword);
+
     }
 }

@@ -1,5 +1,8 @@
 package com.bjit.tss.model;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,5 +16,8 @@ import java.util.List;
 @NoArgsConstructor
 public class FinalTraineeSelectionRequest {
 
+    @Valid
+
+    @NotNull(message = "Candidate ID is required")
     private List<Long> candidateIds;
 }
