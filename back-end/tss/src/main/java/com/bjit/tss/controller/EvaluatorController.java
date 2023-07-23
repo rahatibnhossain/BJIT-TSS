@@ -7,10 +7,7 @@ import com.bjit.tss.service.EvaluatorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/evaluator")
@@ -24,5 +21,11 @@ public class EvaluatorController {
         return evaluatorService.getAllEvaluator();
     }
 
+
+    @GetMapping("/assigned-candidates/{evaluatorId}")
+    public ResponseEntity<ApiResponse<?>> getAssignedCandidate(@PathVariable Long evaluatorId) {
+        return evaluatorService.getAssignedCandidate(evaluatorId);
+
+    }
 
 }

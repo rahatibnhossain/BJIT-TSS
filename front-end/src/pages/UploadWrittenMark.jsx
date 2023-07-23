@@ -86,7 +86,7 @@ const UploadWrittenMark = () => {
                 console.error('Error uploading written marks:', error);
                 setShowErrorMessage(true)
                 setErrorMessage(JSON2Message(JSON.stringify(error.response.data.errorMessage)))
-                
+
             });
 
 

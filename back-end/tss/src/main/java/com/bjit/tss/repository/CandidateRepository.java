@@ -18,4 +18,6 @@ public interface CandidateRepository extends JpaRepository<CandidateMarks, Long>
     List<CandidateMarks> findAllByHrVivaPassedAndTechnicalVivaPassedAndAptitudeTestPassedAndWrittenMarksPassedAndExamineeInfoCourseInfoBatchCode(boolean b, boolean b1, boolean b2, boolean b3, String batchCode);
 
     List<CandidateMarks> findAllByExamineeInfoRoleAndExamineeInfoCourseInfoBatchCode(Role role, String batchCode);
+
+    List<CandidateMarks> findByWrittenMarksEvaluatorInfoEvaluatorIdAndExamineeInfoCourseInfoIsAvailable(Long evaluatorId, boolean b);
 }

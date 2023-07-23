@@ -5,12 +5,19 @@ import { styled } from '@mui/material/styles';
 const Container = styled(TableContainer)(({ theme }) => ({
   maxHeight: 440,
 }));
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  cursor: 'pointer',
+  '&:hover': {
+    background: theme.palette.action.hover,
+  },
+}));
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   fontWeight: 'bold',
+
 }));
 
-const EvaluatorTable = ({ data }) => {
+const EvaluatorTable = ({ data, onRowClick }) => {
   const [sortField, setSortField] = useState('');
   const [sortOrder, setSortOrder] = useState('asc');
 
@@ -60,10 +67,12 @@ const EvaluatorTable = ({ data }) => {
         </TableHead>
         <TableBody>
           {sortedData.map((evaluator, index) => (
-            <TableRow key={index}>
+
+            <StyledTableRow key={index} onClick={() => onRowClick(evaluator)}>
               <TableCell>{evaluator.name}</TableCell>
               <TableCell>{evaluator.email}</TableCell>
-            </TableRow>
+            </StyledTableRow>
+
           ))}
         </TableBody>
       </Table>

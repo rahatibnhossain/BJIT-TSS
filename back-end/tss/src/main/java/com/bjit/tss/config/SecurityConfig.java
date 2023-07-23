@@ -86,7 +86,8 @@ public class SecurityConfig {
                         "/api/final-trainee/all-passed/**",
                         "/api/final-trainee/all-passed/",
                         "/api/course/unavailable",
-                        "/api/evaluator/get-all"
+                        "/api/evaluator/get-all",
+                        "/api/evaluator/assigned-candidates/**"
                 )
                 .hasAuthority("ADMIN")
                 .anyRequest()
