@@ -148,7 +148,7 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
 
         if (totalMark.get() > Float.parseFloat(maximumMark.get().getDataValue())) {
-            throw new EvaluationException("Total written mark cannot be greater than " + maximumMark);
+            throw new EvaluationException("Total written mark cannot be greater than " + maximumMark.get().getDataValue());
         }
 
         boolean isPassed = totalMark.get() >= Float.parseFloat(passingMark.get().getDataValue());
