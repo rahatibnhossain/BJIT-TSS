@@ -77,7 +77,7 @@ const Sidebar = ({ close }) => {
 
           </ListItem>
 
-          {role === "APPLICANT" &&
+          {(role === "APPLICANT" || role == "EVALUATOR") &&
             <ListItem disablePadding>
               <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/profile") }} component={NavLink} to="/profile" variant="ListItemButton"   >
                 <ListItemButton >
@@ -107,17 +107,19 @@ const Sidebar = ({ close }) => {
 
 
 
+          {role !== "EVALUATOR" &&
 
-          <ListItem disablePadding>
-            <Link flex={1.5} style={{ textDecoration: 'none', color: isActiveLink("/course") }} component={ReactRouterLink} to="/course" variant="ListItemButton" >
-              <ListItemButton >
-                <ListItemIcon>
-                  <School />
-                </ListItemIcon>
-                <ListItemText primary="Courses" />
-              </ListItemButton>
-            </Link>
-          </ListItem>
+            <ListItem disablePadding>
+              <Link flex={1.5} style={{ textDecoration: 'none', color: isActiveLink("/course") }} component={ReactRouterLink} to="/course" variant="ListItemButton" >
+                <ListItemButton >
+                  <ListItemIcon>
+                    <School />
+                  </ListItemIcon>
+                  <ListItemText primary="Courses" />
+                </ListItemButton>
+              </Link>
+            </ListItem>
+          }
 
           {role === "ADMIN" &&
 

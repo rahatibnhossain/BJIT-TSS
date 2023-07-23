@@ -19,7 +19,7 @@ import UploadWrittenMark from '../pages/UploadWrittenMark';
 
 const Feed = ({ data, loading, close }) => {
 
-  const { role, uploaded } = useContext(LoginContext);
+  const { role, uploaded, loggedIn } = useContext(LoginContext);
 
 
   return (
@@ -37,28 +37,33 @@ const Feed = ({ data, loading, close }) => {
 
         }
         {role == "EVALUATOR" &&
-                    <Route path="/upload-written-marks" element={!loading ? <UploadWrittenMark /> : <h1>Loading</h1>} />
+          <Route path="/upload-written-marks" element={!loading ? <UploadWrittenMark /> : <h1>Loading</h1>} />
 
         }
 
 
+        {role !== "EVALUATOR" &&
+          <Route path="/course">
+            <Route index element={<CoursesPage courses={data} />} />
+            <Route path=":id" element={<CourseDescriptionComponent />} />
 
-        <Route path="/course">
-          <Route index element={<CoursesPage courses={data} />} />
-          <Route path=":id" element={<CourseDescriptionComponent />} />
+          </Route>
+        }
 
-        </Route>
 
-        <Route path="/login" element={<LoginPage />} />
-        <Route
-          path="/registration"
-          element={
-            role === "USER" ? (!uploaded ? <UploadFilePage /> : <EmailVerification />) : <RegistrationPage />
-          }
-        />
+        {!loggedIn && <>
+
+          <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/registration"
+            element={
+              role === "USER" ? (!uploaded ? <UploadFilePage /> : <EmailVerification />) : <RegistrationPage />
+            }
+          />
+        </>}
 
         {
-          role === "APPLICANT" &&
+          (role === "APPLICANT" || role === "EVALUATOR") &&
           <Route path="/profile" element={<ProfilePage />} />
 
         }
