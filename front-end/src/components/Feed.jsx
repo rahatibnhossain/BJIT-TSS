@@ -14,6 +14,8 @@ import ProfilePage from '../pages/ProfilePage';
 import CourseDescriptionComponent from '../pages/CourseDetailsPage';
 import NoticeBoardPage from '../pages/NoticeBoard';
 import EvaluatorManagement from '../pages/EvaluatorManagement';
+import ApproveApplicantPage from '../pages/ApproveApplicantPage';
+import UploadWrittenMark from '../pages/UploadWrittenMark';
 
 const Feed = ({ data, loading, close }) => {
 
@@ -34,6 +36,13 @@ const Feed = ({ data, loading, close }) => {
           )
 
         }
+        {role == "EVALUATOR" &&
+                    <Route path="/upload-written-marks" element={!loading ? <UploadWrittenMark /> : <h1>Loading</h1>} />
+
+        }
+
+
+
         <Route path="/course">
           <Route index element={<CoursesPage courses={data} />} />
           <Route path=":id" element={<CourseDescriptionComponent />} />
@@ -56,8 +65,11 @@ const Feed = ({ data, loading, close }) => {
 
         {
           role === "ADMIN" &&
-          <Route path="/evaluator_management" element={<EvaluatorManagement courses={data} />} />
+          <>
+            <Route path="/evaluator_management" element={<EvaluatorManagement />} />
+            <Route path="/approve_applicant" element={<ApproveApplicantPage />} />
 
+          </>
         }
 
 

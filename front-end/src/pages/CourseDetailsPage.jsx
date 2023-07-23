@@ -6,6 +6,7 @@ import useFetch from '../hooks/useFetch';
 import axios from '../api/axios';
 import { Alert } from 'react-bootstrap';
 import { LoginContext } from '../context/LoginContex';
+import JSON2Message from '../services/JSON2Message';
 
 
 const CourseTitle = styled(Typography)(({ theme }) => ({
@@ -119,7 +120,7 @@ const CourseDescriptionComponent = () => {
             .catch((error) => {
                 console.error('Error :', error.response.data.errorMessage);
                 setShowErrorMessage(true)
-                setErrorMessage(error.response.data.errorMessage)
+                setErrorMessage(JSON2Message(JSON.stringify(error.response.data.errorMessage)))
 
                 setTimeout(() => {
                     setShowErrorMessage(false)

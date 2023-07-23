@@ -47,7 +47,7 @@ const EnrollButton = styled(Button)(({ theme }) => ({
     fontWeight: 600,
 }));
 
-const CourseCards = ({ courses, setValue, setSingleCourse, }) => {
+const CourseCards = ({ courses, setValue, setSingleCourse, pathValue }) => {
     const { role } = useContext(LoginContext);
     return (
         <Box pt={role === "ADMIN" ? 7 : 0}>
@@ -58,7 +58,7 @@ const CourseCards = ({ courses, setValue, setSingleCourse, }) => {
                 {courses?.map((course) => (
                     <Grid item key={course.courseId} xs={12} sm={6} md={4}>
                         <Box onClick={() => {
-                            setValue("single-course");
+                            setValue(pathValue);
                             setSingleCourse(course)
                         }}>
 

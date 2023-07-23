@@ -102,6 +102,7 @@ const AllCourses = () => {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+   
   };
 
 
@@ -406,7 +407,7 @@ const AllCourses = () => {
       }
       {value === "unavailable-courses" && role === "ADMIN" &&
 
-      <CourseCards courses={unavailableCourses} setValue={setValue} setSingleCourse={setSingleCourse}/>
+      <CourseCards courses={unavailableCourses} pathValue={"single-course"}  setValue={setValue} setSingleCourse={setSingleCourse}/>
 
       }
 

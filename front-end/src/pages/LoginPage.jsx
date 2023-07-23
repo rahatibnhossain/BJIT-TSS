@@ -79,6 +79,9 @@ const LoginForm = () => {
           if (data?.data?.data?.role=="APPLICANT") {
             setUserData(data.data.data.userInfo);
           }
+          if (data?.data?.data?.role=="EVALUATOR") {
+            setUserData(data.data.data.evaluatorInfo);
+          }
           navigate("/");
 
         }, 1000);

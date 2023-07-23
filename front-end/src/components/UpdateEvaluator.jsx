@@ -14,7 +14,7 @@ const FormBox = styled(Box)(({ theme }) => ({
     margin: '0 auto',
 }));
 
-const AddEvaluatorForm = ({ setAllEvaluators, setValue }) => {
+const UpdateEvaluatorForm = ({ setAllEvaluators, setValue }) => {
 
     const navigate = useNavigate();
 
@@ -148,4 +148,4 @@ const AddEvaluatorForm = ({ setAllEvaluators, setValue }) => {
     );
 };
 
-export default AddEvaluatorForm;
+export default UpdateEvaluatorForm;

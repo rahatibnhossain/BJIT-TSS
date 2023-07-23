@@ -34,11 +34,43 @@ public class ApplicantDashboardServiceImpl implements ApplicantDashboardService 
 
         List<ExamineeInfo> examineeInfo = examineeRepository.findAllByUserInfoUserIdAndCourseInfoIsAvailable(loginInfo.getUserInfo().getUserId(), true);
 
+        List<ExamineeInfo> filtered = examineeInfo.stream().filter(examinee->{
+
+            if (examinee.getRole()==Role.APPLICANT){
+                return true;
+            }
+            else {
+                return false;
+            }
+        }).toList();
+
+
+
+
         List<CandidateMarks> candidateMarks = candidateRepository.findAllByExamineeInfoUserInfoUserIdAndExamineeInfoCourseInfoIsAvailable(loginInfo.getUserInfo().getUserId(), true);
 
         List<ApplicantDashboardMessage> dashboardMessage;
 
+
+        List<ApplicantDashboardMessage> dashboardMessageFiltered;
+
+        dashboardMessageFiltered = filtered.stream().map(examinee -> {
+
+
+                ApplicantDashboardMessage applicantDashboardMessage = new ApplicantDashboardMessage();
+                applicantDashboardMessage.setDashboardMessage(examinee.getCourseInfo().getApplicantDashboardMessage());
+                applicantDashboardMessage.setCourseName(examinee.getCourseInfo().getCourseName());
+
+                return applicantDashboardMessage;
+
+
+
+        }).toList();
+
+
+
         if (candidateMarks.size() == 0) {
+
             dashboardMessage = examineeInfo.stream().map(examinee -> {
                 ApplicantDashboardMessage applicantDashboardMessage = new ApplicantDashboardMessage();
                 applicantDashboardMessage.setDashboardMessage(examinee.getCourseInfo().getApplicantDashboardMessage());
@@ -112,9 +144,13 @@ public class ApplicantDashboardServiceImpl implements ApplicantDashboardService 
             return ApiResponseMapper.mapToResponseEntityOK(listResponse, "Applicant Dashboard");
         }
 
+        ArrayList<ApplicantDashboardMessage> merge = new ArrayList<ApplicantDashboardMessage>();
+        merge.addAll(dashboardMessage);
+        merge.addAll(dashboardMessageFiltered);
+
         ListResponse<?> listResponse = ListResponse.builder()
-                .dataLength(dashboardMessage.size())
-                .listResponse(dashboardMessage)
+                .dataLength(merge.size())
+                .listResponse(merge)
                 .build();
         return ApiResponseMapper.mapToResponseEntityOK(listResponse, "Applicant Dashboard");
     }

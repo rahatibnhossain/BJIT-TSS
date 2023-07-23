@@ -18,6 +18,7 @@ function App() {
 
   const [role, setRole] = useState("");
   const [courses, setCourses] = useState([]);
+  const [allEvaluators, setAllEvaluators] = useState([]);
   const [unavailableCourses, setUnavailableCourses] = useState([]);
 
   const [appliedCoursesGlobal, setappliedCoursesGlobal] = useState(0)
@@ -40,6 +41,41 @@ function App() {
         },
       };
 
+
+
+      axios.get('/api/evaluator/get-all', config)
+        .then((response) => {
+          console.log(response?.data?.data?.listResponse);
+
+          if (response.status === 200) {
+            setShowSuccessMessage(true)
+            setSuccessMessage(response.data.successMessage)
+            setAllEvaluators(response?.data?.data?.listResponse)
+
+            setTimeout(() => {
+              setShowSuccessMessage(false)
+              setSuccessMessage("")
+
+
+            }, 2000);
+          }
+        })
+        .catch((error) => {
+          console.error('Error getting all evaluator: ', error);
+          setShowErrorMessage(true)
+          setErrorMessage(JSON2Message(JSON.stringify(error.response.data.errorMessage)))
+         
+          setTimeout(() => {
+            setShowErrorMessage(false)
+            setErrorMessage("")
+
+          }, 1000);
+
+
+        });
+
+
+
       axios.get('/api/course/unavailable', config)
         .then((response) => {
           console.log(response?.data?.data?.listResponse);
@@ -58,7 +94,7 @@ function App() {
           }
         })
         .catch((error) => {
-          console.error('Error uploading files:', error);
+          console.error('Error getting unavailavle courses', error);
           setShowErrorMessage(true)
           setErrorMessage(JSON2Message(JSON.stringify(error.response.data.errorMessage)))
          
@@ -141,7 +177,7 @@ function App() {
       setUserData(response.data.data.data);
 
       console.log("Response is :");
-      console.log(response);
+      console.log(response.data.data.data);
       if (response.status == 200) {
 
         setRole(response.data.data.role)
@@ -200,7 +236,7 @@ function App() {
   return (
 
     <Box >
-      <LoginContext.Provider value={{ appliedCoursesGlobal, setappliedCoursesGlobal, courses, setUserData, userData, uploaded, setUploaded, loggedIn, setLoggedIn, role, setRole, setCourses, unavailableCourses, setUnavailableCourses }}>
+      <LoginContext.Provider value={{allEvaluators, setAllEvaluators, appliedCoursesGlobal, setappliedCoursesGlobal, courses, setUserData, userData, uploaded, setUploaded, loggedIn, setLoggedIn, role, setRole, setCourses, unavailableCourses, setUnavailableCourses }}>
 
         <Navbar courseNumber={data?.data.data.dataLength} onClose={toggleSideBar} />
         <Stack direction="row" spacing={2} justifyContent="space-between">

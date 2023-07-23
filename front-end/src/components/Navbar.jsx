@@ -65,6 +65,7 @@ const Navbar = ({ courseNumber, onClose }) => {
       if (role === "ADMIN") {
         setName("ADMIN")
       }else if(role === "EVALUATOR"){
+        console.log(userData?.name);
         setName(userData?.name)
 
       }
@@ -93,8 +94,8 @@ const Navbar = ({ courseNumber, onClose }) => {
       setName("ADMIN")
 
     }
-    if (role === "EVALUATOR") {
-            setName(userData.name)
+    if (role === "EVALUATOR" && userData ) {
+            setName(userData?.name)
 
     }
 

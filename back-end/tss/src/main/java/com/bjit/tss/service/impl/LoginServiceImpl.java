@@ -1,6 +1,7 @@
 package com.bjit.tss.service.impl;
 
 import com.bjit.tss.config.JwtService;
+import com.bjit.tss.entity.EvaluatorInfo;
 import com.bjit.tss.entity.LoginInfo;
 import com.bjit.tss.entity.UserInfo;
 import com.bjit.tss.enums.Role;
@@ -10,6 +11,7 @@ import com.bjit.tss.mapper.ApiResponseMapper;
 import com.bjit.tss.model.AuthenticationResponse;
 import com.bjit.tss.model.LoginRequest;
 import com.bjit.tss.model.ValidationResponse;
+import com.bjit.tss.repository.EvaluatorRepository;
 import com.bjit.tss.repository.LoginRepository;
 import com.bjit.tss.repository.UserRepository;
 import com.bjit.tss.service.LoginService;
@@ -31,6 +33,7 @@ public class LoginServiceImpl implements LoginService {
     private final LoginRepository loginRepository;
     private final JwtService jwtService;
     private final UserRepository userRepository;
+    private final EvaluatorRepository evaluatorRepository;
 
     @Override
     public ResponseEntity<ApiResponse<?>> login(LoginRequest loginRequest) {
@@ -85,7 +88,19 @@ public class LoginServiceImpl implements LoginService {
                     .data(null)
                     .role(loginInfo.getRole())
                     .build();
-            System.out.println(loginInfo.getRole()+" with the email "+loginInfo.getEmail()+" logged in to the system successfully.");
+            System.out.println(loginInfo.getRole()+" with the email "+loginInfo.getEmail()+"automatically logged in to the system successfully.");
+            return ApiResponseMapper.mapToResponseEntityOK(validationResponse, "Valid User");
+        }
+        if (loginInfo.getRole()== Role.EVALUATOR){
+            Optional<EvaluatorInfo> evaluatorInfo = evaluatorRepository.findById(loginInfo.getEvaluatorInfo().getEvaluatorId());
+            if (evaluatorInfo.isEmpty()){
+                throw new UserException("Evaluator not exists");
+            }
+            ValidationResponse<?> validationResponse = ValidationResponse.builder()
+                    .data(evaluatorInfo)
+                    .role(loginInfo.getRole())
+                    .build();
+            System.out.println(loginInfo.getRole()+" with the email "+loginInfo.getEmail()+"automatically logged in to the system successfully.");
             return ApiResponseMapper.mapToResponseEntityOK(validationResponse, "Valid User");
         }
 
@@ -98,7 +113,7 @@ public class LoginServiceImpl implements LoginService {
                     .data(userInfo)
                     .role(loginInfo.getRole())
                     .build();
-            System.out.println(loginInfo.getRole()+" with the email "+loginInfo.getEmail()+" logged in to the system successfully.");
+            System.out.println(loginInfo.getRole()+" with the email "+loginInfo.getEmail()+"automatically logged in to the system successfully.");
             return ApiResponseMapper.mapToResponseEntityOK(validationResponse, "Valid User");
         }
         if (loginInfo.getRole()== Role.USER){
@@ -106,7 +121,7 @@ public class LoginServiceImpl implements LoginService {
                     .data(loginInfo.getEmail())
                     .role(loginInfo.getRole())
                     .build();
-            System.out.println(loginInfo.getRole()+" with the email "+loginInfo.getEmail()+" logged in to the system successfully.");
+            System.out.println(loginInfo.getRole()+" with the email "+loginInfo.getEmail()+"automatically logged in to the system successfully.");
             return ApiResponseMapper.mapToResponseEntityOK(validationResponse, "Valid User");
 
         }

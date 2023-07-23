@@ -21,9 +21,9 @@ const Sidebar = ({ close }) => {
 
 
 
-  const {setappliedCoursesGlobal, userData,setUserData, role, loggedIn, setLoggedIn, setRole } = useContext(LoginContext);
+  const { setappliedCoursesGlobal, userData, setUserData, role, loggedIn, setLoggedIn, setRole } = useContext(LoginContext);
 
-  
+
 
   // const [name, setName] = useState("User");
 
@@ -49,9 +49,9 @@ const Sidebar = ({ close }) => {
   const isActiveLink = (path) => {
 
 
-    let extracted= location.pathname.split("/");
-    let final = "/"+ extracted[1];
-    if (location.pathname === path || final===path) {
+    let extracted = location.pathname.split("/");
+    let final = "/" + extracted[1];
+    if (location.pathname === path || final === path) {
       return "#9c27b0";
     }
 
@@ -63,8 +63,6 @@ const Sidebar = ({ close }) => {
     <Box flex={1} sx={{ display: { xs: close ? "none" : "block", sm: "block" } }}>
       <Box position="fixed" >
 
-
-
         <List>
 
           <ListItem disablePadding>
@@ -73,7 +71,7 @@ const Sidebar = ({ close }) => {
                 <ListItemIcon>
                   <Home />
                 </ListItemIcon>
-                <ListItemText primary={role==="APPLICANT"? "Notice Board": "Home Page"} />
+                <ListItemText primary={role === "APPLICANT" ? "Notice Board" : "Home Page"} />
               </ListItemButton>
             </Link>
 
@@ -87,6 +85,20 @@ const Sidebar = ({ close }) => {
                     <Home />
                   </ListItemIcon>
                   <ListItemText primary="Profile" />
+                </ListItemButton>
+              </Link>
+            </ListItem>
+          }
+
+          {role == "EVALUATOR" &&
+
+            <ListItem disablePadding>
+              <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/upload-written-marks") }} component={NavLink} to="/upload-written-marks" variant="ListItemButton"   >
+                <ListItemButton >
+                  <ListItemIcon>
+                    <Home />
+                  </ListItemIcon>
+                  <ListItemText primary="Upload Marks" />
                 </ListItemButton>
               </Link>
             </ListItem>
@@ -108,17 +120,32 @@ const Sidebar = ({ close }) => {
           </ListItem>
 
           {role === "ADMIN" &&
-            <ListItem disablePadding>
-              <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/evaluator_management") }} component={NavLink} to="/evaluator_management" variant="ListItemButton"   >
-                <ListItemButton >
-                  <ListItemIcon>
-                    <Home />
-                  </ListItemIcon>
-                  <ListItemText primary="Evaluators" />
-                </ListItemButton>
-              </Link>
-            </ListItem>
 
+            <>
+              <ListItem disablePadding>
+                <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/approve_applicant") }} component={NavLink} to="/approve_applicant" variant="ListItemButton"   >
+                  <ListItemButton >
+                    <ListItemIcon>
+                      <Home />
+                    </ListItemIcon>
+                    <ListItemText primary="Approve Appicant" />
+                  </ListItemButton>
+                </Link>
+              </ListItem>
+
+
+
+              <ListItem disablePadding>
+                <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/evaluator_management") }} component={NavLink} to="/evaluator_management" variant="ListItemButton"   >
+                  <ListItemButton >
+                    <ListItemIcon>
+                      <Home />
+                    </ListItemIcon>
+                    <ListItemText primary="Evaluators" />
+                  </ListItemButton>
+                </Link>
+              </ListItem>
+            </>
           }
 
 

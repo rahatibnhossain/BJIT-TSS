@@ -25,20 +25,20 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public ResponseEntity<ApiResponse<?>> sendEmail(EmailRequest emailRequest) {
-        try
-        {
-            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false);
-            mimeMessageHelper.setFrom(fromEmail);
-            mimeMessageHelper.setTo(emailRequest.getTo());
-            mimeMessageHelper.setText(emailRequest.getBody());
-            mimeMessageHelper.setSubject(emailRequest.getSubject());
-            javaMailSender.send(mimeMessage);
-            return ApiResponseMapper.mapToResponseEntityOK(null,"Email sent successful.");
-        }
-        catch (Exception ex){
-            throw new EmailException(ex.getMessage());
-        }
-//        returnurn null;
+//        try
+//        {
+//            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+//            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false);
+//            mimeMessageHelper.setFrom(fromEmail);
+//            mimeMessageHelper.setTo(emailRequest.getTo());
+//            mimeMessageHelper.setText(emailRequest.getBody());
+//            mimeMessageHelper.setSubject(emailRequest.getSubject());
+//            javaMailSender.send(mimeMessage);
+//            return ApiResponseMapper.mapToResponseEntityOK(null,"Email sent successful.");
+//        }
+//        catch (Exception ex){
+//            throw new EmailException(ex.getMessage());
+//        }
+        return null;
     }
 }
