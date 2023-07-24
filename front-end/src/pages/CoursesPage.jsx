@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Tab, Tabs, Box, Card, CardContent, CardMedia, Typography, Button, Grid } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { LoginContext } from '../context/LoginContex';
 import axios from '../api/axios';
 import CourseComponent from '../components/CourseComponent';
@@ -56,6 +56,8 @@ const EnrollButton = styled(Button)(({ theme }) => ({
 }));
 
 const AllCourses = () => {
+
+  const navigate = useNavigate();
 
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
@@ -140,6 +142,93 @@ const AllCourses = () => {
     setTraineeDashboardMessage(c.traineeDashboardMessage);
 
   }
+
+
+  const updateCourse = (event) => {
+    event.preventDefault();
+
+    const formData = {
+      courseName,
+      courseDescription,
+      startDate,
+      endDate,
+      batchCode,
+      applicationDeadline,
+      vacancy,
+      writtenExamTime,
+      applicantDashboardMessage,
+      writtenShortlistedDashboardMessage,
+      writtenPassedDashboardMessage,
+      technicalVivaPassedDashboardMessage,
+      aptitudeTestPassedDashboardMessage,
+      hrVivaPassedDashboardMessage,
+      traineeDashboardMessage,
+      isAvailable
+    };
+    console.log(formData);
+
+    const token = window.localStorage.getItem("tss-token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    axios.post(`/api/course/update/batch_code/${formData.batchCode}`, formData, config)
+      .then((response) => {
+        console.log(response);
+        console.log(response?.data?.data);
+
+        setSingleCourse(response?.data?.data)
+        const courseId = response?.data?.data?.courseId
+
+        if (response.status === 200) {
+          setShowSuccessMessage(true)
+          setSuccessMessage(response.data.successMessage)
+
+          const updatedCourse = { ...formData, courseId }
+
+          const updatedCourseIndex = courses.findIndex((course) => course.courseId === response?.data?.data?.courseId);
+
+          if (updatedCourseIndex !== -1) {
+            setCourses((prevCourses) => [
+              ...prevCourses.slice(0, updatedCourseIndex),
+              updatedCourse,
+              ...prevCourses.slice(updatedCourseIndex + 1),
+            ]);
+          }
+
+          setTimeout(() => {
+            setShowSuccessMessage(false)
+            setSuccessMessage("")
+
+            if (isAvailable == true) {
+              setValue("available-courses")
+            } else {
+              setValue("unavailable-courses")
+            }
+            resetFormFields();
+          }, 2000);
+        }
+      })
+      .catch((error) => {
+        console.error('Error uploading files:', error);
+        setShowErrorMessage(true)
+        setErrorMessage(JSON2Message(JSON.stringify(error.response.data.errorMessage)))
+        setTimeout(() => {
+          setShowErrorMessage(false)
+          setErrorMessage("")
+
+        }, 5000);
+
+      }).finally(() => {
+        setValue2("");
+        window.location.reload(false)
+        navigate("/course")
+
+      })
+
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -330,10 +419,12 @@ const AllCourses = () => {
           <HeaderTypography>
             Update this course.
           </HeaderTypography>
-          <CourseComponent  buttonText={"Update Course"} handleSubmit={handleSubmit} courseName={courseName} setCourseName={setCourseName} batchCode={batchCode} setBatchCode={setBatchCode} isAvailable={isAvailable} setIsAvailable={setIsAvailable} showSuccessMessage={showSuccessMessage} successMessage={successMessage} showErrorMessage={showErrorMessage} errorMessage={errorMessage} courseDescription={courseDescription} setCourseDescription={setCourseDescription} vacancy={vacancy} setVacancy={setVacancy} applicationDeadline={applicationDeadline} setApplicationDeadline={setApplicationDeadline} writtenExamTime={writtenExamTime} setWrittenExamTime={setWrittenExamTime} startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} applicantDashboardMessage={applicantDashboardMessage} setApplicantDashboardMessage={setApplicantDashboardMessage} writtenShortlistedDashboardMessage={writtenShortlistedDashboardMessage} setWrittenShortlistedDashboardMessage={setWrittenShortlistedDashboardMessage} writtenPassedDashboardMessage={writtenPassedDashboardMessage} setWrittenPassedDashboardMessage={setWrittenPassedDashboardMessage} technicalVivaPassedDashboardMessage={technicalVivaPassedDashboardMessage} setTechnicalVivaPassedDashboardMessage={setTechnicalVivaPassedDashboardMessage} aptitudeTestPassedDashboardMessage={aptitudeTestPassedDashboardMessage} setAptitudeTestPassedDashboardMessage={setAptitudeTestPassedDashboardMessage} hrVivaPassedDashboardMessage={hrVivaPassedDashboardMessage} setHrVivaPassedDashboardMessage={setHrVivaPassedDashboardMessage} traineeDashboardMessage={traineeDashboardMessage} setTraineeDashboardMessage={setTraineeDashboardMessage} />
+          <CourseComponent buttonText={"Update Course"} handleSubmit={updateCourse} courseName={courseName} setCourseName={setCourseName} batchCode={batchCode} setBatchCode={setBatchCode} isAvailable={isAvailable} setIsAvailable={setIsAvailable} showSuccessMessage={showSuccessMessage} successMessage={successMessage} showErrorMessage={showErrorMessage} errorMessage={errorMessage} courseDescription={courseDescription} setCourseDescription={setCourseDescription} vacancy={vacancy} setVacancy={setVacancy} applicationDeadline={applicationDeadline} setApplicationDeadline={setApplicationDeadline} writtenExamTime={writtenExamTime} setWrittenExamTime={setWrittenExamTime} startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} applicantDashboardMessage={applicantDashboardMessage} setApplicantDashboardMessage={setApplicantDashboardMessage} writtenShortlistedDashboardMessage={writtenShortlistedDashboardMessage} setWrittenShortlistedDashboardMessage={setWrittenShortlistedDashboardMessage} writtenPassedDashboardMessage={writtenPassedDashboardMessage} setWrittenPassedDashboardMessage={setWrittenPassedDashboardMessage} technicalVivaPassedDashboardMessage={technicalVivaPassedDashboardMessage} setTechnicalVivaPassedDashboardMessage={setTechnicalVivaPassedDashboardMessage} aptitudeTestPassedDashboardMessage={aptitudeTestPassedDashboardMessage} setAptitudeTestPassedDashboardMessage={setAptitudeTestPassedDashboardMessage} hrVivaPassedDashboardMessage={hrVivaPassedDashboardMessage} setHrVivaPassedDashboardMessage={setHrVivaPassedDashboardMessage} traineeDashboardMessage={traineeDashboardMessage} setTraineeDashboardMessage={setTraineeDashboardMessage} />
         </Box>
 
       }
+
+
 
       {
         value === "available-courses" && value2 == "" && role === "ADMIN" &&
@@ -353,7 +444,7 @@ const AllCourses = () => {
           <HeaderTypography>
             Add a new course
           </HeaderTypography>
-          <CourseComponent  buttonText={"Add Course"} handleSubmit={handleSubmit} courseName={courseName} setCourseName={setCourseName} batchCode={batchCode} setBatchCode={setBatchCode} isAvailable={isAvailable} setIsAvailable={setIsAvailable} showSuccessMessage={showSuccessMessage} successMessage={successMessage} showErrorMessage={showErrorMessage} errorMessage={errorMessage} courseDescription={courseDescription} setCourseDescription={setCourseDescription} vacancy={vacancy} setVacancy={setVacancy} applicationDeadline={applicationDeadline} setApplicationDeadline={setApplicationDeadline} writtenExamTime={writtenExamTime} setWrittenExamTime={setWrittenExamTime} startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} applicantDashboardMessage={applicantDashboardMessage} setApplicantDashboardMessage={setApplicantDashboardMessage} writtenShortlistedDashboardMessage={writtenShortlistedDashboardMessage} setWrittenShortlistedDashboardMessage={setWrittenShortlistedDashboardMessage} writtenPassedDashboardMessage={writtenPassedDashboardMessage} setWrittenPassedDashboardMessage={setWrittenPassedDashboardMessage} technicalVivaPassedDashboardMessage={technicalVivaPassedDashboardMessage} setTechnicalVivaPassedDashboardMessage={setTechnicalVivaPassedDashboardMessage} aptitudeTestPassedDashboardMessage={aptitudeTestPassedDashboardMessage} setAptitudeTestPassedDashboardMessage={setAptitudeTestPassedDashboardMessage} hrVivaPassedDashboardMessage={hrVivaPassedDashboardMessage} setHrVivaPassedDashboardMessage={setHrVivaPassedDashboardMessage} traineeDashboardMessage={traineeDashboardMessage} setTraineeDashboardMessage={setTraineeDashboardMessage} />
+          <CourseComponent buttonText={"Add Course"} handleSubmit={handleSubmit} courseName={courseName} setCourseName={setCourseName} batchCode={batchCode} setBatchCode={setBatchCode} isAvailable={isAvailable} setIsAvailable={setIsAvailable} showSuccessMessage={showSuccessMessage} successMessage={successMessage} showErrorMessage={showErrorMessage} errorMessage={errorMessage} courseDescription={courseDescription} setCourseDescription={setCourseDescription} vacancy={vacancy} setVacancy={setVacancy} applicationDeadline={applicationDeadline} setApplicationDeadline={setApplicationDeadline} writtenExamTime={writtenExamTime} setWrittenExamTime={setWrittenExamTime} startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} applicantDashboardMessage={applicantDashboardMessage} setApplicantDashboardMessage={setApplicantDashboardMessage} writtenShortlistedDashboardMessage={writtenShortlistedDashboardMessage} setWrittenShortlistedDashboardMessage={setWrittenShortlistedDashboardMessage} writtenPassedDashboardMessage={writtenPassedDashboardMessage} setWrittenPassedDashboardMessage={setWrittenPassedDashboardMessage} technicalVivaPassedDashboardMessage={technicalVivaPassedDashboardMessage} setTechnicalVivaPassedDashboardMessage={setTechnicalVivaPassedDashboardMessage} aptitudeTestPassedDashboardMessage={aptitudeTestPassedDashboardMessage} setAptitudeTestPassedDashboardMessage={setAptitudeTestPassedDashboardMessage} hrVivaPassedDashboardMessage={hrVivaPassedDashboardMessage} setHrVivaPassedDashboardMessage={setHrVivaPassedDashboardMessage} traineeDashboardMessage={traineeDashboardMessage} setTraineeDashboardMessage={setTraineeDashboardMessage} />
         </Box>
       }
 

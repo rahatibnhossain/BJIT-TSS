@@ -16,6 +16,10 @@ import NoticeBoardPage from '../pages/NoticeBoard';
 import EvaluatorManagement from '../pages/EvaluatorManagement';
 import ApproveApplicantPage from '../pages/ApproveApplicantPage';
 import UploadWrittenMark from '../pages/UploadWrittenMark';
+import FinalTraineesPage from '../pages/FinalTraineesPage';
+import HrInterviewPage from '../pages/HrInterviewPage';
+import TechnicalInterviewPage from '../pages/TechnicalInterviewPage';
+import AptitudeTestPage from '../pages/AptitudeTestPage';
 
 const Feed = ({ data, loading, close }) => {
 
@@ -73,6 +77,11 @@ const Feed = ({ data, loading, close }) => {
           <>
             <Route path="/evaluator_management" element={<EvaluatorManagement />} />
             <Route path="/approve_applicant" element={<ApproveApplicantPage />} />
+            <Route path="/aptitude_test" element={<AptitudeTestPage />} />
+            <Route path="/technical_interview" element={<TechnicalInterviewPage />} />
+            <Route path="/hr_interview" element={<HrInterviewPage />} />
+            <Route path="/final_trainees" element={<FinalTraineesPage />} />
+
 
           </>
         }

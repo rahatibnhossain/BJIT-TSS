@@ -60,7 +60,7 @@ const Sidebar = ({ close }) => {
   };
   return (
 
-    <Box flex={1} sx={{ color:"black", backgroundColor: "#EDE4FF", display: { xs: close ? "none" : "block", sm: "block" } }}>
+    <Box flex={1} sx={{ color: "black", backgroundColor: "#EDE4FF", display: { xs: close ? "none" : "block", sm: "block" } }}>
       <Box position="fixed" >
 
         <List>
@@ -124,6 +124,48 @@ const Sidebar = ({ close }) => {
           {role === "ADMIN" &&
 
             <>
+              <ListItem disablePadding>
+                <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/final_trainees") }} component={NavLink} to="/final_trainees" variant="ListItemButton"   >
+                  <ListItemButton >
+                    <ListItemIcon>
+                      <Home />
+                    </ListItemIcon>
+                    <ListItemText primary="Final Trainees" />
+                  </ListItemButton>
+                </Link>
+              </ListItem>
+              <ListItem disablePadding>
+                <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/hr_interview") }} component={NavLink} to="/hr_interview" variant="ListItemButton"   >
+                  <ListItemButton >
+                    <ListItemIcon>
+                      <Home />
+                    </ListItemIcon>
+                    <ListItemText primary="HR Interview" />
+                  </ListItemButton>
+                </Link>
+              </ListItem>
+              <ListItem disablePadding>
+                <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/technical_interview") }} component={NavLink} to="/technical_interview" variant="ListItemButton"   >
+                  <ListItemButton >
+                    <ListItemIcon>
+                      <Home />
+                    </ListItemIcon>
+                    <ListItemText primary="Technical Interview" />
+                  </ListItemButton>
+                </Link>
+              </ListItem>
+              <ListItem disablePadding>
+                <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/aptitude_test") }} component={NavLink} to="/aptitude_test" variant="ListItemButton"   >
+                  <ListItemButton >
+                    <ListItemIcon>
+                      <Home />
+                    </ListItemIcon>
+                    <ListItemText primary="Aptitude Test" />
+                  </ListItemButton>
+                </Link>
+              </ListItem>
+
+
               <ListItem disablePadding>
                 <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/approve_applicant") }} component={NavLink} to="/approve_applicant" variant="ListItemButton"   >
                   <ListItemButton >
