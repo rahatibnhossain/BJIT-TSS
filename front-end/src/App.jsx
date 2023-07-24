@@ -235,7 +235,7 @@ function App() {
   }
   return (
 
-    <Box >
+    <Box  sx={{backgroundColor: "#EDE4FF" , minHeight:"100vh"}} >
       <LoginContext.Provider value={{allEvaluators, setAllEvaluators, appliedCoursesGlobal, setappliedCoursesGlobal, courses, setUserData, userData, uploaded, setUploaded, loggedIn, setLoggedIn, role, setRole, setCourses, unavailableCourses, setUnavailableCourses }}>
 
         <Navbar courseNumber={data?.data.data.dataLength} onClose={toggleSideBar} />

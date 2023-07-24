@@ -10,4 +10,6 @@ public interface ApplicationService {
     ResponseEntity<ApiResponse<?>> applyCourse(ApplicationRequest applicationRequest);
 
     ResponseEntity<ApiResponse<?>> allApplicationSpecific(CourseRoleRequest courseRoleRequest);
+
+    ResponseEntity<ApiResponse<?>> allUnassignedCandidates(CourseRoleRequest courseRoleRequest);
 }

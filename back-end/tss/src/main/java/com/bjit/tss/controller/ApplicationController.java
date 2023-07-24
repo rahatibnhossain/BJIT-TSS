@@ -25,4 +25,9 @@ public class ApplicationController {
     public ResponseEntity<ApiResponse<?>> allApplicationSpecific(@Valid @RequestBody CourseRoleRequest courseRoleRequest) {
         return applicationService.allApplicationSpecific(courseRoleRequest);
     }
+
+    @PostMapping("/course/unassigned-candidates")
+    public ResponseEntity<ApiResponse<?>> allUnassignedCandidates(@Valid @RequestBody CourseRoleRequest courseRoleRequest) {
+        return applicationService.allUnassignedCandidates(courseRoleRequest);
+    }
 }

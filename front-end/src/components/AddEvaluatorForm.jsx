@@ -10,7 +10,6 @@ const FormBox = styled(Box)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
     gap: theme.spacing(2),
-    maxWidth: '400px',
     margin: '0 auto',
 }));
 
@@ -102,45 +101,49 @@ const AddEvaluatorForm = ({ setAllEvaluators, setValue }) => {
     return (
         <Box pt={7}>
 
-            <form onSubmit={handleSubmit}>
-                <FormBox>
-                    <TextField
-                        label="Email"
-                        type="email"
-                        value={email}
-                        onChange={handleEmailChange}
-                        required
-                    />
-                    <TextField
-                        label="Password"
-                        type="password"
-                        value={password}
-                        onChange={handlePasswordChange}
-                        required
-                    />
-                    <TextField
-                        label="Name"
-                        type="text"
-                        value={name}
-                        onChange={handleNameChange}
-                        required
-                    />
-                    <Button variant="contained" color="primary" type="submit">
-                        Add Evaluator
-                    </Button>
-                    {showSuccessMessage &&
-                        <Alert key="success" variant="success">
-                            {successMessage}
-                        </Alert>
-                    }
+            <Box p={3} sx={{ bgcolor: "white" }}>
 
-                    {showErrorMessage &&
-                        <Alert key="danger" variant="danger">
-                            {errorMessage}
-                        </Alert>
-                    }
-                </FormBox>
-            </form>
+
+                <form onSubmit={handleSubmit}>
+                    <FormBox>
+                        <TextField
+                            label="Email"
+                            type="email"
+                            value={email}
+                            onChange={handleEmailChange}
+                            required
+                        />
+                        <TextField
+                            label="Password"
+                            type="password"
+                            value={password}
+                            onChange={handlePasswordChange}
+                            required
+                        />
+                        <TextField
+                            label="Name"
+                            type="text"
+                            value={name}
+                            onChange={handleNameChange}
+                            required
+                        />
+                        <Button variant="contained" sx={{bgcolor:"#4140a5"}} type="submit">
+                            Add Evaluator
+                        </Button>
+                        {showSuccessMessage &&
+                            <Alert key="success" variant="success">
+                                {successMessage}
+                            </Alert>
+                        }
+
+                        {showErrorMessage &&
+                            <Alert key="danger" variant="danger">
+                                {errorMessage}
+                            </Alert>
+                        }
+                    </FormBox>
+                </form>
+            </Box>
 
 
         </Box>

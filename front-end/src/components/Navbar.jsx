@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { theme } from "../theme/theme";
-import { Menu, Tooltip, MenuItem, Badge, Box, InputBase, Container, Stack, AppBar, Toolbar, Typography, styled } from "@mui/material";
+import { Menu, Tooltip, MenuItem, Badge, Box, InputBase, Container, Stack, AppBar, Toolbar, Typography, styled, colors } from "@mui/material";
 import { Mail, Notifications } from "@mui/icons-material";
 import { Avatar } from '@mui/material/index';
 import { LoginContext } from '../context/LoginContex';
@@ -35,7 +35,6 @@ const UserBox = styled(Box)(({ theme }) => ({
     display: "none"
   }
 }))
-
 const Navbar = ({ courseNumber, onClose }) => {
 
   const navigate = useNavigate();
@@ -46,15 +45,12 @@ const Navbar = ({ courseNumber, onClose }) => {
     window.localStorage.removeItem("tss-token")
 
     setLoggedIn(false);
-
   }
   useEffect(() => {
     if (role === "ADMIN") {
       setName("ADMIN")
     }
   }, [])
-
-
 
   useEffect(() => {
     if (!loggedIn) {
@@ -74,17 +70,11 @@ const Navbar = ({ courseNumber, onClose }) => {
       }
     }
 
-
   }, [loggedIn])
-
 
   const [open, setOpen] = useState(false);
 
-
-
   const [name, setName] = useState("User");
-
-
 
   useEffect(() => {
     if (userData && role === "APPLICANT") {
@@ -99,15 +89,11 @@ const Navbar = ({ courseNumber, onClose }) => {
 
     }
 
-
   }, [userData]);
 
 
-
-
-
   return (
-    <AppBar position="sticky" color="primary">
+    <AppBar position="sticky"  sx={{bgcolor:"#2d2c72"}} >
       <StyledToolbar>
         <Typography variant="h6" sx={{ display: { xs: "none", sm: "block" } }}>Trainee Selection System</Typography>
 
@@ -144,9 +130,7 @@ const Navbar = ({ courseNumber, onClose }) => {
         <UserBox onClick={e => { navigate("/profile") }}>
           <Avatar sx={{ width: 30, height: 30 }} src="https://www.w3schools.com/w3images/avatar2.png" />
           <Typography variant="span">
-
             {name}
-
           </Typography>
         </UserBox>
       </StyledToolbar>

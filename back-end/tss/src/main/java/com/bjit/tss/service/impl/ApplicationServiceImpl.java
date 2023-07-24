@@ -1,17 +1,17 @@
 package com.bjit.tss.service.impl;
 
-import com.bjit.tss.entity.CourseInfo;
-import com.bjit.tss.entity.ExamineeInfo;
-import com.bjit.tss.entity.LoginInfo;
-import com.bjit.tss.entity.UserInfo;
+import com.bjit.tss.entity.*;
 import com.bjit.tss.exception.CourseException;
 import com.bjit.tss.exception.ExamineeException;
 import com.bjit.tss.exception.UserException;
 import com.bjit.tss.mapper.ApiResponseMapper;
+import com.bjit.tss.mapper.CandidateMapper;
 import com.bjit.tss.model.ApiResponse;
 import com.bjit.tss.model.ApplicationRequest;
 import com.bjit.tss.model.CourseRoleRequest;
 import com.bjit.tss.model.ListResponse;
+import com.bjit.tss.model.response.CandidateResponse;
+import com.bjit.tss.repository.CandidateRepository;
 import com.bjit.tss.repository.CourseRepository;
 import com.bjit.tss.repository.ExamineeRepository;
 import com.bjit.tss.repository.UserRepository;
@@ -33,6 +33,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final CourseRepository courseRepository;
     private final UserRepository userRepository;
     private final ExamineeRepository examineeRepository;
+    private final CandidateRepository candidateRepository;
 
     @Override
     public ResponseEntity<ApiResponse<?>> applyCourse(ApplicationRequest applicationRequest) {
@@ -74,5 +75,20 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .listResponse(examineeInfos)
                 .build();
         return ApiResponseMapper.mapToResponseEntityOK(listResponse);
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse<?>> allUnassignedCandidates(CourseRoleRequest courseRoleRequest) {
+
+        List<CandidateMarks> candidateMarksList = candidateRepository.findAllByExamineeInfoRoleAndExamineeInfoCourseInfoBatchCodeAndWrittenMarksEvaluatorInfoIsNull(courseRoleRequest.getRole(), courseRoleRequest.getBatchCode());
+
+        List<CandidateResponse> candidateResponseList = candidateMarksList.stream().map(CandidateMapper::mapToCandidateResponse).toList();
+
+        ListResponse listResponse = ListResponse.builder()
+                .dataLength(candidateResponseList.size())
+                .listResponse(candidateResponseList)
+                .build();
+
+        return ApiResponseMapper.mapToResponseEntityOK(listResponse, "All the " + courseRoleRequest.getRole() + " of the batch " + courseRoleRequest.getBatchCode() + " who have not been assigned to any evaluator for written mark.");
     }
 }

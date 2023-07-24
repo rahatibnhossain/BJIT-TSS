@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TableSortLabel } from '@mui/material';
+import {Typography, Box,  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TableSortLabel } from '@mui/material';
 import { styled } from '@mui/material/styles';
+
+const HeaderTypography = styled(Typography)(({ theme }) => ({
+  fontSize: '1.6rem',
+  marginBottom: theme.spacing(2),
+}));
 
 const Container = styled(TableContainer)(({ theme }) => ({
   maxHeight: 440,
@@ -17,7 +22,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 }));
 
-const EvaluatorTable = ({ data, onRowClick }) => {
+const EvaluatorTable = ({topMessage, data, onRowClick }) => {
   const [sortField, setSortField] = useState('');
   const [sortOrder, setSortOrder] = useState('asc');
 
@@ -42,6 +47,14 @@ const EvaluatorTable = ({ data, onRowClick }) => {
 
   return (
     <Container component={Paper}>
+
+      <Box p={2}>
+        <HeaderTypography>
+
+          {topMessage}
+        </HeaderTypography>
+      </Box>
+
       <Table stickyHeader>
         <TableHead>
           <TableRow>

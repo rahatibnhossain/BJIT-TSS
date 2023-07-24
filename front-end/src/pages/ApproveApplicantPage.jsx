@@ -1,20 +1,27 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Tab, Tabs, Box } from '@mui/material';
+import { Tab, Tabs, Box, Typography } from '@mui/material';
 import { LoginContext } from '../context/LoginContex';
 import CourseCards from '../components/CourseCards';
 import axios from '../api/axios';
 import ApplicantTable from '../components/ApplicantTable';
+import { styled } from '@mui/material/styles';
+
+
+const HeaderTypography = styled(Typography)(({ theme }) => ({
+    fontSize: '1.6rem',
+    marginBottom: theme.spacing(2),
+}));
 
 const approveApplicant = (examineeId) => {
 
     const token = window.localStorage.getItem("tss-token");
     const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
     };
     axios
-        .post('/api/approval/applicant', { examineeId } , config)
+        .post('/api/approval/applicant', { examineeId }, config)
         .then((response) => {
 
             console.log(response);
@@ -30,15 +37,15 @@ const approveApplicant = (examineeId) => {
 
 const ApproveApplicantPage = () => {
 
- 
-    
+
+
 
 
     const [allApplicants, setAllApplicants] = useState([]);
 
     const [allCandidated, setAllCandidated] = useState([]);
 
-const [value2, setValue2] = useState('')
+    const [value2, setValue2] = useState('')
 
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [showErrorMessage, setShowErrorMessage] = useState(false);
@@ -186,7 +193,7 @@ const [value2, setValue2] = useState('')
     useEffect(() => {
         console.log(value);
         console.log(value2);
-        }, [value, value2]);
+    }, [value, value2]);
 
 
     return (
@@ -211,9 +218,17 @@ const [value2, setValue2] = useState('')
 
             </Box>
 
-            {value == "all-applicants"   && value2==""&&
 
-                <CourseCards courses={courses} pathValue={"single-course-applicant"} setValue={setValue2} setSingleCourse={setSingleCourse} />
+            {value == "all-applicants" && value2 == "" &&
+
+                <Box pt={7}>
+
+                    <HeaderTypography>
+                        Select course to approve from the selected course.
+                    </HeaderTypography>
+
+                    <CourseCards courseButtonText={"Approve Applicants for this course"} courses={courses} pathValue={"single-course-applicant"} setValue={setValue2} setSingleCourse={setSingleCourse} />
+                </Box>
 
 
             }
@@ -227,10 +242,12 @@ const [value2, setValue2] = useState('')
 
 
             {value == "approved-applicants" && value2 == "" &&
-
-                <CourseCards courses={courses} pathValue={"single-course-candidate"} setValue={setValue2} setSingleCourse={setSingleCourse} />
-
-
+                <Box pt={7}>
+                    <HeaderTypography>
+                        Select course to view approved candidates for selected course.
+                    </HeaderTypography>
+                    <CourseCards courseButtonText={"Approved Candidates for this course"} courses={courses} pathValue={"single-course-candidate"} setValue={setValue2} setSingleCourse={setSingleCourse} />
+                </Box>
             }
 
             {value == "approved-applicants" && value2 == "single-course-candidate" &&

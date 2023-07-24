@@ -60,7 +60,7 @@ const Sidebar = ({ close }) => {
   };
   return (
 
-    <Box flex={1} sx={{ display: { xs: close ? "none" : "block", sm: "block" } }}>
+    <Box flex={1} sx={{ color:"black", backgroundColor: "#EDE4FF", display: { xs: close ? "none" : "block", sm: "block" } }}>
       <Box position="fixed" >
 
         <List>

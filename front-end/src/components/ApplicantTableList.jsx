@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TableSortLabel, Button, Box } from '@mui/material';
+import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TableSortLabel, Button, Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import axios from '../api/axios';
 
@@ -24,7 +24,7 @@ const ScrollableWrapper = styled('div')(({ theme }) => ({
     overflowX: 'auto',
 }));
 
-const ApplicantTableList = ({ evaluator, applicants, setApplicants, action, actionText }) => {
+const ApplicantTableList = ({ topMessage, evaluator, applicants, setApplicants, action, actionText, showAction }) => {
     const [sortField, setSortField] = useState('');
     const [sortOrder, setSortOrder] = useState('asc');
 
@@ -54,7 +54,8 @@ const ApplicantTableList = ({ evaluator, applicants, setApplicants, action, acti
         <Container component={Paper}>
             <Box p={2}>
                 <HeaderTypography>
-                    {evaluator.name} has been assigned to these candidates.
+
+                    {topMessage}
                 </HeaderTypography>
             </Box>
             <ScrollableWrapper>
@@ -133,6 +134,16 @@ const ApplicantTableList = ({ evaluator, applicants, setApplicants, action, acti
                                     Passing Year
                                 </TableSortLabel>
                             </StyledTableCell>
+
+                            {
+                                showAction &&
+                                <StyledTableCell>
+
+                                    <TableSortLabel  >
+                                        
+                                    </TableSortLabel>
+                                </StyledTableCell>
+                            }
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -146,9 +157,19 @@ const ApplicantTableList = ({ evaluator, applicants, setApplicants, action, acti
                                 <TableCell>{applicant.presentAddress}</TableCell>
                                 <TableCell>{applicant.degreeName}</TableCell>
                                 <TableCell>{applicant.passingYear}</TableCell>
-                                {/* <Button variant="contained" color="secondary" onClick={() => action(applicant.examineeId)}>
-                                    {actionText}
-                                </Button> */}
+
+
+                                {
+                                    showAction &&
+                                    <TableCell>
+                                        <Button variant="contained" color="secondary" onClick={() => action(applicant, evaluator)}>
+                                            {actionText}
+                                        </Button>
+                                    </TableCell>
+
+                                }
+
+
                             </TableRow>
                         ))}
                     </TableBody>

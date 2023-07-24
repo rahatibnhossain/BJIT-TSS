@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { Box, Card, CardContent, CardMedia, Typography, Button, Grid } from '@mui/material';
 import { LoginContext } from '../context/LoginContex';
 import { styled } from '@mui/material/styles'; 
-
+import ClipMessage from "../services/ClipMessage"
 
 
 
@@ -47,10 +47,10 @@ const EnrollButton = styled(Button)(({ theme }) => ({
     fontWeight: 600,
 }));
 
-const CourseCards = ({ courses, setValue, setSingleCourse, pathValue }) => {
+const CourseCards = ({ courses, setValue, setSingleCourse, pathValue, courseButtonText }) => {
     const { role } = useContext(LoginContext);
     return (
-        <Box pt={role === "ADMIN" ? 7 : 0}>
+        <Box >
 
             <Grid container spacing={2} justifyContent="center">
                 {/* {courses?.data.data.listResponse.map((course) => ( */}
@@ -62,14 +62,14 @@ const CourseCards = ({ courses, setValue, setSingleCourse, pathValue }) => {
                             setSingleCourse(course)
                         }}>
 
-                            <CourseCard>
+                            <CourseCard sx={{height:"240px"}} >
                                 <CourseMedia component="img" image={course.imageUrl} alt={course.title} />
                                 <CourseContent>
                                     <CourseTitle variant="h6">{course.courseName}</CourseTitle>
-                                    <CourseDescription variant="body2">{course.courseDescription}</CourseDescription>
+                                    <CourseDescription variant="body2">{ClipMessage(course.courseDescription,45)} </CourseDescription>
                                 </CourseContent>
-                                <EnrollButton variant="contained" color="primary" size="small">
-                                    Edit Course Details
+                                <EnrollButton sx={{bgcolor:"#2d2c72"}} variant="contained" color="primary" size="small">
+                                    {courseButtonText}
                                 </EnrollButton>
                             </CourseCard>
                         </Box>

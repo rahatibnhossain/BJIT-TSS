@@ -6,10 +6,9 @@ import com.bjit.tss.exception.EvaluationException;
 import com.bjit.tss.exception.HiddenCodeException;
 import com.bjit.tss.exception.UserException;
 import com.bjit.tss.mapper.ApiResponseMapper;
-import com.bjit.tss.model.ApiResponse;
-import com.bjit.tss.model.AssignAnswerSheetRequest;
-import com.bjit.tss.model.UploadMarkRequest;
-import com.bjit.tss.model.UploadWrittenMarkRequest;
+import com.bjit.tss.mapper.EvaluatorMapper;
+import com.bjit.tss.model.*;
+import com.bjit.tss.model.response.EvaluatorAssignmentResponse;
 import com.bjit.tss.repository.*;
 import com.bjit.tss.service.EvaluationService;
 import lombok.RequiredArgsConstructor;
@@ -73,8 +72,17 @@ public class EvaluationServiceImpl implements EvaluationService {
             return hiddenCode;
         }).toList();
 
-        List<HiddenCodeInfo> savedCandidatesWithHiddenCodes = hiddenCodeRepository.saveAll(result);
-        return ApiResponseMapper.mapToResponseEntityOK(savedCandidatesWithHiddenCodes);
+        List<HiddenCodeInfo> saved = hiddenCodeRepository.saveAll(result);
+
+        List<EvaluatorAssignmentResponse> assignmentResponseList = saved.stream().map(EvaluatorMapper::mapToEvaluatorAssignmentResponse).toList();
+
+
+        ListResponse listResponse= ListResponse.builder()
+                .dataLength(assignmentResponseList.size())
+                .listResponse(assignmentResponseList)
+                .build();
+
+        return ApiResponseMapper.mapToResponseEntityOK(listResponse, "Successfully assigned to "+evaluatorInfo.get().getName());
     }
 
     @Override

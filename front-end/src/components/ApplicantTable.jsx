@@ -19,7 +19,7 @@ const ScrollableWrapper = styled('div')(({ theme }) => ({
     overflowX: 'auto',
 }));
 
-const ApplicantTable = ({ applicants, setApplicants, action , actionText }) => {
+const ApplicantTable = ({ applicants, setApplicants, action, actionText }) => {
     const [sortField, setSortField] = useState('');
     const [sortOrder, setSortOrder] = useState('asc');
 
@@ -31,7 +31,7 @@ const ApplicantTable = ({ applicants, setApplicants, action , actionText }) => {
             setSortOrder('asc');
         }
     };
-   
+
 
     const sortedApplicants = sortField
         ? [...applicants].sort((a, b) => {
@@ -114,6 +114,7 @@ const ApplicantTable = ({ applicants, setApplicants, action , actionText }) => {
                                     Passing Year
                                 </TableSortLabel>
                             </StyledTableCell>
+
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -126,9 +127,10 @@ const ApplicantTable = ({ applicants, setApplicants, action , actionText }) => {
                                 <TableCell>{applicant.userInfo.presentAddress}</TableCell>
                                 <TableCell>{applicant.userInfo.degreeName}</TableCell>
                                 <TableCell>{applicant.userInfo.passingYear}</TableCell>
-                                <Button variant="contained" color="secondary" onClick={() => action(applicant.examineeId)}>
-                                    {actionText}
-                                </Button>
+                         
+                                    <Button variant="contained" color="secondary" onClick={() => action(applicant.examineeId)}>
+                                        {actionText}
+                                    </Button>
                             </TableRow>
                         ))}
                     </TableBody>
