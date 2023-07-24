@@ -4,6 +4,7 @@ import com.bjit.tss.model.ApiResponse;
 import com.bjit.tss.model.AssignAnswerSheetRequest;
 import com.bjit.tss.model.UploadMarkRequest;
 import com.bjit.tss.model.UploadWrittenMarkRequest;
+import com.bjit.tss.model.request.RoundCandidatesRequest;
 import org.springframework.http.ResponseEntity;
 
 public interface EvaluationService {
@@ -17,4 +18,6 @@ public interface EvaluationService {
     ResponseEntity<ApiResponse<?>> uploadTechnicalMark(UploadMarkRequest uploadMarkRequest);
 
     ResponseEntity<ApiResponse<?>> uploadHrVivaMark(UploadMarkRequest uploadMarkRequest);
+
+    ResponseEntity<ApiResponse<?>> getRoundPassedSpecific(RoundCandidatesRequest roundCandidatesRequest);
 }

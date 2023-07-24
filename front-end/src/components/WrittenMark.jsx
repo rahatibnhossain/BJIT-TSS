@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { styled,Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TableSortLabel, Button, Box } from '@mui/material';
 import axios from '../api/axios';
 
+
+
 const HeaderTypography = styled(Typography)(({ theme }) => ({
     fontSize: '1.6rem',
     marginBottom: theme.spacing(2),
@@ -23,7 +25,7 @@ const ScrollableWrapper = styled('div')(({ theme }) => ({
     overflowX: 'auto',
 }));
 
-const ApplicantTableList = ({ topMessage, evaluator, applicants, setApplicants, action, actionText, showAction }) => {
+const WrittenMark = ({ topMessage, applicants, action, actionText, showAction }) => {
     const [sortField, setSortField] = useState('');
     const [sortOrder, setSortOrder] = useState('asc');
 
@@ -72,15 +74,6 @@ const ApplicantTableList = ({ topMessage, evaluator, applicants, setApplicants, 
                             </StyledTableCell>
                             <StyledTableCell>
                                 <TableSortLabel
-                                    active={sortField === 'lastName'}
-                                    direction={sortField === 'lastName' ? sortOrder : 'asc'}
-                                    onClick={() => handleSort('lastName')}
-                                >
-                                    Last Name
-                                </TableSortLabel>
-                            </StyledTableCell>
-                            <StyledTableCell>
-                                <TableSortLabel
                                     active={sortField === 'email'}
                                     direction={sortField === 'email' ? sortOrder : 'asc'}
                                     onClick={() => handleSort('email')}
@@ -90,49 +83,23 @@ const ApplicantTableList = ({ topMessage, evaluator, applicants, setApplicants, 
                             </StyledTableCell>
                             <StyledTableCell>
                                 <TableSortLabel
-                                    active={sortField === 'cgpa'}
-                                    direction={sortField === 'cgpa' ? sortOrder : 'asc'}
-                                    onClick={() => handleSort('cgpa')}
+                                    active={sortField === 'fullMark'}
+                                    direction={sortField === 'fullMark' ? sortOrder : 'asc'}
+                                    onClick={() => handleSort('fullMark')}
                                 >
-                                    CGPA
+                                    Full Mark
                                 </TableSortLabel>
                             </StyledTableCell>
                             <StyledTableCell>
                                 <TableSortLabel
-                                    active={sortField === 'courseName'}
-                                    direction={sortField === 'courseName' ? sortOrder : 'asc'}
-                                    onClick={() => handleSort('courseName')}
+                                    active={sortField === 'marks'}
+                                    direction={sortField === 'marks' ? sortOrder : 'asc'}
+                                    onClick={() => handleSort('marks')}
                                 >
-                                    Course Name
+                                    Individula Marks
                                 </TableSortLabel>
                             </StyledTableCell>
-                            <StyledTableCell>
-                                <TableSortLabel
-                                    active={sortField === 'presentAddress'}
-                                    direction={sortField === 'presentAddress' ? sortOrder : 'asc'}
-                                    onClick={() => handleSort('presentAddress')}
-                                >
-                                    Present Address
-                                </TableSortLabel>
-                            </StyledTableCell>
-                            <StyledTableCell>
-                                <TableSortLabel
-                                    active={sortField === 'degreeName'}
-                                    direction={sortField === 'degreeName' ? sortOrder : 'asc'}
-                                    onClick={() => handleSort('degreeName')}
-                                >
-                                    Degree Name
-                                </TableSortLabel>
-                            </StyledTableCell>
-                            <StyledTableCell>
-                                <TableSortLabel
-                                    active={sortField === 'passingYear'}
-                                    direction={sortField === 'passingYear' ? sortOrder : 'asc'}
-                                    onClick={() => handleSort('passingYear')}
-                                >
-                                    Passing Year
-                                </TableSortLabel>
-                            </StyledTableCell>
+                            
 
                             {
                                 showAction &&
@@ -148,20 +115,16 @@ const ApplicantTableList = ({ topMessage, evaluator, applicants, setApplicants, 
                     <TableBody>
                         {sortedApplicants.map((applicant, index) => (
                             <TableRow key={index}>
-                                <TableCell>{applicant.firstName}</TableCell>
-                                <TableCell>{applicant.lastName}</TableCell>
-                                <TableCell>{applicant.email}</TableCell>
-                                <TableCell>{applicant.cgpa}</TableCell>
-                                <TableCell>{applicant.courseName}</TableCell>
-                                <TableCell>{applicant.presentAddress}</TableCell>
-                                <TableCell>{applicant.degreeName}</TableCell>
-                                <TableCell>{applicant.passingYear}</TableCell>
-
+                                <TableCell>{applicant.examineeInfo.userInfo.firstName}</TableCell>
+                                <TableCell>{applicant.examineeInfo.userInfo.email}</TableCell>
+                                <TableCell>{applicant.writtenMarks.writtenMark}</TableCell>
+                                <TableCell>{applicant.writtenMarks.writtenQuestionMarks.map((item)=>item.writtenQuestionMark).join(', ')}</TableCell>
+                        
 
                                 {
                                     showAction &&
                                     <TableCell>
-                                        <Button variant="contained" color="secondary" onClick={() => action(applicant, evaluator)}>
+                                        <Button variant="contained" color="secondary" onClick={() => action(applicant)}>
                                             {actionText}
                                         </Button>
                                     </TableCell>
@@ -178,4 +141,8 @@ const ApplicantTableList = ({ topMessage, evaluator, applicants, setApplicants, 
     );
 };
 
-export default ApplicantTableList;
+
+
+
+
+export default WrittenMark

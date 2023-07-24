@@ -3,11 +3,9 @@ import { Tab, Tabs, Box, Typography, styled } from '@mui/material';
 import { LoginContext } from '../context/LoginContex';
 import CourseCards from '../components/CourseCards';
 import axios from '../api/axios';
+import ApplicantTable from '../components/ApplicantTable';
 import AptitudeMark from '../components/AptitudeMark';
-import CandidateTable from '../components/CandidateTable';
-import UploadAptitudeMark from "../components/UploadAptitudeMark";
-import JSON2Message from '../services/JSON2Message';
-import UploadTechnicalMark from '../components/UploadTechnicalMark';
+import WrittenMark from '../components/WrittenMark';
 
 
 const HeaderTypography = styled(Typography)(({ theme }) => ({
@@ -15,7 +13,7 @@ const HeaderTypography = styled(Typography)(({ theme }) => ({
   marginBottom: theme.spacing(2),
 }));
 
-const TechnicalInterviewPage = () => {
+const WrittenTestPage = () => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
@@ -45,22 +43,18 @@ const TechnicalInterviewPage = () => {
 
   const [value, setValue] = useState("passed-candidates")
   const [value2, setValue2] = useState("")
-  const [value3, setValue3] = useState("");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
     setValue2("");
-    setValue3("")
   };
 
-  const [allCandidates, setAllCandidates] = useState([])
-
-
+const [allCandidates, setAllCandidates] = useState([])
   const [passedCandidates, setPassedCandidates] = useState([]);
 
   const setSingleCourse = (course) => {
     console.log(course);
-    let roundName = "technical";
+    let roundName = "written";
     let batchCode = course.batchCode;
 
     const formData = {
@@ -87,7 +81,7 @@ const TechnicalInterviewPage = () => {
           setPassedCandidates(response?.data?.data?.listResponse);
         }
       }).catch((error) => {
-        console.error('Error getting all passed:', error);
+        console.error('Error getting all passed written:', error);
         setShowErrorMessage(true)
         setErrorMessage(JSON2Message(JSON.stringify(error.response.data.errorMessage)))
       });
@@ -99,48 +93,7 @@ const TechnicalInterviewPage = () => {
     console.log(course);
     setValue2("single-course-update")
 
-    let roundName = "aptitude";
-    let batchCode = course.batchCode;
-
-    const formData = {
-      roundName,
-      batchCode
-
-    };
-
-    console.log(formData);
-    const token = window.localStorage.getItem("tss-token");
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    axios.post("/api/evaluation/passed-round", formData, config)
-      .then((response) => {
-        console.log(response);
-        if (response.status === 200) {
-          setShowSuccessMessage(true)
-          setSuccessMessage(response.data.successMessage)
-          console.log(response?.data?.data?.listResponse);
-          setAllCandidates(response?.data?.data?.listResponse);
-        }
-      }).catch((error) => {
-        console.error('Error getting all  written:', error);
-        setShowErrorMessage(true)
-        setErrorMessage(JSON2Message(JSON.stringify(error.response.data.errorMessage)))
-      });
   }
-
-  const [selectedCandidate, setSelectedCandidate] = useState({})
-  const uploadMarkCandidate = (candidate) => {
-    console.log(candidate);
-    setValue3("upload-mark")
-    setSelectedCandidate(candidate)
-  }
-
-
-
 
   return (
     <Box mt={1}>
@@ -155,8 +108,8 @@ const TechnicalInterviewPage = () => {
             indicatorColor="secondary"
             aria-label="secondary tabs example"
           >
-            <Tab value="passed-candidates" label="Technical Viva Passed Candidates" />
-            <Tab value="upload-mark" label="Upload Technical Viva Test Mark" />
+            <Tab value="passed-candidates" label="Written Test Passed Candidates" />
+            <Tab value="upload-mark" label="All Written Test Candidates" />
           </Tabs>
         </Box>
       </Box>
@@ -169,7 +122,7 @@ const TechnicalInterviewPage = () => {
             Select course to view the passed candidates of selected course.
           </HeaderTypography>
 
-          <CourseCards courseButtonText={"Technical viva passed for this course"} courses={courses} pathValue={"single-course-candidate"} setValue={setValue2} setSingleCourse={setSingleCourse} />
+          <CourseCards courseButtonText={"Written Test passed for this course"} courses={courses} pathValue={"single-course-candidate"} setValue={setValue2} setSingleCourse={setSingleCourse} />
         </Box>
 
       }
@@ -177,32 +130,31 @@ const TechnicalInterviewPage = () => {
       {value == "passed-candidates" && value2 == "single-course-candidate" &&
 
         <Box pt={7}>
-          <AptitudeMark topMessage={"Candidate who passed technical viva"} applicants={passedCandidates} showAction={false} />
+
+          <WrittenMark topMessage={"Candidate who passed written test"} applicants={passedCandidates} showAction={false} />
         </Box>
 
       }
-      {value == "upload-mark" && value2 == "" && value3 == "" &&
+      {value == "upload-mark" && value2 == "" &&
 
         <Box pt={7}>
 
           <HeaderTypography>
-            Select course to upload marks.
+            Select course to view all candidates of selected course.
           </HeaderTypography>
-          <CourseCards courseButtonText={"Upload Technical Viva Marks."} courses={courses} pathValue={"single-course-candidate"} setValue={setValue2} setSingleCourse={setSingleCourseForUploadMark} />
+          <CourseCards courseButtonText={"Upload Aptitude Marks for this course"} courses={courses} pathValue={"single-course-candidate"} setValue={setValue2} setSingleCourse={setSingleCourseForUploadMark} />
         </Box>
 
       }
 
-      {value == "upload-mark" && value2 == "single-course-update" && value3 == "" &&
-        <Box pt={7}>
-          <CandidateTable applicants={allCandidates} setApplicants={setAllCandidates} action={uploadMarkCandidate} actionText={"Upload Mark"} />
-        </Box>
-      }
+      {value == "upload-mark" && value2 == "single-course-update" &&
 
-      {value == "upload-mark" && value2 == "single-course-update" && value3 == "upload-mark" &&
+
         <Box pt={7}>
-          <UploadTechnicalMark candidate={selectedCandidate} />
+<h1>gd</h1>
+          {/* <ApplicantTable applicants={allApplicants} setApplicants={setAllApplicants} action={approveApplicant} actionText={"Approve Applicant"} /> */}
         </Box>
+
       }
 
 
@@ -212,4 +164,4 @@ const TechnicalInterviewPage = () => {
 }
 
 
-export default TechnicalInterviewPage
+export default WrittenTestPage

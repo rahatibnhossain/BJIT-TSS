@@ -165,6 +165,17 @@ const Sidebar = ({ close }) => {
                 </Link>
               </ListItem>
 
+              <ListItem disablePadding>
+                <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/written_test") }} component={NavLink} to="/written_test" variant="ListItemButton"   >
+                  <ListItemButton >
+                    <ListItemIcon>
+                      <Home />
+                    </ListItemIcon>
+                    <ListItemText primary="Written Test" />
+                  </ListItemButton>
+                </Link>
+              </ListItem>
+
 
               <ListItem disablePadding>
                 <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/approve_applicant") }} component={NavLink} to="/approve_applicant" variant="ListItemButton"   >

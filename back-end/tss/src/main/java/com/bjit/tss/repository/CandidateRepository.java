@@ -22,4 +22,12 @@ public interface CandidateRepository extends JpaRepository<CandidateMarks, Long>
     List<CandidateMarks> findByWrittenMarksEvaluatorInfoEvaluatorIdAndExamineeInfoCourseInfoIsAvailable(Long evaluatorId, boolean b);
 
     List<CandidateMarks> findAllByExamineeInfoRoleAndExamineeInfoCourseInfoBatchCodeAndWrittenMarksEvaluatorInfoIsNull(Role role, String batchCode);
+
+    List<CandidateMarks> findAllByAptitudeTestPassedAndExamineeInfoCourseInfoBatchCodeAndExamineeInfoCourseInfoIsAvailable(boolean b, String batchCode, boolean b1);
+
+    List<CandidateMarks> findAllByWrittenMarksPassedAndExamineeInfoCourseInfoBatchCodeAndExamineeInfoCourseInfoIsAvailable(boolean b, String batchCode, boolean b1);
+
+    List<CandidateMarks> findAllByTechnicalVivaPassedAndExamineeInfoCourseInfoBatchCodeAndExamineeInfoCourseInfoIsAvailable(boolean b, String batchCode, boolean b1);
+
+    List<CandidateMarks> findAllByHrVivaPassedAndExamineeInfoCourseInfoBatchCodeAndExamineeInfoCourseInfoIsAvailable(boolean b, String batchCode, boolean b1);
 }

@@ -20,6 +20,7 @@ import FinalTraineesPage from '../pages/FinalTraineesPage';
 import HrInterviewPage from '../pages/HrInterviewPage';
 import TechnicalInterviewPage from '../pages/TechnicalInterviewPage';
 import AptitudeTestPage from '../pages/AptitudeTestPage';
+import WrittenTestPage from '../pages/WrittenTestPage';
 
 const Feed = ({ data, loading, close }) => {
 
@@ -81,6 +82,7 @@ const Feed = ({ data, loading, close }) => {
             <Route path="/technical_interview" element={<TechnicalInterviewPage />} />
             <Route path="/hr_interview" element={<HrInterviewPage />} />
             <Route path="/final_trainees" element={<FinalTraineesPage />} />
+            <Route path="/written_test" element={<WrittenTestPage />} />
 
 
           </>

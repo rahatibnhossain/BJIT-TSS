@@ -4,14 +4,12 @@ import com.bjit.tss.model.ApiResponse;
 import com.bjit.tss.model.AssignAnswerSheetRequest;
 import com.bjit.tss.model.UploadMarkRequest;
 import com.bjit.tss.model.UploadWrittenMarkRequest;
+import com.bjit.tss.model.request.RoundCandidatesRequest;
 import com.bjit.tss.service.EvaluationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/evaluation")
@@ -43,5 +41,10 @@ public class EvaluationController {
     @PostMapping("/upload-mark/hr-viva")
     public ResponseEntity<ApiResponse<?>> uploadHrVivaMark(@RequestBody UploadMarkRequest UploadMarkRequest) {
         return evaluationService.uploadHrVivaMark(UploadMarkRequest);
+    }
+
+    @PostMapping("/passed-round")
+    public ResponseEntity<ApiResponse<?>> getRoundPassedSpecific(@RequestBody RoundCandidatesRequest roundCandidatesRequest){
+        return evaluationService.getRoundPassedSpecific(roundCandidatesRequest);
     }
 }

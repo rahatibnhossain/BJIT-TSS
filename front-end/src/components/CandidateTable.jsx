@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
-import { styled,Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TableSortLabel, Button, Box } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TableSortLabel, Button } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import axios from '../api/axios';
-
-const HeaderTypography = styled(Typography)(({ theme }) => ({
-    fontSize: '1.6rem',
-    marginBottom: theme.spacing(2),
-}));
 
 const Container = styled(TableContainer)(({ theme }) => ({
     maxHeight: 440,
@@ -23,7 +19,7 @@ const ScrollableWrapper = styled('div')(({ theme }) => ({
     overflowX: 'auto',
 }));
 
-const ApplicantTableList = ({ topMessage, evaluator, applicants, setApplicants, action, actionText, showAction }) => {
+const CandidateTable = ({ applicants, setApplicants, action, actionText }) => {
     const [sortField, setSortField] = useState('');
     const [sortOrder, setSortOrder] = useState('asc');
 
@@ -51,12 +47,6 @@ const ApplicantTableList = ({ topMessage, evaluator, applicants, setApplicants, 
 
     return (
         <Container component={Paper}>
-            <Box p={2}>
-                <HeaderTypography>
-
-                    {topMessage}
-                </HeaderTypography>
-            </Box>
             <ScrollableWrapper>
                 <ResponsiveTable stickyHeader>
                     <TableHead>
@@ -99,15 +89,6 @@ const ApplicantTableList = ({ topMessage, evaluator, applicants, setApplicants, 
                             </StyledTableCell>
                             <StyledTableCell>
                                 <TableSortLabel
-                                    active={sortField === 'courseName'}
-                                    direction={sortField === 'courseName' ? sortOrder : 'asc'}
-                                    onClick={() => handleSort('courseName')}
-                                >
-                                    Course Name
-                                </TableSortLabel>
-                            </StyledTableCell>
-                            <StyledTableCell>
-                                <TableSortLabel
                                     active={sortField === 'presentAddress'}
                                     direction={sortField === 'presentAddress' ? sortOrder : 'asc'}
                                     onClick={() => handleSort('presentAddress')}
@@ -134,39 +115,28 @@ const ApplicantTableList = ({ topMessage, evaluator, applicants, setApplicants, 
                                 </TableSortLabel>
                             </StyledTableCell>
 
-                            {
-                                showAction &&
-                                <StyledTableCell>
+                            <StyledTableCell>
+                                <TableSortLabel >
+                                </TableSortLabel>
+                            </StyledTableCell>
 
-                                    <TableSortLabel  >
-                                        
-                                    </TableSortLabel>
-                                </StyledTableCell>
-                            }
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {sortedApplicants.map((applicant, index) => (
                             <TableRow key={index}>
-                                <TableCell>{applicant.firstName}</TableCell>
-                                <TableCell>{applicant.lastName}</TableCell>
-                                <TableCell>{applicant.email}</TableCell>
-                                <TableCell>{applicant.cgpa}</TableCell>
-                                <TableCell>{applicant.courseName}</TableCell>
-                                <TableCell>{applicant.presentAddress}</TableCell>
-                                <TableCell>{applicant.degreeName}</TableCell>
-                                <TableCell>{applicant.passingYear}</TableCell>
-
-
-                                {
-                                    showAction &&
-                                    <TableCell>
-                                        <Button variant="contained" color="secondary" onClick={() => action(applicant, evaluator)}>
-                                            {actionText}
-                                        </Button>
-                                    </TableCell>
-
-                                }
+                                <TableCell>{applicant.examineeInfo.userInfo.firstName}</TableCell>
+                                <TableCell>{applicant.examineeInfo.userInfo.lastName}</TableCell>
+                                <TableCell>{applicant.examineeInfo.userInfo.email}</TableCell>
+                                <TableCell>{applicant.examineeInfo.userInfo.cgpa}</TableCell>
+                                <TableCell>{applicant.examineeInfo.userInfo.presentAddress}</TableCell>
+                                <TableCell>{applicant.examineeInfo.userInfo.degreeName}</TableCell>
+                                <TableCell>{applicant.examineeInfo.userInfo.passingYear}</TableCell>
+                                <TableCell>
+                                    <Button variant="contained" color="secondary" onClick={() => action(applicant)}>
+                                        {actionText}
+                                    </Button>
+                                </TableCell>
 
 
                             </TableRow>
@@ -178,4 +148,6 @@ const ApplicantTableList = ({ topMessage, evaluator, applicants, setApplicants, 
     );
 };
 
-export default ApplicantTableList;
+
+
+export default CandidateTable

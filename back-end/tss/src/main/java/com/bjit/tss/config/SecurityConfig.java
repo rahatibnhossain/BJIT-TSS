@@ -88,7 +88,8 @@ public class SecurityConfig {
                         "/api/course/unavailable",
                         "/api/evaluator/get-all",
                         "/api/evaluator/assigned-candidates/**",
-                        "/api/application/course/unassigned-candidates"
+                        "/api/application/course/unassigned-candidates",
+                        "/api/evaluation/passed-round"
                 )
                 .hasAuthority("ADMIN")
                 .anyRequest()

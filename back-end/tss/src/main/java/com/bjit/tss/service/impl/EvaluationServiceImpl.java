@@ -8,6 +8,7 @@ import com.bjit.tss.exception.UserException;
 import com.bjit.tss.mapper.ApiResponseMapper;
 import com.bjit.tss.mapper.EvaluatorMapper;
 import com.bjit.tss.model.*;
+import com.bjit.tss.model.request.RoundCandidatesRequest;
 import com.bjit.tss.model.response.EvaluatorAssignmentResponse;
 import com.bjit.tss.repository.*;
 import com.bjit.tss.service.EvaluationService;
@@ -77,12 +78,12 @@ public class EvaluationServiceImpl implements EvaluationService {
         List<EvaluatorAssignmentResponse> assignmentResponseList = saved.stream().map(EvaluatorMapper::mapToEvaluatorAssignmentResponse).toList();
 
 
-        ListResponse listResponse= ListResponse.builder()
+        ListResponse listResponse = ListResponse.builder()
                 .dataLength(assignmentResponseList.size())
                 .listResponse(assignmentResponseList)
                 .build();
 
-        return ApiResponseMapper.mapToResponseEntityOK(listResponse, "Successfully assigned to "+evaluatorInfo.get().getName());
+        return ApiResponseMapper.mapToResponseEntityOK(listResponse, "Successfully assigned to " + evaluatorInfo.get().getName());
     }
 
     @Override
@@ -101,8 +102,8 @@ public class EvaluationServiceImpl implements EvaluationService {
             throw new EvaluationException("Ask admin to set the number of written question");
         }
 
-        if (Integer.parseInt(dataStorage.get().getDataValue()) < (Integer) request.getMarks().size()) {
-            throw new EvaluationException("Maximum number of written questions are : " + dataStorage.get().getDataValue());
+        if (Integer.parseInt(dataStorage.get().getDataValue()) != (Integer) request.getMarks().size()) {
+            throw new EvaluationException("Number of written questions are : " + dataStorage.get().getDataValue());
         }
 
         WrittenMarks writtenMarks = hiddenCodeInfo.get().getCandidateMarks().getWrittenMarks();
@@ -198,8 +199,8 @@ public class EvaluationServiceImpl implements EvaluationService {
 
         }
 
-        if (Integer.parseInt(aptitudeQuestionNumber.get().getDataValue()) < (Integer) request.getMarks().size()) {
-            throw new EvaluationException("Maximum number of questions in aptitude test is : " + aptitudeQuestionNumber.get().getDataValue());
+        if (Integer.parseInt(aptitudeQuestionNumber.get().getDataValue()) != (Integer) request.getMarks().size()) {
+            throw new EvaluationException("Number of questions in aptitude test is : " + aptitudeQuestionNumber.get().getDataValue());
         }
         AtomicReference<Integer> questionNo = new AtomicReference<>(0);
         AtomicReference<Float> totalMark = new AtomicReference<>(0.0f);
@@ -277,8 +278,8 @@ public class EvaluationServiceImpl implements EvaluationService {
             throw new EvaluationException("Please set the number of questions in technical viva");
 
         }
-        if (Integer.parseInt(technicalQuestionNumber.get().getDataValue()) < (Integer) request.getMarks().size()) {
-            throw new EvaluationException("Maximum number of questions in technical viva is : " + technicalQuestionNumber.get().getDataValue());
+        if (Integer.parseInt(technicalQuestionNumber.get().getDataValue()) != (Integer) request.getMarks().size()) {
+            throw new EvaluationException("Number of questions in technical viva is : " + technicalQuestionNumber.get().getDataValue());
         }
         AtomicReference<Integer> questionNo = new AtomicReference<>(0);
         AtomicReference<Float> totalMark = new AtomicReference<>(0.0f);
@@ -356,8 +357,8 @@ public class EvaluationServiceImpl implements EvaluationService {
             throw new EvaluationException("Please set the number of questions in hr viva");
         }
 
-        if (Integer.parseInt(hrVivaQuestionNumber.get().getDataValue()) < (Integer) request.getMarks().size()) {
-            throw new EvaluationException("Maximum number of questions in hr viva is : " + hrVivaQuestionNumber.get().getDataValue());
+        if (Integer.parseInt(hrVivaQuestionNumber.get().getDataValue()) != (Integer) request.getMarks().size()) {
+            throw new EvaluationException("Number of questions in hr viva is : " + hrVivaQuestionNumber.get().getDataValue());
         }
 
         AtomicReference<Integer> questionNo = new AtomicReference<>(0);
@@ -414,12 +415,39 @@ public class EvaluationServiceImpl implements EvaluationService {
         candidateMarks.get().getHrViva().setPassed(isPassed);
         candidateMarks.get().getHrViva().setRoundName(Round.HR);
 
-        Float fullMark = candidateMarks.get().getWrittenMarks().getWrittenMark()+candidateMarks.get().getAptitudeTest().getRoundMark()+ candidateMarks.get().getTechnicalViva().getRoundMark()+candidateMarks.get().getHrViva().getRoundMark();
+        Float fullMark = candidateMarks.get().getWrittenMarks().getWrittenMark() + candidateMarks.get().getAptitudeTest().getRoundMark() + candidateMarks.get().getTechnicalViva().getRoundMark() + candidateMarks.get().getHrViva().getRoundMark();
         candidateMarks.get().setFullMark(fullMark);
 
         questionNo.set(0);
         totalMark.set(0.0f);
         CandidateMarks saved = candidateRepository.save(candidateMarks.get());
         return ApiResponseMapper.mapToResponseEntityOK(saved, "HR viva mark uploaded successfully.");
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse<?>> getRoundPassedSpecific(RoundCandidatesRequest request) {
+
+
+        List<CandidateMarks> candidateMarks = null;
+        if (Objects.equals(request.getRoundName(), "aptitude")) {
+            candidateMarks = candidateRepository.findAllByAptitudeTestPassedAndExamineeInfoCourseInfoBatchCodeAndExamineeInfoCourseInfoIsAvailable(true, request.getBatchCode(), true);
+
+        } else if (Objects.equals(request.getRoundName(), "written")) {
+            candidateMarks = candidateRepository.findAllByWrittenMarksPassedAndExamineeInfoCourseInfoBatchCodeAndExamineeInfoCourseInfoIsAvailable(true, request.getBatchCode(), true);
+
+        }
+        else if (Objects.equals(request.getRoundName(), "technical")) {
+            candidateMarks = candidateRepository.findAllByTechnicalVivaPassedAndExamineeInfoCourseInfoBatchCodeAndExamineeInfoCourseInfoIsAvailable(true, request.getBatchCode(), true);
+        }
+        else if (Objects.equals(request.getRoundName(), "hrviva")) {
+            candidateMarks = candidateRepository.findAllByHrVivaPassedAndExamineeInfoCourseInfoBatchCodeAndExamineeInfoCourseInfoIsAvailable(true, request.getBatchCode(), true);
+        }
+
+        ListResponse<?> listResponse = ListResponse.builder()
+                .listResponse(candidateMarks)
+                .dataLength(candidateMarks.size())
+                .build();
+
+        return ApiResponseMapper.mapToResponseEntityOK(listResponse, "Candidates who have passed " + request.getRoundName() + " round of " + request.getBatchCode() + " batch code.");
     }
 }
