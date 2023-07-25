@@ -4,7 +4,7 @@ import com.bjit.tss.entity.ExamineeInfo;
 import com.bjit.tss.entity.LoginInfo;
 import com.bjit.tss.exception.AdmitGenerationException;
 import com.bjit.tss.exception.UserException;
-import com.bjit.tss.model.AdmitCardRequest;
+import com.bjit.tss.model.request.AdmitCardRequest;
 import com.bjit.tss.repository.ExamineeRepository;
 import com.bjit.tss.enums.Role;
 import com.bjit.tss.service.AdmitCardService;

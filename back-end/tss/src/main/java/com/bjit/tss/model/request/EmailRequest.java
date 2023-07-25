@@ -1,4 +1,4 @@
-package com.bjit.tss.model;
+package com.bjit.tss.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

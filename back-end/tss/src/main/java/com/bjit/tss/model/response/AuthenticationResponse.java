@@ -1,4 +1,4 @@
-package com.bjit.tss.model;
+package com.bjit.tss.model.response;
 
 import com.bjit.tss.entity.EvaluatorInfo;
 import com.bjit.tss.entity.UserInfo;

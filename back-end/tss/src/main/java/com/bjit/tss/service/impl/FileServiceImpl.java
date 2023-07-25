@@ -1,13 +1,10 @@
 package com.bjit.tss.service.impl;
 
 import com.bjit.tss.entity.LoginInfo;
-import com.bjit.tss.entity.ValidationCodes;
 import com.bjit.tss.exception.FileUploadException;
-import com.bjit.tss.exception.UserException;
 import com.bjit.tss.mapper.ApiResponseMapper;
-import com.bjit.tss.model.ApiResponse;
-import com.bjit.tss.model.EmailRequest;
-import com.bjit.tss.model.FileUploadResponse;
+import com.bjit.tss.model.response.ApiResponse;
+import com.bjit.tss.model.response.FileUploadResponse;
 import com.bjit.tss.repository.LoginRepository;
 import com.bjit.tss.repository.ValidationRepository;
 import com.bjit.tss.service.EmailService;
@@ -20,10 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

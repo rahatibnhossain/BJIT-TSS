@@ -1,6 +1,5 @@
-package com.bjit.tss.model;
+package com.bjit.tss.model.request;
 
-import com.bjit.tss.enums.Role;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -9,17 +8,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class CourseRoleRequest {
+public class AssignAnswerSheetRequest {
 
     @Valid
 
-    @NotNull(message = "Role is required")
-    private Role role;
+    @NotNull(message = "Evaluator ID is required")
+    private Long evaluatorId;
 
-    @NotEmpty(message = "Batch Code is required")
-    private String batchCode;
+    @NotNull(message = "Candidate IDs are required")
+    private List<Long> candidateIds;
 }

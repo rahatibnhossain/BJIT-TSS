@@ -1,10 +1,10 @@
 package com.bjit.tss.controller;
 
-import com.bjit.tss.model.EvaluatorRegisterRequest;
-import com.bjit.tss.model.RegisterRequest;
-import com.bjit.tss.model.ValidationRequest;
+import com.bjit.tss.model.request.EvaluatorRegisterRequest;
+import com.bjit.tss.model.request.RegisterRequest;
+import com.bjit.tss.model.request.ValidationRequest;
 import com.bjit.tss.service.RegisterService;
-import com.bjit.tss.model.ApiResponse;
+import com.bjit.tss.model.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,6 @@
 package com.bjit.tss.controller;
 
-import com.bjit.tss.model.ApiResponse;
+import com.bjit.tss.model.response.ApiResponse;
 import com.bjit.tss.service.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

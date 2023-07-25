@@ -1,4 +1,4 @@
-package com.bjit.tss.model;
+package com.bjit.tss.model.request;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -11,13 +11,16 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FinalTraineeSelectionRequest {
+@Builder
+public class UploadWrittenMarkRequest {
 
     @Valid
 
-    @NotNull(message = "Candidate ID is required")
-    private List<Long> candidateIds;
+    @NotNull(message = "Candidate ID cannot be null")
+    private Long hiddenCode;
+
+    @NotEmpty(message = "Marks list cannot be empty")
+    private List<Float> marks;
 }

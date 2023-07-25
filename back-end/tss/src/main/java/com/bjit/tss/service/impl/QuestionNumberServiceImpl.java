@@ -2,8 +2,8 @@ package com.bjit.tss.service.impl;
 
 import com.bjit.tss.entity.DataStorage;
 import com.bjit.tss.mapper.ApiResponseMapper;
-import com.bjit.tss.model.ApiResponse;
-import com.bjit.tss.model.QuestionNumberRequest;
+import com.bjit.tss.model.response.ApiResponse;
+import com.bjit.tss.model.request.QuestionNumberRequest;
 import com.bjit.tss.repository.DataStorageRepository;
 import com.bjit.tss.service.QuestionNumberService;
 import lombok.RequiredArgsConstructor;

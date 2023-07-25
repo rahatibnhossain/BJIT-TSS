@@ -1,4 +1,4 @@
-package com.bjit.tss.model;
+package com.bjit.tss.model.request;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -11,12 +11,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class DataStorageRequest {
+public class ApplicationRequest {
+
     @Valid
 
-    @NotEmpty(message = "Data Key is required")
-    private String dataKey;
-
-    @NotEmpty(message = "Data Value is required")
-    private String dataValue;
+    @NotEmpty(message = "Batch Code is required")
+    private String batchCode;
 }

@@ -1,7 +1,6 @@
-package com.bjit.tss.model;
+package com.bjit.tss.model.request;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,13 +8,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class ValidationRequest {
+public class AdmitCardRequest {
 
     @Valid
 
-    @NotEmpty(message = "Validation Code cannot be null")
-    private String validationCode;
+    @NotNull(message = "examineeId is required")
+    private Long examineeId;
 }

@@ -1,8 +1,8 @@
 package com.bjit.tss.service;
 
-import com.bjit.tss.model.ApiResponse;
-import com.bjit.tss.model.ApplicationRequest;
-import com.bjit.tss.model.CourseRoleRequest;
+import com.bjit.tss.model.response.ApiResponse;
+import com.bjit.tss.model.request.ApplicationRequest;
+import com.bjit.tss.model.request.CourseRoleRequest;
 import org.springframework.http.ResponseEntity;
 
 public interface ApplicationService {

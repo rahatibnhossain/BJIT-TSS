@@ -1,9 +1,9 @@
 package com.bjit.tss.controller;
 
-import com.bjit.tss.model.ApiResponse;
-import com.bjit.tss.model.AssignAnswerSheetRequest;
-import com.bjit.tss.model.UploadMarkRequest;
-import com.bjit.tss.model.UploadWrittenMarkRequest;
+import com.bjit.tss.model.response.ApiResponse;
+import com.bjit.tss.model.request.AssignAnswerSheetRequest;
+import com.bjit.tss.model.request.UploadMarkRequest;
+import com.bjit.tss.model.request.UploadWrittenMarkRequest;
 import com.bjit.tss.model.request.RoundCandidatesRequest;
 import com.bjit.tss.service.EvaluationService;
 import jakarta.validation.Valid;

@@ -1,4 +1,4 @@
-package com.bjit.tss.model;
+package com.bjit.tss.model.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -11,8 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ValidationResponse<T> {
+public class ApiResponse<T> {
 
+    private T successMessage;
     private T data;
-    private T role;
+    private T errorMessage;
 }

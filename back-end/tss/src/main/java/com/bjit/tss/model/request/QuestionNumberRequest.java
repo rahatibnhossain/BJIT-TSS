@@ -1,4 +1,4 @@
-package com.bjit.tss.model;
+package com.bjit.tss.model.request;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -8,19 +8,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AssignAnswerSheetRequest {
+@Builder
+public class QuestionNumberRequest {
 
     @Valid
 
-    @NotNull(message = "Evaluator ID is required")
-    private Long evaluatorId;
+    @NotEmpty(message = "Question type cannot be null or empty")
+    private String questionType;
 
-    @NotNull(message = "Candidate IDs are required")
-    private List<Long> candidateIds;
+    @NotNull(message = "Question numbers cannot be null")
+    private Long questionNumbers;
 }

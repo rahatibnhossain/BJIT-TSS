@@ -1,6 +1,6 @@
 package com.bjit.tss.mapper;
 
-import com.bjit.tss.model.ApiResponse;
+import com.bjit.tss.model.response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 

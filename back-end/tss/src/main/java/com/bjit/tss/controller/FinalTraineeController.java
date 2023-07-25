@@ -1,7 +1,7 @@
 package com.bjit.tss.controller;
 
-import com.bjit.tss.model.ApiResponse;
-import com.bjit.tss.model.FinalTraineeSelectionRequest;
+import com.bjit.tss.model.response.ApiResponse;
+import com.bjit.tss.model.request.FinalTraineeSelectionRequest;
 import com.bjit.tss.service.FinalTraineeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

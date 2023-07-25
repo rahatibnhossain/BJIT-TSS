@@ -1,7 +1,7 @@
 package com.bjit.tss.exception;
 
 import com.bjit.tss.mapper.ApiResponseMapper;
-import com.bjit.tss.model.ApiResponse;
+import com.bjit.tss.model.response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;

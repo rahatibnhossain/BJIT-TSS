@@ -1,7 +1,8 @@
-package com.bjit.tss.model;
+package com.bjit.tss.model.request;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,13 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class LoginRequest {
-
+public class ApprovalRequest {
     @Valid
 
-    @NotEmpty(message = "Email is required")
-    private String email;
-
-    @NotEmpty(message = "Password is required")
-    private String password;
+    @NotNull(message = "Examinee ID is required")
+    private Long examineeId;
 }

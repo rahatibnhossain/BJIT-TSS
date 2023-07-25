@@ -1,5 +1,6 @@
-package com.bjit.tss.model;
+package com.bjit.tss.model.request;
 
+import com.bjit.tss.enums.Role;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -12,13 +13,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class QuestionNumberRequest {
+public class CourseRoleRequest {
 
     @Valid
 
-    @NotEmpty(message = "Question type cannot be null or empty")
-    private String questionType;
+    @NotNull(message = "Role is required")
+    private Role role;
 
-    @NotNull(message = "Question numbers cannot be null")
-    private Long questionNumbers;
+    @NotEmpty(message = "Batch Code is required")
+    private String batchCode;
 }

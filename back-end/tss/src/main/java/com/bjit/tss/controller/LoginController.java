@@ -1,8 +1,8 @@
 package com.bjit.tss.controller;
 
-import com.bjit.tss.model.LoginRequest;
+import com.bjit.tss.model.request.LoginRequest;
 import com.bjit.tss.service.LoginService;
-import com.bjit.tss.model.ApiResponse;
+import com.bjit.tss.model.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
