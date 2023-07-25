@@ -177,7 +177,7 @@ const HrInterviewPage = () => {
       {value == "passed-candidates" && value2 == "single-course-candidate" &&
 
         <Box pt={7}>
-          <AptitudeMark topMessage={"Candidate who passed HR viva"} applicants={passedCandidates} showAction={false} />
+          <AptitudeMark type={"hrviva"} topMessage={"Candidate who passed HR viva"} applicants={passedCandidates} showAction={false} />
         </Box>
 
       }

@@ -433,19 +433,28 @@ public class EvaluationServiceImpl implements EvaluationService {
 
 
         List<CandidateMarks> candidateMarks = null;
-        if (Objects.equals(request.getRoundName(), "aptitude")) {
-            candidateMarks = candidateRepository.findAllByAptitudeTestPassedAndExamineeInfoCourseInfoBatchCodeAndExamineeInfoCourseInfoIsAvailable(true, request.getBatchCode(), true);
 
-        } else if (Objects.equals(request.getRoundName(), "written")) {
-            candidateMarks = candidateRepository.findAllByWrittenMarksPassedAndExamineeInfoCourseInfoBatchCodeAndExamineeInfoCourseInfoIsAvailable(true, request.getBatchCode(), true);
+        switch (request.getRoundName()) {
+            case "aptitude":
+                candidateMarks = candidateRepository.findAllByAptitudeTestPassedAndExamineeInfoCourseInfoBatchCodeAndExamineeInfoCourseInfoIsAvailable(true, request.getBatchCode(), true);
+                break;
 
+            case "written":
+                candidateMarks = candidateRepository.findAllByWrittenMarksPassedAndExamineeInfoCourseInfoBatchCodeAndExamineeInfoCourseInfoIsAvailable(true, request.getBatchCode(), true);
+                break;
+
+            case "technical":
+                candidateMarks = candidateRepository.findAllByTechnicalVivaPassedAndExamineeInfoCourseInfoBatchCodeAndExamineeInfoCourseInfoIsAvailable(true, request.getBatchCode(), true);
+                break;
+
+            case "hrviva":
+                candidateMarks = candidateRepository.findAllByHrVivaPassedAndExamineeInfoCourseInfoBatchCodeAndExamineeInfoCourseInfoIsAvailable(true, request.getBatchCode(), true);
+                break;
+
+            default:
+                throw new EvaluationException("Invalid Request");
         }
-        else if (Objects.equals(request.getRoundName(), "technical")) {
-            candidateMarks = candidateRepository.findAllByTechnicalVivaPassedAndExamineeInfoCourseInfoBatchCodeAndExamineeInfoCourseInfoIsAvailable(true, request.getBatchCode(), true);
-        }
-        else if (Objects.equals(request.getRoundName(), "hrviva")) {
-            candidateMarks = candidateRepository.findAllByHrVivaPassedAndExamineeInfoCourseInfoBatchCodeAndExamineeInfoCourseInfoIsAvailable(true, request.getBatchCode(), true);
-        }
+
 
         ListResponse<?> listResponse = ListResponse.builder()
                 .listResponse(candidateMarks)

@@ -44,30 +44,18 @@ public class ApplicantDashboardServiceImpl implements ApplicantDashboardService 
             }
         }).toList();
 
-
-
-
         List<CandidateMarks> candidateMarks = candidateRepository.findAllByExamineeInfoUserInfoUserIdAndExamineeInfoCourseInfoIsAvailable(loginInfo.getUserInfo().getUserId(), true);
 
         List<ApplicantDashboardMessage> dashboardMessage;
-
-
         List<ApplicantDashboardMessage> dashboardMessageFiltered;
-
         dashboardMessageFiltered = filtered.stream().map(examinee -> {
-
 
                 ApplicantDashboardMessage applicantDashboardMessage = new ApplicantDashboardMessage();
                 applicantDashboardMessage.setDashboardMessage(examinee.getCourseInfo().getApplicantDashboardMessage());
                 applicantDashboardMessage.setCourseName(examinee.getCourseInfo().getCourseName());
 
                 return applicantDashboardMessage;
-
-
-
         }).toList();
-
-
 
         if (candidateMarks.size() == 0) {
 
@@ -90,7 +78,6 @@ public class ApplicantDashboardServiceImpl implements ApplicantDashboardService 
 
                         } else {
                             applicantDashboardMessage.setDashboardMessage("Sorry you did not qualify HR viva. Best of luck.");
-
                         }
 
                     } else if (candidate.getTechnicalViva().getPassed() != null) {

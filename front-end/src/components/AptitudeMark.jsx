@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { styled,Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TableSortLabel, Button, Box } from '@mui/material';
+import { styled, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TableSortLabel, Button, Box } from '@mui/material';
 import axios from '../api/axios';
 
 
@@ -25,7 +25,7 @@ const ScrollableWrapper = styled('div')(({ theme }) => ({
     overflowX: 'auto',
 }));
 
-const AptitudeMark = ({ topMessage, applicants, action, actionText, showAction }) => {
+const AptitudeMark = ({ type, topMessage, applicants, action, actionText, showAction }) => {
     const [sortField, setSortField] = useState('');
     const [sortOrder, setSortOrder] = useState('asc');
 
@@ -99,14 +99,12 @@ const AptitudeMark = ({ topMessage, applicants, action, actionText, showAction }
                                     Individula Marks
                                 </TableSortLabel>
                             </StyledTableCell>
-                            
-
                             {
                                 showAction &&
                                 <StyledTableCell>
 
                                     <TableSortLabel  >
-                                        
+
                                     </TableSortLabel>
                                 </StyledTableCell>
                             }
@@ -115,11 +113,36 @@ const AptitudeMark = ({ topMessage, applicants, action, actionText, showAction }
                     <TableBody>
                         {sortedApplicants.map((applicant, index) => (
                             <TableRow key={index}>
-                                <TableCell>{applicant.examineeInfo.userInfo.firstName}</TableCell>
-                                <TableCell>{applicant.examineeInfo.userInfo.email}</TableCell>
-                                <TableCell>{applicant.aptitudeTest.roundMark}</TableCell>
-                                <TableCell>{applicant.aptitudeTest.questionMarksList.map((item)=>item.questionMark).join(', ')}</TableCell>
-                        
+
+                                {type == "technical" &&
+                                    <>
+                                        <TableCell>{applicant.examineeInfo.userInfo.firstName}</TableCell>
+                                        <TableCell>{applicant.examineeInfo.userInfo.email}</TableCell>
+                                        <TableCell>{applicant.technicalViva.roundMark}</TableCell>
+                                        <TableCell>{applicant.technicalViva.questionMarksList.map((item) => item.questionMark).join(', ')}</TableCell>
+                                    </>
+                                }
+
+                                {type == "aptitude" &&
+                                    <>
+                                        <TableCell>{applicant.examineeInfo.userInfo.firstName}</TableCell>
+                                        <TableCell>{applicant.examineeInfo.userInfo.email}</TableCell>
+                                        <TableCell>{applicant.technicalViva.roundMark}</TableCell>
+                                        <TableCell>{applicant.technicalViva.questionMarksList.map((item) => item.questionMark).join(', ')}</TableCell>
+
+
+                                    </>
+                                }
+
+                                {type == "hrviva" &&
+                                    <>
+                                        <TableCell>{applicant.examineeInfo.userInfo.firstName}</TableCell>
+                                        <TableCell>{applicant.examineeInfo.userInfo.email}</TableCell>
+                                        <TableCell>{applicant.hrViva.roundMark}</TableCell>
+                                        <TableCell>{applicant.hrViva.questionMarksList.map((item) => item.questionMark).join(', ')}</TableCell>
+                                    </>
+                                }
+
 
                                 {
                                     showAction &&

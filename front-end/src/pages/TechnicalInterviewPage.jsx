@@ -177,7 +177,7 @@ const TechnicalInterviewPage = () => {
       {value == "passed-candidates" && value2 == "single-course-candidate" &&
 
         <Box pt={7}>
-          <AptitudeMark topMessage={"Candidate who passed technical viva"} applicants={passedCandidates} showAction={false} />
+          <AptitudeMark  type={"technical"} topMessage={"Candidate who passed technical viva"} applicants={passedCandidates} showAction={false} />
         </Box>
 
       }

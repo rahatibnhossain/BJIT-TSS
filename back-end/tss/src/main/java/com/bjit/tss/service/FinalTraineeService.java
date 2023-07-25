@@ -9,4 +9,6 @@ public interface FinalTraineeService {
     ResponseEntity<ApiResponse<?>> allPassedFinalTrainee(String batchCode);
 
     ResponseEntity<ApiResponse<?>> selectFinalTrainee(FinalTraineeSelectionRequest request);
+
+    ResponseEntity<ApiResponse<?>> allFinalTrainee(String batchCode);
 }

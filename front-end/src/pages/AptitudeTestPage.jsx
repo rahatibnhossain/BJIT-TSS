@@ -216,7 +216,7 @@ const AptitudeTestPage = () => {
       {value == "passed-candidates" && value2 == "single-course-candidate" &&
 
         <Box pt={7}>
-          <AptitudeMark topMessage={"Candidate who passed aptitude test"} applicants={passedCandidates} showAction={false} />
+          <AptitudeMark type={"aptitude"} topMessage={"Candidate who passed aptitude test"} applicants={passedCandidates} showAction={false} />
         </Box>
 
       }
