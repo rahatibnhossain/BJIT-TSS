@@ -34,92 +34,92 @@ public class ApplicantDashboardServiceImpl implements ApplicantDashboardService 
 
         List<ExamineeInfo> examineeInfo = examineeRepository.findAllByUserInfoUserIdAndCourseInfoIsAvailable(loginInfo.getUserInfo().getUserId(), true);
 
-        List<ExamineeInfo> filtered = examineeInfo.stream().filter(examinee->{
+        List<ExamineeInfo> filteredApplicant = examineeInfo.stream().filter(examinee -> {
 
-            if (examinee.getRole()==Role.APPLICANT){
+            if (examinee.getRole() == Role.APPLICANT) {
                 return true;
-            }
-            else {
+            } else {
                 return false;
             }
         }).toList();
 
-        List<CandidateMarks> candidateMarks = candidateRepository.findAllByExamineeInfoUserInfoUserIdAndExamineeInfoCourseInfoIsAvailable(loginInfo.getUserInfo().getUserId(), true);
+        List<ExamineeInfo> filteredCandidate = examineeInfo.stream().filter(examinee -> {
+
+            if (examinee.getRole() == Role.CANDIDATE) {
+                return true;
+            } else {
+                return false;
+            }
+        }).toList();
+
+        List<CandidateMarks> candidateMarks = candidateRepository.findAllByExamineeInfoUserInfoUserIdAndExamineeInfoCourseInfoIsAvailableAndExamineeInfoRole(loginInfo.getUserInfo().getUserId(), true, Role.CANDIDATE);
 
         List<ApplicantDashboardMessage> dashboardMessage;
         List<ApplicantDashboardMessage> dashboardMessageFiltered;
-        dashboardMessageFiltered = filtered.stream().map(examinee -> {
+        dashboardMessageFiltered = filteredApplicant.stream().map(examinee -> {
 
-                ApplicantDashboardMessage applicantDashboardMessage = new ApplicantDashboardMessage();
-                applicantDashboardMessage.setDashboardMessage(examinee.getCourseInfo().getApplicantDashboardMessage());
-                applicantDashboardMessage.setCourseName(examinee.getCourseInfo().getCourseName());
+            ApplicantDashboardMessage applicantDashboardMessage = new ApplicantDashboardMessage();
+            applicantDashboardMessage.setDashboardMessage(examinee.getCourseInfo().getApplicantDashboardMessage());
+            applicantDashboardMessage.setCourseName(examinee.getCourseInfo().getCourseName());
 
-                return applicantDashboardMessage;
+            return applicantDashboardMessage;
         }).toList();
 
-        if (candidateMarks.size() == 0) {
+        dashboardMessage = candidateMarks.stream().map(candidate -> {
+            ApplicantDashboardMessage applicantDashboardMessage = new ApplicantDashboardMessage();
+            if (candidate.getExamineeInfo().getRole() == Role.CANDIDATE) {
 
-            dashboardMessage = examineeInfo.stream().map(examinee -> {
-                ApplicantDashboardMessage applicantDashboardMessage = new ApplicantDashboardMessage();
-                applicantDashboardMessage.setDashboardMessage(examinee.getCourseInfo().getApplicantDashboardMessage());
-                applicantDashboardMessage.setCourseName(examinee.getCourseInfo().getCourseName());
-
-                return applicantDashboardMessage;
-            }).toList();
-
-        } else {
-            dashboardMessage = candidateMarks.stream().map(candidate -> {
-                ApplicantDashboardMessage applicantDashboardMessage = new ApplicantDashboardMessage();
-                if (candidate.getExamineeInfo().getRole() == Role.CANDIDATE) {
-
-                    if (candidate.getHrViva().getPassed() != null ) {
-                        if (candidate.getHrViva().getPassed()){
-                            applicantDashboardMessage.setDashboardMessage(candidate.getExamineeInfo().getCourseInfo().getHrVivaPassedDashboardMessage());
-
-                        } else {
-                            applicantDashboardMessage.setDashboardMessage("Sorry you did not qualify HR viva. Best of luck.");
-                        }
-
-                    } else if (candidate.getTechnicalViva().getPassed() != null) {
-
-                        if (candidate.getTechnicalViva().getPassed()) {
-                            applicantDashboardMessage.setDashboardMessage(candidate.getExamineeInfo().getCourseInfo().getTechnicalVivaPassedDashboardMessage());
-                        } else {
-                            applicantDashboardMessage.setDashboardMessage("Sorry you did not qualify technical viva. Best of luck.");
-                        }
-
-                    } else if (candidate.getAptitudeTest().getPassed() != null) {
-
-                        if (candidate.getAptitudeTest().getPassed()) {
-                            applicantDashboardMessage.setDashboardMessage(candidate.getExamineeInfo().getCourseInfo().getAptitudeTestPassedDashboardMessage());
-                        } else {
-                            applicantDashboardMessage.setDashboardMessage("Sorry you did not qualify aptitude test. Best of luck.");
-                        }
-
-                    } else if (candidate.getWrittenMarks().getPassed() != null) {
-
-                        if (candidate.getWrittenMarks().getPassed()) {
-                            applicantDashboardMessage.setDashboardMessage(candidate.getExamineeInfo().getCourseInfo().getWrittenPassedDashboardMessage());
-                        } else {
-                            applicantDashboardMessage.setDashboardMessage("Sorry you did not qualify written test. Best of luck.");
-                        }
+                if (candidate.getHrViva().getPassed() != null) {
+                    if (candidate.getHrViva().getPassed()) {
+                        applicantDashboardMessage.setDashboardMessage(candidate.getExamineeInfo().getCourseInfo().getHrVivaPassedDashboardMessage());
 
                     } else {
-                        applicantDashboardMessage.setDashboardMessage(candidate.getExamineeInfo().getCourseInfo().getWrittenShortlistedDashboardMessage());
+                        applicantDashboardMessage.setDashboardMessage("Sorry you did not qualify HR viva. Best of luck.");
                     }
 
-                } else if (candidate.getExamineeInfo().getRole() == Role.TRAINEE) {
-                    applicantDashboardMessage.setDashboardMessage(candidate.getExamineeInfo().getCourseInfo().getTraineeDashboardMessage());
-                } else {
-                    throw new UserException("Invalid Request");
-                }
-                applicantDashboardMessage.setCourseName(candidate.getExamineeInfo().getCourseInfo().getCourseName());
-                return applicantDashboardMessage;
-            }).toList();
-        }
+                } else if (candidate.getTechnicalViva().getPassed() != null) {
 
-        if (dashboardMessage.size() == 0) {
-            List<ApplicantDashboardMessage> applicantDashboardMessage = new ArrayList<>(); // Initialize a list
+                    if (candidate.getTechnicalViva().getPassed()) {
+                        applicantDashboardMessage.setDashboardMessage(candidate.getExamineeInfo().getCourseInfo().getTechnicalVivaPassedDashboardMessage());
+                    } else {
+                        applicantDashboardMessage.setDashboardMessage("Sorry you did not qualify technical viva. Best of luck.");
+                    }
+
+                } else if (candidate.getAptitudeTest().getPassed() != null) {
+
+                    if (candidate.getAptitudeTest().getPassed()) {
+                        applicantDashboardMessage.setDashboardMessage(candidate.getExamineeInfo().getCourseInfo().getAptitudeTestPassedDashboardMessage());
+                    } else {
+                        applicantDashboardMessage.setDashboardMessage("Sorry you did not qualify aptitude test. Best of luck.");
+                    }
+
+                } else if (candidate.getWrittenMarks().getPassed() != null) {
+
+                    if (candidate.getWrittenMarks().getPassed()) {
+                        applicantDashboardMessage.setDashboardMessage(candidate.getExamineeInfo().getCourseInfo().getWrittenPassedDashboardMessage());
+                    } else {
+                        applicantDashboardMessage.setDashboardMessage("Sorry you did not qualify written test. Best of luck.");
+                    }
+
+                } else {
+                    applicantDashboardMessage.setDashboardMessage(candidate.getExamineeInfo().getCourseInfo().getWrittenShortlistedDashboardMessage());
+                }
+
+            } else if (candidate.getExamineeInfo().getRole() == Role.TRAINEE) {
+                applicantDashboardMessage.setDashboardMessage(candidate.getExamineeInfo().getCourseInfo().getTraineeDashboardMessage());
+            } else {
+                throw new UserException("Invalid Request");
+            }
+            applicantDashboardMessage.setCourseName(candidate.getExamineeInfo().getCourseInfo().getCourseName());
+            return applicantDashboardMessage;
+        }).toList();
+
+        ArrayList<ApplicantDashboardMessage> merge = new ArrayList<ApplicantDashboardMessage>();
+        merge.addAll(dashboardMessage);
+        merge.addAll(dashboardMessageFiltered);
+
+        if (merge.size() == 0) {
+            List<ApplicantDashboardMessage> applicantDashboardMessage = new ArrayList<>();
 
             ApplicantDashboardMessage applicantDashboardMessage1 = new ApplicantDashboardMessage();
             applicantDashboardMessage1.setDashboardMessage("You have not been applied to any course");
@@ -129,16 +129,15 @@ public class ApplicantDashboardServiceImpl implements ApplicantDashboardService 
                     .listResponse(applicantDashboardMessage)
                     .build();
             return ApiResponseMapper.mapToResponseEntityOK(listResponse, "Applicant Dashboard");
+        } else {
+
+
+
+            ListResponse<?> listResponse = ListResponse.builder()
+                    .dataLength(merge.size())
+                    .listResponse(merge)
+                    .build();
+            return ApiResponseMapper.mapToResponseEntityOK(listResponse, "Applicant Dashboard");
         }
-
-        ArrayList<ApplicantDashboardMessage> merge = new ArrayList<ApplicantDashboardMessage>();
-        merge.addAll(dashboardMessage);
-        merge.addAll(dashboardMessageFiltered);
-
-        ListResponse<?> listResponse = ListResponse.builder()
-                .dataLength(merge.size())
-                .listResponse(merge)
-                .build();
-        return ApiResponseMapper.mapToResponseEntityOK(listResponse, "Applicant Dashboard");
     }
 }

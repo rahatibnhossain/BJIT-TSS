@@ -31,7 +31,7 @@ const RegistrationForm = () => {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState(null);
     const [successMessage, setSuccessMessage] = useState("")
-    const { setLoggedIn, setRole, uploaded, setUploaded } = useContext(LoginContext);
+    const { setLoggedIn, setRole, uploaded, setUploaded, setUserData } = useContext(LoginContext);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -125,6 +125,9 @@ const RegistrationForm = () => {
         console.log(formData);
         setLoading(true);
         axios.post("/api/auth/register/applicant", formData).then((response) => {
+            console.log(response);
+            console.log(response?.data?.data?.userInfo);
+            setUserData(response?.data?.data?.userInfo)
             setData(response)
             setApiResponse(data.data);
         }).catch((err) => {

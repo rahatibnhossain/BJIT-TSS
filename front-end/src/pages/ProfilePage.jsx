@@ -1,55 +1,94 @@
 import React, { useContext, useEffect } from 'react';
-import { Typography, Box } from '@mui/material';
+import { Typography, Box, Avatar, Button } from '@mui/material';
 import { LoginContext } from '../context/LoginContex';
-import { useNavigate } from 'react-router-dom/dist/index';
+import { useNavigate } from 'react-router-dom';
+import AvatarImage from '../components/avatarImage';
+import axios from '../api/axios';
 
 const ProfileComponent = () => {
-
   const navigate = useNavigate();
   const { userData, loggedIn, role } = useContext(LoginContext);
-  if (!loggedIn) {
-    navigate("/login")
-  }
+
+  const imageSrc = "http://localhost:8085/api/file-download/image/" + userData.userId.toString();
+
+
+  useEffect(() => {
+    if (!loggedIn) {
+      navigate('/login');
+    }
+  }, [loggedIn, navigate]);
 
   if (!userData) {
     return <Typography variant="h6">Profile data not available</Typography>;
   }
 
-  console.log(userData);
+  const handleResumeDownload = () => {
+
+    const token = window.localStorage.getItem("tss-token");
 
 
+    axios({
+      url: '/api/file-download/resume', 
+      method: 'GET',
+      responseType: 'blob',
+         headers: {
+        Authorization: `Bearer ${token}`,
+    },
+    }).then((response) => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `resume_${userData.firstName}.pdf`); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+
+
+      // Add your logic to initiate the download of the resume
+      // For example, you can use the 'userData.resumeUrl' to fetch the resume and trigger the download
+    });
+  }
 
   return (
-    <Box mt={2}>
-      <Typography variant="h4">Profile Information</Typography>
+    <Box mt={4} p={3} sx={{ background: '#f8f8f8', borderRadius: '8px', boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)' }}>
+      <Typography variant="h4" mb={3}>
+        Profile Information
+      </Typography>
 
-      {role == "EVALUATOR" &&
+      {role === 'EVALUATOR' && (
         <Box>
           <Typography variant="subtitle1">Name: {userData.name || 'Not provided'}</Typography>
           <Typography variant="subtitle1">Email: {userData.email || 'Not provided'}</Typography>
         </Box>
+      )}
 
-      }
-
-      {role == "APPLICANT" &&
+      {role === 'APPLICANT' && (
         <Box>
-          <Typography variant="subtitle1">Full Name: {userData.data?.data?.data?.firstName || 'Not provided'} {userData.data?.data?.data?.lastName || 'Not provided'}</Typography>
-          <Typography variant="subtitle1">Email: {userData.data?.data?.data?.email || 'Not provided'}</Typography>
-          <Typography variant="subtitle1">Contact Number: {userData.data?.data?.data?.contactNumber || 'Not provided'}</Typography>
-          <Typography variant="subtitle1">Date of Birth: {userData.data?.data?.data?.dateOfBirth || 'Not provided'}</Typography>
-          <Typography variant="subtitle1">Gender: {userData.data?.data?.data?.gender || 'Not provided'}</Typography>
-          <Typography variant="subtitle1">Degree Name: {userData.data?.data?.data?.degreeName || 'Not provided'}</Typography>
-          <Typography variant="subtitle1">Educational Institute: {userData.data?.data?.data?.educationalInstitute || 'Not provided'}</Typography>
-          <Typography variant="subtitle1">Passing Year: {userData.data?.data?.data?.passingYear || 'Not provided'}</Typography>
-          <Typography variant="subtitle1">CGPA: {userData.data?.data?.data?.cgpa || 'Not provided'}</Typography>
-          <Typography variant="subtitle1">Present Address: {userData.data?.data?.data?.presentAddress || 'Not provided'}</Typography>
-          <Typography variant="subtitle1">Resume URL: {userData.data?.data?.data?.resumeUrl || 'Not provided'}</Typography>
-          <Typography variant="subtitle1">Resume URL: {userData.data?.data?.data?.photoUrl || 'Not provided'}</Typography>
-          <Typography variant="subtitle1">User ID: {userData.data?.data?.data?.userId || 'Not provided'}</Typography>
+          <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
+            <Avatar sx={{ width: 100, height: 100 }} alt="User" src={imageSrc} />
+          </Box>
+
+          <Typography variant="subtitle1">Full Name: {`${userData.firstName || 'Not provided'} ${userData.lastName || 'Not provided'}`}</Typography>
+          <Typography variant="subtitle1">Email: {userData.email || 'Not provided'}</Typography>
+          <Typography variant="subtitle1">Contact Number: {userData.contactNumber || 'Not provided'}</Typography>
+          <Typography variant="subtitle1">Date of Birth: {userData.dateOfBirth || 'Not provided'}</Typography>
+          <Typography variant="subtitle1">Gender: {userData.gender || 'Not provided'}</Typography>
+          <Typography variant="subtitle1">Degree Name: {userData.degreeName || 'Not provided'}</Typography>
+          <Typography variant="subtitle1">Educational Institute: {userData.educationalInstitute || 'Not provided'}</Typography>
+          <Typography variant="subtitle1">Passing Year: {userData.passingYear || 'Not provided'}</Typography>
+          <Typography variant="subtitle1">CGPA: {userData.cgpa || 'Not provided'}</Typography>
+          <Typography variant="subtitle1">Present Address: {userData.presentAddress || 'Not provided'}</Typography>
+
+
+          <Box mt={2}>
+            <Button variant="contained" color="primary" onClick={handleResumeDownload}>
+              Download Resume
+            </Button>
+          </Box>
         </Box>
-      }
+      )}
     </Box>
   );
 };
+
 
 export default ProfileComponent;

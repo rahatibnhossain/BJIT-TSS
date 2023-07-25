@@ -101,6 +101,8 @@ const EmailVerificationComponent = () => {
         
                 setRole(response.data.data.role)
                 setLoggedIn(true);
+                window.location.reload(false);
+
                 
               }
             }).catch((err) => {

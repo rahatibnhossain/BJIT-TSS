@@ -39,11 +39,14 @@ public class SecurityConfig {
                         "api/auth/login",
                         "api/auth/register/applicant",
                         "/api/course",
-                        "/api/validation"
+                        "/api/validation",
+                        "/api/file-download/image/**"
+
                 )
                 .permitAll()
                 .requestMatchers(
                         "/api/auth/validation"
+
                 )
                 .hasAnyAuthority("USER", "ADMIN", "APPLICANT", "EVALUATOR")
                 .requestMatchers(
@@ -58,7 +61,8 @@ public class SecurityConfig {
                         "api/upload/file-upload/image",
                         "api/upload/file-upload/resume",
                         "api/candidate/generate-admit",
-                        "api/candidate/dashboard"
+                        "api/candidate/dashboard",
+                        "api/file-download/resume"
                 )
                 .hasAuthority("APPLICANT")
                 .requestMatchers(
@@ -89,7 +93,8 @@ public class SecurityConfig {
                         "/api/evaluator/get-all",
                         "/api/evaluator/assigned-candidates/**",
                         "/api/application/course/unassigned-candidates",
-                        "/api/evaluation/passed-round"
+                        "/api/evaluation/passed-round",
+                        "api/file-download/resume/**"
                 )
                 .hasAuthority("ADMIN")
                 .anyRequest()

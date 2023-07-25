@@ -4,6 +4,7 @@ import { LoginContext } from '../context/LoginContex';
 import CourseCards from '../components/CourseCards';
 import axios from '../api/axios';
 import ApplicantTable from '../components/ApplicantTable';
+import AllApplicantsTableForApprove from '../components/AllApplicantsTableForApprove';
 import { styled } from '@mui/material/styles';
 
 
@@ -12,41 +13,108 @@ const HeaderTypography = styled(Typography)(({ theme }) => ({
     marginBottom: theme.spacing(2),
 }));
 
-const approveApplicant = (examineeId) => {
-
-    const token = window.localStorage.getItem("tss-token");
-    const config = {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    };
-    axios
-        .post('/api/approval/applicant', { examineeId }, config)
-        .then((response) => {
-
-            console.log(response);
-
-            // setApplicants((prevApplicants) =>
-            //     prevApplicants.filter((applicant) => applicant.examineeId !== examineeId)
-            // );
-
-        })
-        .catch((error) => {
-            console.error('Error approving applicant:', error);
-        }).finally(() => {
-            setTimeout(() => {
-
-                window.location.reload(false);
-            }, 2000);
-
-        })
-
-};
 
 const ApproveApplicantPage = () => {
 
+    const fetchApplicant = () => {
+
+        let role = "APPLICANT"
+
+        const formData = {
+            role,
+            batchCode
+        };
+        console.log(formData);
+
+        const token = window.localStorage.getItem("tss-token");
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+
+        axios.post(`/api/application/course`, formData, config)
+            .then((response) => {
+                console.log(response);
+                console.log(response?.data?.data);
 
 
+                if (response.status === 200) {
+                    setShowSuccessMessage(true)
+                    setSuccessMessage(response.data.successMessage)
+                    console.log(response?.data?.data?.listResponse);
+                    setAllApplicants(response?.data?.data?.listResponse)
+
+
+                    setTimeout(() => {
+                        setShowSuccessMessage(false)
+                        setSuccessMessage("")
+
+
+
+                    }, 2000);
+                }
+            })
+            .catch((error) => {
+                console.error('Error uploading files:', error);
+                setShowErrorMessage(true)
+                setErrorMessage(JSON2Message(JSON.stringify(error.response.data.errorMessage)))
+                setTimeout(() => {
+                    setShowErrorMessage(false)
+                    setErrorMessage("")
+
+                }, 5000);
+
+
+            });
+    };
+
+
+
+    const approveApplicant = (examinee) => {
+        console.log(examinee);
+
+        let b = examinee.courseInfo.batchCode;
+
+        let selectedid = examinee.examineeId
+
+        console.log(selectedid);
+        console.log(b);
+
+        const formData = {
+            examineeId: selectedid,
+
+
+        };
+        const token = window.localStorage.getItem("tss-token");
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+        axios
+            .post('/api/approval/applicant', formData, config)
+            .then((response) => {
+
+                console.log(response);
+                fetchApplicant();
+
+
+            })
+            .catch((error) => {
+                console.error('Error approving applicant:', error);
+            }).finally(() => {
+                // setTimeout(() => {
+
+                //     window.location.reload(false);
+                // }, 2000);
+
+            })
+
+
+
+
+    };
 
 
     const [allApplicants, setAllApplicants] = useState([]);
@@ -168,7 +236,7 @@ const ApproveApplicantPage = () => {
 
         }
 
-    }, [])
+    }, [batchCode])
 
 
 
@@ -264,7 +332,7 @@ const ApproveApplicantPage = () => {
             {value == "all-applicants" && value2 == "single-course-applicant" &&
                 <Box pt={7}>
 
-                    <ApplicantTable applicants={allApplicants} setApplicants={setAllApplicants} action={approveApplicant} actionText={"Approve Applicant"} />
+                    <AllApplicantsTableForApprove showAction={true} applicants={allApplicants} setApplicants={setAllApplicants} action={approveApplicant} actionText={"Approve Applicant"} />
                 </Box>
             }
 

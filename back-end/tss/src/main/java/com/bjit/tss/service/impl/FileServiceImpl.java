@@ -1,21 +1,28 @@
 package com.bjit.tss.service.impl;
 
 import com.bjit.tss.entity.LoginInfo;
+import com.bjit.tss.exception.FileDownloadException;
 import com.bjit.tss.exception.FileUploadException;
 import com.bjit.tss.mapper.ApiResponseMapper;
 import com.bjit.tss.model.response.ApiResponse;
 import com.bjit.tss.model.response.FileUploadResponse;
 import com.bjit.tss.repository.LoginRepository;
+import com.bjit.tss.repository.UserRepository;
 import com.bjit.tss.repository.ValidationRepository;
 import com.bjit.tss.service.EmailService;
 import com.bjit.tss.service.FileService;
+import com.bjit.tss.utils.FileDownloaderUtils;
 import com.bjit.tss.utils.FileUploaderUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Objects;
 
@@ -25,8 +32,7 @@ public class FileServiceImpl implements FileService {
 
     private final FileUploaderUtils fileUploaderUtils;
     private final LoginRepository loginRepository;
-    private final ValidationRepository validationRepository;
-    private final EmailService emailService;
+    private final UserRepository userRepository;
 
     @Override
     public ResponseEntity<ApiResponse<?>> uploadImage(MultipartFile image) {
@@ -69,5 +75,49 @@ public class FileServiceImpl implements FileService {
                 .filePath(path)
                 .build();
         return ApiResponseMapper.mapToResponseEntityCreated(fileUploadResponse,"File Uploaded");
+    }
+
+    @Override
+    public ResponseEntity<?> downloadImage(String fileName) throws IOException {
+
+        FileDownloaderUtils downloadUtil = new FileDownloaderUtils();
+
+
+        Resource  resource = downloadUtil.getFileAsResourceImage(fileName);
+
+        if (resource == null) {
+            throw new FileDownloadException("Image name code: "+fileName+" does not exist.");
+        }
+        String contentType = "application/octet-stream";
+        String headerValue = "attachment; filename=\"" + resource.getFilename() + "\"";
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, headerValue)
+                .body(resource);
+    }
+
+    @Override
+    public ResponseEntity<?> downloadResumeAdmin(String fileName) throws IOException {
+        FileDownloaderUtils downloadUtil = new FileDownloaderUtils();
+
+
+        Resource  resource = downloadUtil.getFileAsResourceResume(fileName);
+
+        if (resource == null) {
+            throw new FileDownloadException("CV file code: "+fileName+" does not exist.");
+        }
+        String contentType = "application/octet-stream";
+        String headerValue = "attachment; filename=\"" + resource.getFilename() + "\"";
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, headerValue)
+                .body(resource);
+    }
+
+    @Override
+    public ResponseEntity<?> downloadResume() throws IOException {
+        LoginInfo loginInfo = (LoginInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String fileName = loginInfo.getUserInfo().getUserId().toString();
+        return downloadResumeAdmin(fileName);
     }
 }

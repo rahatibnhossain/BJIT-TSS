@@ -5,6 +5,7 @@ import { Mail, Notifications } from "@mui/icons-material";
 import { Avatar } from '@mui/material/index';
 import { LoginContext } from '../context/LoginContex';
 import { useNavigate } from 'react-router-dom/dist/index';
+import AvatarImage from './avatarImage';
 const StyledToolbar = styled(Toolbar)({
   display: "flex",
   justifyContent: "space-between"
@@ -60,7 +61,7 @@ const Navbar = ({ courseNumber, onClose }) => {
       console.log(role);
       if (role === "ADMIN") {
         setName("ADMIN")
-      }else if(role === "EVALUATOR"){
+      } else if (role === "EVALUATOR") {
         console.log(userData?.name);
         setName(userData?.name)
 
@@ -84,8 +85,8 @@ const Navbar = ({ courseNumber, onClose }) => {
       setName("ADMIN")
 
     }
-    if (role === "EVALUATOR" && userData ) {
-            setName(userData?.name)
+    if (role === "EVALUATOR" && userData) {
+      setName(userData?.name)
 
     }
 
@@ -93,7 +94,7 @@ const Navbar = ({ courseNumber, onClose }) => {
 
 
   return (
-    <AppBar position="sticky"  sx={{bgcolor:"#2d2c72"}} >
+    <AppBar position="sticky" sx={{ bgcolor: "#2d2c72" }} >
       <StyledToolbar>
         <Typography variant="h6" sx={{ display: { xs: "none", sm: "block" } }}>Trainee Selection System</Typography>
 
@@ -120,15 +121,29 @@ const Navbar = ({ courseNumber, onClose }) => {
             </Badge>
           </Tooltip>
 
-          <Avatar
-            sx={{ width: 30, height: 30 }}
-            src="https://www.w3schools.com/w3images/avatar2.png"
-            onClick={e => setOpen(true)}
-          />
+          {role == "APPLICANT" ?
+            <AvatarImage id={userData.userId} />
+            :
+            <Avatar
+              sx={{ width: 30, height: 30 }}
+              src="https://www.w3schools.com/w3images/avatar2.png"
+
+            />
+          }
+
 
         </Icons>
         <UserBox onClick={e => { navigate("/profile") }}>
-          <Avatar sx={{ width: 30, height: 30 }} src="https://www.w3schools.com/w3images/avatar2.png" />
+
+          {role == "APPLICANT" ?
+            <AvatarImage id={userData.userId} />
+            :
+            <Avatar
+            sx={{ width: 30, height: 30 }}
+            src="https://www.w3schools.com/w3images/avatar2.png"
+
+          />
+          }
           <Typography variant="span">
             {name}
           </Typography>
