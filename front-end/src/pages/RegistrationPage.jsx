@@ -31,8 +31,17 @@ const RegistrationForm = () => {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState(null);
     const [successMessage, setSuccessMessage] = useState("")
-    const { setLoggedIn, setRole } = useContext(LoginContext);
+    const { setLoggedIn, setRole, uploaded, setUploaded } = useContext(LoginContext);
     const navigate = useNavigate();
+
+    useEffect(() => {
+      console.log(uploaded);
+    }, [uploaded])
+
+    useEffect(() => {
+        console.log(uploaded);
+      }, [])
+    
 
     useEffect(() => {
         if (successMessage!=="") {
@@ -93,6 +102,7 @@ const RegistrationForm = () => {
                 setSuccessMessage(null);
                 setLoggedIn(true)
                 setRole("USER")
+                setUploaded(false)
     
             }, 2000);
         } else if (error) {

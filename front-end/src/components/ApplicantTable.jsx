@@ -19,7 +19,7 @@ const ScrollableWrapper = styled('div')(({ theme }) => ({
     overflowX: 'auto',
 }));
 
-const ApplicantTable = ({ applicants, setApplicants, action, actionText }) => {
+const ApplicantTable = ({ applicants, showAction, setApplicants, action, actionText }) => {
     const [sortField, setSortField] = useState('');
     const [sortOrder, setSortOrder] = useState('asc');
 
@@ -114,7 +114,12 @@ const ApplicantTable = ({ applicants, setApplicants, action, actionText }) => {
                                     Passing Year
                                 </TableSortLabel>
                             </StyledTableCell>
+                            <StyledTableCell>
+                                <TableSortLabel
 
+                                >
+                                </TableSortLabel>
+                            </StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -127,10 +132,15 @@ const ApplicantTable = ({ applicants, setApplicants, action, actionText }) => {
                                 <TableCell>{applicant.userInfo.presentAddress}</TableCell>
                                 <TableCell>{applicant.userInfo.degreeName}</TableCell>
                                 <TableCell>{applicant.userInfo.passingYear}</TableCell>
-                         
-                                    <Button variant="contained" color="secondary" onClick={() => action(applicant.examineeId)}>
-                                        {actionText}
-                                    </Button>
+                                <TableCell>
+                                    {showAction &&
+                                        <Button variant="contained" color="secondary" onClick={() => action(applicant.examineeId)}>
+                                            {actionText}
+                                        </Button>
+                                    }
+                                </TableCell>
+
+
                             </TableRow>
                         ))}
                     </TableBody>

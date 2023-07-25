@@ -50,6 +50,9 @@ const NoticeBoardPage = () => {
     const [appliedCourse, setAppliedCourse] = useState(0);
 
     const [loading, setLoading] = useState(false);
+    const [value, setValue] = useState("notice-board")
+    const [selectedDashBoard, setselectedDashBoard] = useState({});
+
 
 
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -57,7 +60,7 @@ const NoticeBoardPage = () => {
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("")
 
-    const { appliedCoursesGlobal, setappliedCoursesGlobal } = useContext(LoginContext);
+    const { userData, appliedCoursesGlobal, setappliedCoursesGlobal } = useContext(LoginContext);
 
     const [dashboardData, setdashboardData] = useState([]);
 
@@ -118,51 +121,87 @@ const NoticeBoardPage = () => {
         return <div>Loading...</div>;
     }
 
+    const goToApplicationStatus = (dashboard) => {
+        setselectedDashBoard(dashboard)
+        console.log(dashboard);
+        console.log(userData);
+        setValue("applied-course");
+
+    }
+
 
     return (
         <>
+            {value == "notice-board" &&
+                <>
+                    <Card sx={{ minWidth: 275, marginTop: 4 }}>
+                        <CardContent>
+                            <Typography align="center" sx={{ fontSize: 34 }} color="text.secondary" gutterBottom>
+                                Notice Board
+                            </Typography>
+                            <Typography variant="h5" component="div">
+                                {appliedCourse > 0 ?
+                                    `You have applied ${appliedCourse} ${appliedCourse > 1 ? "courses" : "course"} .` :
+                                    "You haven't applied for any course."
+                                }
+                            </Typography>
+                        </CardContent>
+                    </Card>
 
-            <Card sx={{ minWidth: 275, marginTop: 4 }}>
-                <CardContent>
-                    <Typography align="center" sx={{ fontSize: 34 }} color="text.secondary" gutterBottom>
-                        Notice Board
-                    </Typography>
-                    <Typography variant="h5" component="div">
-                        {appliedCourse > 0 ?
-                            `You have applied ${appliedCourse} ${appliedCourse > 1 ? "courses" : "course"} .` :
-                            "You haven't applied for any course."
-                        }
-                    </Typography>
-                </CardContent>
-            </Card>
+                    <Box mt={4}>
+                        <Grid container spacing={2} justifyContent="center"
+                        >
+                            {dashboardData?.map((dashboard, index) =>
 
-            <Box mt={4}>
-                <Grid container spacing={2} justifyContent="center"
-                >
-                    {dashboardData?.map((dashboard, index) =>
+                                <Grid item key={index} xs={12} sm={6} md={4}>
 
-                        <Grid item key={index} xs={12} sm={6} md={4}>
+                                    <CourseCard onClick={() => { goToApplicationStatus(dashboard) }}>
 
-                            <CourseCard>
+                                        <CourseContent>
+                                            {dashboard.courseName &&
+                                                <CourseTitle align="center" variant="h6">Course : {dashboard.courseName}</CourseTitle>
+                                            }
 
-                                <CourseContent>
-                                    {dashboard.courseName &&
-                                    <CourseTitle align="center" variant="h6">Course : {dashboard.courseName}</CourseTitle>
-                                    }
-                                    
-                                    <CourseDescription align="center" variant="body2">{dashboard.dashboardMessage}</CourseDescription>
-                                </CourseContent>
+                                            <CourseDescription align="center" variant="body2">{dashboard.dashboardMessage}</CourseDescription>
+                                        </CourseContent>
 
-                            </CourseCard>
+                                    </CourseCard>
+
+                                </Grid>
+                            )}
 
                         </Grid>
-                    )}
+                    </Box>
+                </>
+            }
+            {
+                value == "applied-course" &&
+                <>
+                    <Card sx={{ minWidth: 275, marginTop: 4 }}>
+                        <Button onClick={() => {
+                            setValue("notice-board");
+                            setselectedDashBoard({})
 
-                </Grid>
-            </Box>
+
+                        }} >Go Back</Button>
+                        <CardContent>
+                            <Typography align="center" sx={{ fontSize: 34 }} color="text.secondary" gutterBottom>
+                               Course : {selectedDashBoard.courseName}
+                            </Typography>
+                            <Typography variant="h5" component="div">
+                                {selectedDashBoard.dashboardMessage}
+                            </Typography>
+                        </CardContent>
+
+                        
+                    </Card>
 
 
 
+
+
+                </>
+            }
 
 
 

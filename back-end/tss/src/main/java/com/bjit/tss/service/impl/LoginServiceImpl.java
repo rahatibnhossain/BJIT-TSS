@@ -117,8 +117,12 @@ public class LoginServiceImpl implements LoginService {
             return ApiResponseMapper.mapToResponseEntityOK(validationResponse, "Valid User");
         }
         if (loginInfo.getRole()== Role.USER){
+            Optional<UserInfo> userInfo2 = userRepository.findById(loginInfo.getUserInfo().getUserId());
+            if (userInfo2.isEmpty()){
+                throw new UserException("User not exists");
+            }
             ValidationResponse<?> validationResponse = ValidationResponse.builder()
-                    .data(loginInfo.getEmail())
+                    .data(userInfo2)
                     .role(loginInfo.getRole())
                     .build();
             System.out.println(loginInfo.getRole()+" with the email "+loginInfo.getEmail()+"automatically logged in to the system successfully.");

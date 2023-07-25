@@ -28,17 +28,23 @@ const Feed = ({ data, loading, close }) => {
 
 
   return (
-    <Box flex={5}  sx={{ margin: 5, display: { xs: close ? "block" : "none" } }}>
+    <Box flex={5} sx={{ margin: 5, display: { xs: close ? "block" : "none" } }}>
 
 
       <Routes>
-        {role === "USER" || role === "APPLICANT" ? (
+        {(role === "APPLICANT" ? (
           <Route path="/" element={!loading ? <NoticeBoardPage /> : <h1>Loading</h1>} />
         ) :
-          (
+          (role != "USER" &&
             <Route path="/" element={!loading ? <HomePage data={data} /> : <h1>Loading</h1>} />
-
           )
+        )}
+
+        {
+          role == "USER" &&
+          <Route path="/" element={
+            role === "USER" ? (!uploaded ? <UploadFilePage /> : <EmailVerification />) : <RegistrationPage />
+          } />
 
         }
         {role == "EVALUATOR" &&
@@ -47,7 +53,7 @@ const Feed = ({ data, loading, close }) => {
         }
 
 
-        {role !== "EVALUATOR" &&
+        {(role !== "EVALUATOR" && role !== "USER") &&
           <Route path="/course">
             <Route index element={<CoursesPage courses={data} />} />
             <Route path=":id" element={<CourseDescriptionComponent />} />
@@ -59,13 +65,15 @@ const Feed = ({ data, loading, close }) => {
         {!loggedIn && <>
 
           <Route path="/login" element={<LoginPage />} />
-          <Route
-            path="/registration"
-            element={
-              role === "USER" ? (!uploaded ? <UploadFilePage /> : <EmailVerification />) : <RegistrationPage />
-            }
-          />
+
         </>}
+
+        <Route
+          path="/registration"
+          element={
+            role === "USER" ? (!uploaded ? <UploadFilePage /> : <EmailVerification />) : <RegistrationPage />
+          }
+        />
 
         {
           (role === "APPLICANT" || role === "EVALUATOR") &&

@@ -64,187 +64,160 @@ const Sidebar = ({ close }) => {
       <Box position="fixed" >
 
         <List>
+          {role !== "USER" &&
+            < ListItem disablePadding>
+          <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/") }} component={NavLink} to="/" variant="ListItemButton"   >
+            <ListItemButton >
+              <ListItemIcon>
+                <Home />
+              </ListItemIcon>
+              <ListItemText primary={role === "APPLICANT" ? "Notice Board" : "Home Page"} />
+            </ListItemButton>
+          </Link>
+          </ListItem>
 
+}
+
+        {(role === "APPLICANT" || role == "EVALUATOR") &&
           <ListItem disablePadding>
-            <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/") }} component={NavLink} to="/" variant="ListItemButton"   >
+            <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/profile") }} component={NavLink} to="/profile" variant="ListItemButton"   >
               <ListItemButton >
                 <ListItemIcon>
                   <Home />
                 </ListItemIcon>
-                <ListItemText primary={role === "APPLICANT" ? "Notice Board" : "Home Page"} />
+                <ListItemText primary="Profile" />
               </ListItemButton>
             </Link>
+          </ListItem>
+        }
 
+        {role == "EVALUATOR" &&
+
+          <ListItem disablePadding>
+            <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/upload-written-marks") }} component={NavLink} to="/upload-written-marks" variant="ListItemButton"   >
+              <ListItemButton >
+                <ListItemIcon>
+                  <Home />
+                </ListItemIcon>
+                <ListItemText primary="Upload Marks" />
+              </ListItemButton>
+            </Link>
           </ListItem>
 
-          {(role === "APPLICANT" || role == "EVALUATOR") &&
+        }
+
+
+
+        {(role !== "EVALUATOR" && role !== "USER") &&
+
+          <ListItem disablePadding>
+            <Link flex={1.5} style={{ textDecoration: 'none', color: isActiveLink("/course") }} component={ReactRouterLink} to="/course" variant="ListItemButton" >
+              <ListItemButton >
+                <ListItemIcon>
+                  <School />
+                </ListItemIcon>
+                <ListItemText primary="Courses" />
+              </ListItemButton>
+            </Link>
+          </ListItem>
+        }
+
+        {role === "ADMIN" &&
+
+          <>
             <ListItem disablePadding>
-              <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/profile") }} component={NavLink} to="/profile" variant="ListItemButton"   >
+              <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/final_trainees") }} component={NavLink} to="/final_trainees" variant="ListItemButton"   >
                 <ListItemButton >
                   <ListItemIcon>
                     <Home />
                   </ListItemIcon>
-                  <ListItemText primary="Profile" />
+                  <ListItemText primary="Final Trainees" />
                 </ListItemButton>
               </Link>
             </ListItem>
-          }
-
-          {role == "EVALUATOR" &&
-
             <ListItem disablePadding>
-              <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/upload-written-marks") }} component={NavLink} to="/upload-written-marks" variant="ListItemButton"   >
+              <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/hr_interview") }} component={NavLink} to="/hr_interview" variant="ListItemButton"   >
                 <ListItemButton >
                   <ListItemIcon>
                     <Home />
                   </ListItemIcon>
-                  <ListItemText primary="Upload Marks" />
+                  <ListItemText primary="HR Interview" />
                 </ListItemButton>
               </Link>
             </ListItem>
-
-          }
-
-
-
-          {role !== "EVALUATOR" &&
+            <ListItem disablePadding>
+              <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/technical_interview") }} component={NavLink} to="/technical_interview" variant="ListItemButton"   >
+                <ListItemButton >
+                  <ListItemIcon>
+                    <Home />
+                  </ListItemIcon>
+                  <ListItemText primary="Technical Interview" />
+                </ListItemButton>
+              </Link>
+            </ListItem>
+            <ListItem disablePadding>
+              <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/aptitude_test") }} component={NavLink} to="/aptitude_test" variant="ListItemButton"   >
+                <ListItemButton >
+                  <ListItemIcon>
+                    <Home />
+                  </ListItemIcon>
+                  <ListItemText primary="Aptitude Test" />
+                </ListItemButton>
+              </Link>
+            </ListItem>
 
             <ListItem disablePadding>
-              <Link flex={1.5} style={{ textDecoration: 'none', color: isActiveLink("/course") }} component={ReactRouterLink} to="/course" variant="ListItemButton" >
+              <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/written_test") }} component={NavLink} to="/written_test" variant="ListItemButton"   >
                 <ListItemButton >
                   <ListItemIcon>
-                    <School />
+                    <Home />
                   </ListItemIcon>
-                  <ListItemText primary="Courses" />
-                </ListItemButton>
-              </Link>
-            </ListItem>
-          }
-
-          {role === "ADMIN" &&
-
-            <>
-              <ListItem disablePadding>
-                <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/final_trainees") }} component={NavLink} to="/final_trainees" variant="ListItemButton"   >
-                  <ListItemButton >
-                    <ListItemIcon>
-                      <Home />
-                    </ListItemIcon>
-                    <ListItemText primary="Final Trainees" />
-                  </ListItemButton>
-                </Link>
-              </ListItem>
-              <ListItem disablePadding>
-                <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/hr_interview") }} component={NavLink} to="/hr_interview" variant="ListItemButton"   >
-                  <ListItemButton >
-                    <ListItemIcon>
-                      <Home />
-                    </ListItemIcon>
-                    <ListItemText primary="HR Interview" />
-                  </ListItemButton>
-                </Link>
-              </ListItem>
-              <ListItem disablePadding>
-                <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/technical_interview") }} component={NavLink} to="/technical_interview" variant="ListItemButton"   >
-                  <ListItemButton >
-                    <ListItemIcon>
-                      <Home />
-                    </ListItemIcon>
-                    <ListItemText primary="Technical Interview" />
-                  </ListItemButton>
-                </Link>
-              </ListItem>
-              <ListItem disablePadding>
-                <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/aptitude_test") }} component={NavLink} to="/aptitude_test" variant="ListItemButton"   >
-                  <ListItemButton >
-                    <ListItemIcon>
-                      <Home />
-                    </ListItemIcon>
-                    <ListItemText primary="Aptitude Test" />
-                  </ListItemButton>
-                </Link>
-              </ListItem>
-
-              <ListItem disablePadding>
-                <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/written_test") }} component={NavLink} to="/written_test" variant="ListItemButton"   >
-                  <ListItemButton >
-                    <ListItemIcon>
-                      <Home />
-                    </ListItemIcon>
-                    <ListItemText primary="Written Test" />
-                  </ListItemButton>
-                </Link>
-              </ListItem>
-
-
-              <ListItem disablePadding>
-                <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/approve_applicant") }} component={NavLink} to="/approve_applicant" variant="ListItemButton"   >
-                  <ListItemButton >
-                    <ListItemIcon>
-                      <Home />
-                    </ListItemIcon>
-                    <ListItemText primary="Approve Appicant" />
-                  </ListItemButton>
-                </Link>
-              </ListItem>
-
-
-
-              <ListItem disablePadding>
-                <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/evaluator_management") }} component={NavLink} to="/evaluator_management" variant="ListItemButton"   >
-                  <ListItemButton >
-                    <ListItemIcon>
-                      <Home />
-                    </ListItemIcon>
-                    <ListItemText primary="Evaluators" />
-                  </ListItemButton>
-                </Link>
-              </ListItem>
-            </>
-          }
-
-
-          {!loggedIn ?
-            <>
-
-              <ListItem disablePadding>
-                <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/login") }} component={ReactRouterLink} to="/login" variant="ListItemButton" >
-                  <ListItemButton >
-                    <ListItemIcon>
-                      <Login />
-                    </ListItemIcon>
-                    <ListItemText primary="Login" />
-                  </ListItemButton>
-                </Link>
-              </ListItem>
-
-              <ListItem disablePadding>
-                <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/registration") }} component={ReactRouterLink} to="/registration" variant="ListItemButton" >
-                  <ListItemButton >
-                    <ListItemIcon>
-                      <AddBox />
-                    </ListItemIcon>
-                    <ListItemText primary="Registration" />
-                  </ListItemButton>
-                </Link>
-              </ListItem>
-            </>
-            :
-
-            <ListItem disablePadding onClick={() => { logout() }}>
-              <Link flex={1} style={{ textDecoration: 'none' }} component={ReactRouterLink} to="/" variant="ListItemButton" >
-                <ListItemButton >
-                  <ListItemIcon>
-                    <Logout />
-                  </ListItemIcon>
-                  <ListItemText primary="Logout" />
+                  <ListItemText primary="Written Test" />
                 </ListItemButton>
               </Link>
             </ListItem>
 
-          }
 
-          {role === "USER" ?
+            <ListItem disablePadding>
+              <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/approve_applicant") }} component={NavLink} to="/approve_applicant" variant="ListItemButton"   >
+                <ListItemButton >
+                  <ListItemIcon>
+                    <Home />
+                  </ListItemIcon>
+                  <ListItemText primary="Approve Appicant" />
+                </ListItemButton>
+              </Link>
+            </ListItem>
+
+
+
+            <ListItem disablePadding>
+              <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/evaluator_management") }} component={NavLink} to="/evaluator_management" variant="ListItemButton"   >
+                <ListItemButton >
+                  <ListItemIcon>
+                    <Home />
+                  </ListItemIcon>
+                  <ListItemText primary="Evaluators" />
+                </ListItemButton>
+              </Link>
+            </ListItem>
+          </>
+        }
+
+
+        {!loggedIn ?
+          <>
+
+            <ListItem disablePadding>
+              <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/login") }} component={ReactRouterLink} to="/login" variant="ListItemButton" >
+                <ListItemButton >
+                  <ListItemIcon>
+                    <Login />
+                  </ListItemIcon>
+                  <ListItemText primary="Login" />
+                </ListItemButton>
+              </Link>
+            </ListItem>
 
             <ListItem disablePadding>
               <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/registration") }} component={ReactRouterLink} to="/registration" variant="ListItemButton" >
@@ -255,13 +228,41 @@ const Sidebar = ({ close }) => {
                   <ListItemText primary="Registration" />
                 </ListItemButton>
               </Link>
-            </ListItem> : null}
+            </ListItem>
+          </>
+          :
+
+          <ListItem disablePadding onClick={() => { logout() }}>
+            <Link flex={1} style={{ textDecoration: 'none' }} component={ReactRouterLink} to="/" variant="ListItemButton" >
+              <ListItemButton >
+                <ListItemIcon>
+                  <Logout />
+                </ListItemIcon>
+                <ListItemText primary="Logout" />
+              </ListItemButton>
+            </Link>
+          </ListItem>
+
+        }
+
+        {role === "USER" ?
+
+          <ListItem disablePadding>
+            <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/registration") }} component={ReactRouterLink} to="/registration" variant="ListItemButton" >
+              <ListItemButton >
+                <ListItemIcon>
+                  <AddBox />
+                </ListItemIcon>
+                <ListItemText primary="Registration" />
+              </ListItemButton>
+            </Link>
+          </ListItem> : null}
 
 
 
-        </List>
-      </Box>
+      </List>
     </Box>
+    </Box >
 
 
 

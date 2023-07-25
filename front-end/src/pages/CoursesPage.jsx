@@ -400,7 +400,7 @@ const AllCourses = () => {
                         <CourseTitle variant="h6">{course.courseName}</CourseTitle>
                         <CourseDescription variant="body2">{course.courseDescription}</CourseDescription>
                       </CourseContent>
-                      <EnrollButton variant="contained" color="primary" size="small">
+                      <EnrollButton  sx={{bgcolor:"#2d2c72"}} variant="contained" color="primary" size="small">
                         Enroll Now
                       </EnrollButton>
                     </CourseCard>

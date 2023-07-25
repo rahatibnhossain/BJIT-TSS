@@ -26,13 +26,21 @@ const approveApplicant = (examineeId) => {
 
             console.log(response);
 
-            setApplicants((prevApplicants) =>
-                prevApplicants.filter((applicant) => applicant.examineeId !== examineeId)
-            );
+            // setApplicants((prevApplicants) =>
+            //     prevApplicants.filter((applicant) => applicant.examineeId !== examineeId)
+            // );
+
         })
         .catch((error) => {
             console.error('Error approving applicant:', error);
-        });
+        }).finally(() => {
+            setTimeout(() => {
+
+                window.location.reload(false);
+            }, 2000);
+
+        })
+
 };
 
 const ApproveApplicantPage = () => {
@@ -160,7 +168,7 @@ const ApproveApplicantPage = () => {
 
         }
 
-    }, [batchCode])
+    }, [])
 
 
 
@@ -187,7 +195,7 @@ const ApproveApplicantPage = () => {
 
     const { allEvaluators, setAllEvaluators, loggedIn, setCourses, courses, unavailableCourses, setUnavailableCourses } = useContext(LoginContext);
 
-    const [value, setValue] = useState('all-applicants');
+    const [value, setValue] = useState('approved-applicants');
     // const [value2, setValue2] = useState('')
 
     useEffect(() => {
@@ -210,14 +218,34 @@ const ApproveApplicantPage = () => {
                         indicatorColor="secondary"
                         aria-label="secondary tabs example"
                     >
-                        <Tab value="all-applicants" label="All Applicants" />
 
                         <Tab value="approved-applicants" label="Approved Applicants" />
+                        <Tab value="all-applicants" label="All Applicants" />
+
                     </Tabs>
                 </Box>
 
             </Box>
 
+
+
+
+
+            {value == "approved-applicants" && value2 == "" &&
+                <Box pt={7}>
+                    <HeaderTypography>
+                        Select course to view approved candidates for selected course.
+                    </HeaderTypography>
+                    <CourseCards courseButtonText={"Approved Candidates for this course"} courses={courses} pathValue={"single-course-candidate"} setValue={setValue2} setSingleCourse={setSingleCourse} />
+                </Box>
+            }
+
+            {value == "approved-applicants" && value2 == "single-course-candidate" &&
+                <Box pt={7}>
+
+                    <ApplicantTable showAction={false} applicants={allCandidated} setApplicants={setAllApplicants} action={approveApplicant} actionText={"Approve Candidate"} />
+                </Box>
+            }
 
             {value == "all-applicants" && value2 == "" &&
 
@@ -237,23 +265,6 @@ const ApproveApplicantPage = () => {
                 <Box pt={7}>
 
                     <ApplicantTable applicants={allApplicants} setApplicants={setAllApplicants} action={approveApplicant} actionText={"Approve Applicant"} />
-                </Box>
-            }
-
-
-            {value == "approved-applicants" && value2 == "" &&
-                <Box pt={7}>
-                    <HeaderTypography>
-                        Select course to view approved candidates for selected course.
-                    </HeaderTypography>
-                    <CourseCards courseButtonText={"Approved Candidates for this course"} courses={courses} pathValue={"single-course-candidate"} setValue={setValue2} setSingleCourse={setSingleCourse} />
-                </Box>
-            }
-
-            {value == "approved-applicants" && value2 == "single-course-candidate" &&
-                <Box pt={7}>
-
-                    <ApplicantTable applicants={allCandidated} setApplicants={setAllApplicants} action={approveApplicant} actionText={"Approve Candidate"} />
                 </Box>
             }
 

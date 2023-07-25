@@ -23,7 +23,7 @@ function App() {
 
   const [appliedCoursesGlobal, setappliedCoursesGlobal] = useState(0)
 
-  
+
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
@@ -64,7 +64,7 @@ function App() {
           console.error('Error getting all evaluator: ', error);
           setShowErrorMessage(true)
           setErrorMessage(JSON2Message(JSON.stringify(error.response.data.errorMessage)))
-         
+
           setTimeout(() => {
             setShowErrorMessage(false)
             setErrorMessage("")
@@ -97,7 +97,7 @@ function App() {
           console.error('Error getting unavailavle courses', error);
           setShowErrorMessage(true)
           setErrorMessage(JSON2Message(JSON.stringify(error.response.data.errorMessage)))
-         
+
           setTimeout(() => {
             setShowErrorMessage(false)
             setErrorMessage("")
@@ -141,17 +141,7 @@ function App() {
   const [uploaded, setUploaded] = useState(false)
 
 
-  useEffect(() => {
-    if (window.localStorage.getItem("uploadedfortss") == null) {
-      setUploaded(false)
 
-    }
-    else {
-      setUploaded(true)
-
-    }
-
-  }, [])
 
   useEffect(() => {
     console.log("The userData is :");
@@ -174,14 +164,20 @@ function App() {
         Authorization: `Bearer ${token}`,
       },
     }).then((response) => {
-      setUserData(response.data.data.data);
+
+
 
       console.log("Response is :");
       console.log(response.data.data.data);
       if (response.status == 200) {
+        setUserData(response.data.data.data);
 
         setRole(response.data.data.role)
         setLoggedIn(true);
+
+        if (response.data.data.role == "USER" && (response?.data?.data?.data?.photoUrl == null || response?.data?.data?.data?.resumeUrl == null)) {
+          setUploaded(false)
+        }
 
       }
     }).catch((err) => {
@@ -235,8 +231,8 @@ function App() {
   }
   return (
 
-    <Box  sx={{backgroundColor: "#EDE4FF" , minHeight:"100vh"}} >
-      <LoginContext.Provider value={{allEvaluators, setAllEvaluators, appliedCoursesGlobal, setappliedCoursesGlobal, courses, setUserData, userData, uploaded, setUploaded, loggedIn, setLoggedIn, role, setRole, setCourses, unavailableCourses, setUnavailableCourses }}>
+    <Box sx={{ backgroundColor: "#EDE4FF", minHeight: "100vh" }} >
+      <LoginContext.Provider value={{ allEvaluators, setAllEvaluators, appliedCoursesGlobal, setappliedCoursesGlobal, courses, setUserData, userData, uploaded, setUploaded, loggedIn, setLoggedIn, role, setRole, setCourses, unavailableCourses, setUnavailableCourses }}>
 
         <Navbar courseNumber={data?.data.data.dataLength} onClose={toggleSideBar} />
         <Stack direction="row" spacing={2} justifyContent="space-between">
