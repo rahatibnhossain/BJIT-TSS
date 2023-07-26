@@ -106,9 +106,7 @@ const NoticeBoardPage = () => {
                 setTimeout(() => {
                     setShowErrorMessage(false)
                     setErrorMessage("")
-
                 }, 2000);
-
 
             }).finally(() => {
                 setLoading(false)

@@ -23,6 +23,7 @@ public class CourseMapper {
                 .technicalVivaPassedDashboardMessage(courseModel.getTechnicalVivaPassedDashboardMessage())
                 .traineeDashboardMessage(courseModel.getTraineeDashboardMessage())
                 .hrVivaPassedDashboardMessage(courseModel.getHrVivaPassedDashboardMessage())
+                .writtenExamInstruction(courseModel.getWrittenExamInstruction())
                 .build();
         return courseInfo;
     }

@@ -90,6 +90,7 @@ const AllCourses = () => {
     setAptitudeTestPassedDashboardMessage('Congratulations. You have passed the aptitude test. Your technical viva will be held soon.');
     setHrVivaPassedDashboardMessage('Congratulations. You have passed the HR viva. Please wait for the final selection');
     setTraineeDashboardMessage('Congratulations. You have been selected as a Trainee.');
+    setWrittenExamInstruction("1. Please arrive at the exam venue 30 minutes before the scheduled start time.\n2. Bring your photo ID and this admit card for verification.\n3. The written exam will consist of multiple-choice questions and coding exercises.\n4. You will have 2 hours to complete the exam.\n5. Use only the provided answer sheet for marking your answers.\n6. Read the instructions carefully before attempting each section.\n7. Write your answers clearly and legibly.\n8. Use a black or blue pen for writing.\n9. Electronic devices, calculators, and study materials are not allowed during the exam.\n10. Once the exam starts, you cannot leave the exam hall until it's completed.\n11. Make sure to submit your answer sheet before leaving.\n12. Violation of exam rules may lead to disqualification.\n13. All the best for your exam!")
   };
 
   const { role, loggedIn, setCourses, courses, unavailableCourses, setUnavailableCourses } = useContext(LoginContext);
@@ -118,7 +119,11 @@ const AllCourses = () => {
   const [aptitudeTestPassedDashboardMessage, setAptitudeTestPassedDashboardMessage] = useState('Congratulations. You have passed the aptitude test. Your technical viva will held soon.');
   const [hrVivaPassedDashboardMessage, setHrVivaPassedDashboardMessage] = useState('Congratulations. You have passed the HR viva. Please wait for the final selection');
   const [traineeDashboardMessage, setTraineeDashboardMessage] = useState('Congratulations. You have been selected as a Trainee.');
+  const [writtenExamInstruction, setWrittenExamInstruction] = useState("1. Please arrive at the exam venue 30 minutes before the scheduled start time.\n2. Bring your photo ID and this admit card for verification.\n3. The written exam will consist of multiple-choice questions and coding exercises.\n4. You will have 2 hours to complete the exam.\n5. Use only the provided answer sheet for marking your answers.\n6. Read the instructions carefully before attempting each section.\n7. Write your answers clearly and legibly.\n8. Use a black or blue pen for writing.\n9. Electronic devices, calculators, and study materials are not allowed during the exam.\n10. Once the exam starts, you cannot leave the exam hall until it's completed.\n11. Make sure to submit your answer sheet before leaving.\n12. Violation of exam rules may lead to disqualification.\n13. All the best for your exam!")
   const [isAvailable, setIsAvailable] = useState(true);
+
+
+
 
 
   const setSingleCourse = (c) => {
@@ -140,6 +145,7 @@ const AllCourses = () => {
     setAptitudeTestPassedDashboardMessage(c.traineeDashboardMessage);
     setHrVivaPassedDashboardMessage(c.hrVivaPassedDashboardMessage);
     setTraineeDashboardMessage(c.traineeDashboardMessage);
+    setWrittenExamInstruction(c.setWrittenExamInstruction);
 
   }
 
@@ -163,6 +169,7 @@ const AllCourses = () => {
       aptitudeTestPassedDashboardMessage,
       hrVivaPassedDashboardMessage,
       traineeDashboardMessage,
+      writtenExamInstruction,
       isAvailable
     };
     console.log(formData);
@@ -248,6 +255,7 @@ const AllCourses = () => {
       aptitudeTestPassedDashboardMessage,
       hrVivaPassedDashboardMessage,
       traineeDashboardMessage,
+      writtenExamInstruction,
       isAvailable
     };
     console.log(formData);
@@ -400,7 +408,7 @@ const AllCourses = () => {
                         <CourseTitle variant="h6">{course.courseName}</CourseTitle>
                         <CourseDescription variant="body2">{course.courseDescription}</CourseDescription>
                       </CourseContent>
-                      <EnrollButton  sx={{bgcolor:"#2d2c72"}} variant="contained" color="primary" size="small">
+                      <EnrollButton sx={{ bgcolor: "#2d2c72" }} variant="contained" color="primary" size="small">
                         Enroll Now
                       </EnrollButton>
                     </CourseCard>
@@ -419,7 +427,7 @@ const AllCourses = () => {
           <HeaderTypography>
             Update this course.
           </HeaderTypography>
-          <CourseComponent buttonText={"Update Course"} handleSubmit={updateCourse} courseName={courseName} setCourseName={setCourseName} batchCode={batchCode} setBatchCode={setBatchCode} isAvailable={isAvailable} setIsAvailable={setIsAvailable} showSuccessMessage={showSuccessMessage} successMessage={successMessage} showErrorMessage={showErrorMessage} errorMessage={errorMessage} courseDescription={courseDescription} setCourseDescription={setCourseDescription} vacancy={vacancy} setVacancy={setVacancy} applicationDeadline={applicationDeadline} setApplicationDeadline={setApplicationDeadline} writtenExamTime={writtenExamTime} setWrittenExamTime={setWrittenExamTime} startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} applicantDashboardMessage={applicantDashboardMessage} setApplicantDashboardMessage={setApplicantDashboardMessage} writtenShortlistedDashboardMessage={writtenShortlistedDashboardMessage} setWrittenShortlistedDashboardMessage={setWrittenShortlistedDashboardMessage} writtenPassedDashboardMessage={writtenPassedDashboardMessage} setWrittenPassedDashboardMessage={setWrittenPassedDashboardMessage} technicalVivaPassedDashboardMessage={technicalVivaPassedDashboardMessage} setTechnicalVivaPassedDashboardMessage={setTechnicalVivaPassedDashboardMessage} aptitudeTestPassedDashboardMessage={aptitudeTestPassedDashboardMessage} setAptitudeTestPassedDashboardMessage={setAptitudeTestPassedDashboardMessage} hrVivaPassedDashboardMessage={hrVivaPassedDashboardMessage} setHrVivaPassedDashboardMessage={setHrVivaPassedDashboardMessage} traineeDashboardMessage={traineeDashboardMessage} setTraineeDashboardMessage={setTraineeDashboardMessage} />
+          <CourseComponent buttonText={"Update Course"} handleSubmit={updateCourse} courseName={courseName} setCourseName={setCourseName} batchCode={batchCode} setBatchCode={setBatchCode} isAvailable={isAvailable} setIsAvailable={setIsAvailable} showSuccessMessage={showSuccessMessage} successMessage={successMessage} showErrorMessage={showErrorMessage} errorMessage={errorMessage} courseDescription={courseDescription} setCourseDescription={setCourseDescription} vacancy={vacancy} setVacancy={setVacancy} applicationDeadline={applicationDeadline} setApplicationDeadline={setApplicationDeadline} writtenExamTime={writtenExamTime} setWrittenExamTime={setWrittenExamTime} startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} applicantDashboardMessage={applicantDashboardMessage} setApplicantDashboardMessage={setApplicantDashboardMessage} writtenShortlistedDashboardMessage={writtenShortlistedDashboardMessage} setWrittenShortlistedDashboardMessage={setWrittenShortlistedDashboardMessage} writtenPassedDashboardMessage={writtenPassedDashboardMessage} setWrittenPassedDashboardMessage={setWrittenPassedDashboardMessage} technicalVivaPassedDashboardMessage={technicalVivaPassedDashboardMessage} setTechnicalVivaPassedDashboardMessage={setTechnicalVivaPassedDashboardMessage} aptitudeTestPassedDashboardMessage={aptitudeTestPassedDashboardMessage} setAptitudeTestPassedDashboardMessage={setAptitudeTestPassedDashboardMessage} hrVivaPassedDashboardMessage={hrVivaPassedDashboardMessage} setHrVivaPassedDashboardMessage={setHrVivaPassedDashboardMessage} traineeDashboardMessage={traineeDashboardMessage} setTraineeDashboardMessage={setTraineeDashboardMessage} writtenExamInstruction={writtenExamInstruction} setWrittenExamInstruction={setWrittenExamInstruction} />
         </Box>
 
       }
@@ -444,7 +452,7 @@ const AllCourses = () => {
           <HeaderTypography>
             Add a new course
           </HeaderTypography>
-          <CourseComponent buttonText={"Add Course"} handleSubmit={handleSubmit} courseName={courseName} setCourseName={setCourseName} batchCode={batchCode} setBatchCode={setBatchCode} isAvailable={isAvailable} setIsAvailable={setIsAvailable} showSuccessMessage={showSuccessMessage} successMessage={successMessage} showErrorMessage={showErrorMessage} errorMessage={errorMessage} courseDescription={courseDescription} setCourseDescription={setCourseDescription} vacancy={vacancy} setVacancy={setVacancy} applicationDeadline={applicationDeadline} setApplicationDeadline={setApplicationDeadline} writtenExamTime={writtenExamTime} setWrittenExamTime={setWrittenExamTime} startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} applicantDashboardMessage={applicantDashboardMessage} setApplicantDashboardMessage={setApplicantDashboardMessage} writtenShortlistedDashboardMessage={writtenShortlistedDashboardMessage} setWrittenShortlistedDashboardMessage={setWrittenShortlistedDashboardMessage} writtenPassedDashboardMessage={writtenPassedDashboardMessage} setWrittenPassedDashboardMessage={setWrittenPassedDashboardMessage} technicalVivaPassedDashboardMessage={technicalVivaPassedDashboardMessage} setTechnicalVivaPassedDashboardMessage={setTechnicalVivaPassedDashboardMessage} aptitudeTestPassedDashboardMessage={aptitudeTestPassedDashboardMessage} setAptitudeTestPassedDashboardMessage={setAptitudeTestPassedDashboardMessage} hrVivaPassedDashboardMessage={hrVivaPassedDashboardMessage} setHrVivaPassedDashboardMessage={setHrVivaPassedDashboardMessage} traineeDashboardMessage={traineeDashboardMessage} setTraineeDashboardMessage={setTraineeDashboardMessage} />
+          <CourseComponent buttonText={"Add Course"} handleSubmit={handleSubmit} courseName={courseName} setCourseName={setCourseName} batchCode={batchCode} setBatchCode={setBatchCode} isAvailable={isAvailable} setIsAvailable={setIsAvailable} showSuccessMessage={showSuccessMessage} successMessage={successMessage} showErrorMessage={showErrorMessage} errorMessage={errorMessage} courseDescription={courseDescription} setCourseDescription={setCourseDescription} vacancy={vacancy} setVacancy={setVacancy} applicationDeadline={applicationDeadline} setApplicationDeadline={setApplicationDeadline} writtenExamTime={writtenExamTime} setWrittenExamTime={setWrittenExamTime} startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} applicantDashboardMessage={applicantDashboardMessage} setApplicantDashboardMessage={setApplicantDashboardMessage} writtenShortlistedDashboardMessage={writtenShortlistedDashboardMessage} setWrittenShortlistedDashboardMessage={setWrittenShortlistedDashboardMessage} writtenPassedDashboardMessage={writtenPassedDashboardMessage} setWrittenPassedDashboardMessage={setWrittenPassedDashboardMessage} technicalVivaPassedDashboardMessage={technicalVivaPassedDashboardMessage} setTechnicalVivaPassedDashboardMessage={setTechnicalVivaPassedDashboardMessage} aptitudeTestPassedDashboardMessage={aptitudeTestPassedDashboardMessage} setAptitudeTestPassedDashboardMessage={setAptitudeTestPassedDashboardMessage} hrVivaPassedDashboardMessage={hrVivaPassedDashboardMessage} setHrVivaPassedDashboardMessage={setHrVivaPassedDashboardMessage} traineeDashboardMessage={traineeDashboardMessage} setTraineeDashboardMessage={setTraineeDashboardMessage} writtenExamInstruction={writtenExamInstruction} setWrittenExamInstruction={setWrittenExamInstruction} />
         </Box>
       }
 

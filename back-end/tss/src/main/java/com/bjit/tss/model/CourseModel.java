@@ -65,4 +65,7 @@ public class CourseModel {
 
     @NotEmpty(message = "Trainee Dashboard Message is required")
     private String traineeDashboardMessage;
+
+    @NotEmpty(message = "Written Exam Instruction is required")
+    private String writtenExamInstruction;
 }

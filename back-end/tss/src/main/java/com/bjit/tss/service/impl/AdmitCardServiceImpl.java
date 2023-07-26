@@ -52,14 +52,17 @@ public class AdmitCardServiceImpl implements AdmitCardService {
         String name = "Applicant Name : " + examineeInfo.get().getUserInfo().getFirstName() +
                 " " + examineeInfo.get().getUserInfo().getLastName();
         String id = "Applicant ID : " + examineeInfo.get().getExamineeId();
+        String courseName = "Course Name :"+ examineeInfo.get().getCourseInfo().getCourseName();
         String examTime = "Written Exam Time : " + examineeInfo.get().getCourseInfo().getWrittenExamTime();
+        String InstructionTitle = "Instruction";
+        String Instruction = examineeInfo.get().getCourseInfo().getWrittenExamInstruction();
+
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             Document document = new Document();
 
 
             PdfWriter.getInstance(document, out);
-
             document.open();
 
             Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 25, Color.black);
@@ -67,21 +70,31 @@ public class AdmitCardServiceImpl implements AdmitCardService {
             titlePara.setAlignment(Element.ALIGN_CENTER);
             document.add(titlePara);
 
-
-            Font bodyFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18, Color.black);
+            Font bodyFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14, Color.black);
             Paragraph namePara = new Paragraph(name, bodyFont);
-            titlePara.setAlignment(Element.ALIGN_LEFT);
+            namePara.setAlignment(Element.ALIGN_LEFT);
             document.add(namePara);
 
-
-
             Paragraph idPara = new Paragraph(id, bodyFont);
-            titlePara.setAlignment(Element.ALIGN_LEFT);
+            idPara.setAlignment(Element.ALIGN_LEFT);
             document.add(idPara);
 
+            Paragraph courseNamePara = new Paragraph(courseName, bodyFont);
+            courseNamePara.setAlignment(Element.ALIGN_LEFT);
+            document.add(courseNamePara);
+
             Paragraph examTimePara = new Paragraph(examTime, bodyFont);
-            titlePara.setAlignment(Element.ALIGN_LEFT);
+            examTimePara.setAlignment(Element.ALIGN_LEFT);
             document.add(examTimePara);
+
+            Font titleFont2 = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18, Color.black);
+            Paragraph InstructionTitlePara = new Paragraph(InstructionTitle, titleFont2);
+            InstructionTitlePara.setAlignment(Element.ALIGN_CENTER);
+            document.add(InstructionTitlePara);
+
+            Paragraph InstructionPara = new Paragraph(Instruction, bodyFont);
+            InstructionPara.setAlignment(Element.ALIGN_LEFT);
+            document.add(InstructionPara);
 
             document.close();
 

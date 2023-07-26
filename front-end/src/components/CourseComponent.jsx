@@ -29,7 +29,7 @@ const SubmitButton = styled(Button)(({ theme }) => ({
 }));
 
 
-const CourseComponent = ({  buttonText, handleSubmit, courseName, setCourseName, batchCode, setBatchCode, isAvailable, setIsAvailable, showSuccessMessage, successMessage, showErrorMessage, errorMessage, courseDescription, setCourseDescription, vacancy, setVacancy, applicationDeadline, setApplicationDeadline, writtenExamTime, setWrittenExamTime, startDate, setStartDate, endDate, setEndDate, applicantDashboardMessage, setApplicantDashboardMessage, writtenShortlistedDashboardMessage, setWrittenShortlistedDashboardMessage, writtenPassedDashboardMessage, setWrittenPassedDashboardMessage, technicalVivaPassedDashboardMessage, setTechnicalVivaPassedDashboardMessage, aptitudeTestPassedDashboardMessage, setAptitudeTestPassedDashboardMessage, hrVivaPassedDashboardMessage, setHrVivaPassedDashboardMessage, traineeDashboardMessage, setTraineeDashboardMessage }) => {
+const CourseComponent = ({  buttonText, handleSubmit, courseName, setCourseName, batchCode, setBatchCode, isAvailable, setIsAvailable, showSuccessMessage, successMessage, showErrorMessage, errorMessage, courseDescription, setCourseDescription, vacancy, setVacancy, applicationDeadline, setApplicationDeadline, writtenExamTime, setWrittenExamTime, startDate, setStartDate, endDate, setEndDate, applicantDashboardMessage, setApplicantDashboardMessage, writtenShortlistedDashboardMessage, setWrittenShortlistedDashboardMessage, writtenPassedDashboardMessage, setWrittenPassedDashboardMessage, technicalVivaPassedDashboardMessage, setTechnicalVivaPassedDashboardMessage, aptitudeTestPassedDashboardMessage, setAptitudeTestPassedDashboardMessage, hrVivaPassedDashboardMessage, setHrVivaPassedDashboardMessage, traineeDashboardMessage, setTraineeDashboardMessage, writtenExamInstruction , setWrittenExamInstruction }) => {
 
 
     return (
@@ -225,8 +225,20 @@ const CourseComponent = ({  buttonText, handleSubmit, courseName, setCourseName,
                                         onChange={(e) => setTraineeDashboardMessage(e.target.value)}
                                     />
                                 </Grid>
+                                <Grid item xs={12}>
+                                    <FormField
+                                        label="Written Exam Instruction"
+                                        variant="outlined"
+                                        fullWidth
+                                        multiline
+                                        rows={4}
+                                        value={writtenExamInstruction}
+                                        onChange={(e) => setWrittenExamInstruction(e.target.value)}
+                                    />
+                                </Grid>
 
                             </Grid>
+
                             <Grid item xs={12}>
                                 <FormControlLabel
                                     control={

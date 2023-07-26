@@ -26,15 +26,25 @@ public class CourseInfo {
     private Date startDate;
     private Date endDate;
     private String batchCode;
-    private String courseDescription;
     private Boolean isAvailable;
     private Long vacancy;
+    @Column(length = 1000)
+    private String courseDescription;
+    @Column(length = 1000)
     private String applicantDashboardMessage;
+    @Column(length = 1000)
     private String writtenShortlistedDashboardMessage;
+    @Column(length = 1000)
     private String writtenPassedDashboardMessage;
+    @Column(length = 1000)
     private String technicalVivaPassedDashboardMessage;
+    @Column(length = 1000)
     private String aptitudeTestPassedDashboardMessage;
+    @Column(length = 1000)
     private String hrVivaPassedDashboardMessage;
+    @Column(length = 1000)
     private String traineeDashboardMessage;
+    @Column(length = 1000)
+    private String writtenExamInstruction;
 
 }
