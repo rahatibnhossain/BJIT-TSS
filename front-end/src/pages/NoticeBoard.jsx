@@ -129,86 +129,123 @@ const NoticeBoardPage = () => {
 
     }
 
+    const handleAdmitDownload = (coursName) => {
+        console.log(userData);
+        console.log(coursName);
 
-    return (
-        <>
-            {value == "notice-board" &&
-                <>
-                    <Card sx={{ minWidth: 275, marginTop: 4 }}>
-                        <CardContent>
-                            <Typography align="center" sx={{ fontSize: 34 }} color="text.secondary" gutterBottom>
-                                Notice Board
-                            </Typography>
-                            <Typography variant="h5" component="div">
-                                {appliedCourse > 0 ?
-                                    `You have applied ${appliedCourse} ${appliedCourse > 1 ? "courses" : "course"} .` :
-                                    "You haven't applied for any course."
-                                }
-                            </Typography>
-                        </CardContent>
-                    </Card>
-
-                    <Box mt={4}>
-                        <Grid container spacing={2} justifyContent="center"
-                        >
-                            {dashboardData?.map((dashboard, index) =>
-
-                                <Grid item key={index} xs={12} sm={6} md={4}>
-
-                                    <CourseCard onClick={() => { goToApplicationStatus(dashboard) }}>
-
-                                        <CourseContent>
-                                            {dashboard.courseName &&
-                                                <CourseTitle align="center" variant="h6">Course : {dashboard.courseName}</CourseTitle>
-                                            }
-
-                                            <CourseDescription align="center" variant="body2">{dashboard.dashboardMessage}</CourseDescription>
-                                        </CourseContent>
-
-                                    </CourseCard>
-
-                                </Grid>
-                            )}
-
-                        </Grid>
-                    </Box>
-                </>
-            }
-            {
-                value == "applied-course" &&
-                <>
-                    <Card sx={{ minWidth: 275, marginTop: 4 }}>
-                        <Button onClick={() => {
-                            setValue("notice-board");
-                            setselectedDashBoard({})
+        const token = window.localStorage.getItem("tss-token");
 
 
-                        }} >Go Back</Button>
-                        <CardContent>
-                            <Typography align="center" sx={{ fontSize: 34 }} color="text.secondary" gutterBottom>
-                               Course : {selectedDashBoard.courseName}
-                            </Typography>
-                            <Typography variant="h5" component="div">
-                                {selectedDashBoard.dashboardMessage}
-                            </Typography>
-                        </CardContent>
+        axios({
+          url: 'api/candidate/generate-admit/7', 
+          method: 'GET',
+          responseType: 'blob',
+             headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        }).then((response) => {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', `admitcard_${coursName}_${userData.firstName}.pdf`); //or any other extension
+          document.body.appendChild(link);
+          link.click();
 
-                        
-                    </Card>
+
+      
+        });
+    }
 
 
 
+return (
+    <>
+        {value == "notice-board" &&
+            <>
+                <Card sx={{ minWidth: 275, marginTop: 4 }}>
+                    <CardContent>
+                        <Typography align="center" sx={{ fontSize: 34 }} color="text.secondary" gutterBottom>
+                            Notice Board
+                        </Typography>
+                        <Typography variant="h5" component="div">
+                            {appliedCourse > 0 ?
+                                `You have applied ${appliedCourse} ${appliedCourse > 1 ? "courses" : "course"} .` :
+                                "You haven't applied for any course."
+                            }
+                        </Typography>
+                    </CardContent>
+                </Card>
+
+                <Box mt={4}>
+                    <Grid container spacing={2} justifyContent="center"
+                    >
+                        {dashboardData?.map((dashboard, index) =>
+
+                            <Grid item key={index} xs={12} sm={6} md={4}>
+
+                                <CourseCard onClick={() => { goToApplicationStatus(dashboard) }}>
+
+                                    <CourseContent>
+                                        {dashboard.courseName &&
+                                            <CourseTitle align="center" variant="h6">Course : {dashboard.courseName}</CourseTitle>
+                                        }
+
+                                        <CourseDescription align="center" variant="body2">{dashboard.dashboardMessage}</CourseDescription>
+                                    </CourseContent>
+
+                                </CourseCard>
+
+                            </Grid>
+                        )}
+
+                    </Grid>
+                </Box>
+            </>
+        }
+        {
+            value == "applied-course" &&
+            <>
+                <Card sx={{ minWidth: 275, marginTop: 4 }}>
+                    <Button onClick={() => {
+                        setValue("notice-board");
+                        setselectedDashBoard({})
 
 
-                </>
-            }
+                    }} >Go Back</Button>
+                    <CardContent>
+                        <Typography align="center" sx={{ fontSize: 34 }} color="text.secondary" gutterBottom>
+                            Course : {selectedDashBoard.courseName}
+                        </Typography>
+                        <Typography variant="h5" component="div">
+                            {selectedDashBoard.dashboardMessage}
+                        </Typography>
+                        {selectedDashBoard.admitCardDownload &&
+                            <Button variant="contained" color="primary" onClick={() => { handleAdmitDownload(selectedDashBoard.courseName) }}>
+                                Download Admit Card
+                            </Button>
+                        }
 
 
 
-        </>
+
+                    </CardContent>
 
 
-    )
+                </Card>
+
+
+
+
+
+            </>
+        }
+
+
+
+    </>
+
+
+)
 }
 
 export default NoticeBoardPage

@@ -31,8 +31,9 @@ public class AdmitCardServiceImpl implements AdmitCardService {
     private final Logger logger = LoggerFactory.getLogger(AdmitCardServiceImpl.class);
 
     @Override
-    public ByteArrayInputStream generateAdmit(AdmitCardRequest admitCardRequest) {
-        Optional<ExamineeInfo> examineeInfo = examineeRepository.findById(admitCardRequest.getExamineeId());
+    public ByteArrayInputStream generateAdmit(String examineeId) {
+        Long examineId = Long.valueOf(examineeId);
+        Optional<ExamineeInfo> examineeInfo = examineeRepository.findById(examineId);
         if (examineeInfo.isEmpty()) {
             throw new UserException("User not found");
         }
@@ -76,6 +77,8 @@ public class AdmitCardServiceImpl implements AdmitCardService {
             document.add(namePara);
             document.add(idPara);
             document.add(examTimePara);
+
+            logger.info("Created pdf");
 
             return new ByteArrayInputStream(out.toByteArray());
         } catch (Exception ex) {

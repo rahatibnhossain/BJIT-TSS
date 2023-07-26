@@ -29,9 +29,10 @@ public class CandidateController {
         return candidateService.allCandidates();
     }
 
-    @PostMapping("/generate-admit")
-    public ResponseEntity<InputStreamResource> generateAdmitCard(@Valid @RequestBody AdmitCardRequest admitCardRequest) {
-        ByteArrayInputStream pdf = admitCardService.generateAdmit(admitCardRequest);
+    @GetMapping("/generate-admit/{examineeId}")
+    public ResponseEntity<InputStreamResource> generateAdmitCard(@PathVariable String examineeId) {
+
+        ByteArrayInputStream pdf = admitCardService.generateAdmit(examineeId);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Content-Description", "inline;file=AdmitCard.pdf");
         return ResponseEntity

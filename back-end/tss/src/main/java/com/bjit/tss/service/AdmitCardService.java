@@ -6,5 +6,5 @@ import java.io.ByteArrayInputStream;
 
 public interface AdmitCardService {
 
-    ByteArrayInputStream generateAdmit(AdmitCardRequest admitCardRequest);
+    ByteArrayInputStream generateAdmit(String examineeId);
 }

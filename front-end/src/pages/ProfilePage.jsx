@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { Typography, Box, Avatar, Button } from '@mui/material';
 import { LoginContext } from '../context/LoginContex';
 import { useNavigate } from 'react-router-dom';
-import AvatarImage from '../components/avatarImage';
+import AvatarImage from '../components/AvatarImage';
 import axios from '../api/axios';
 
 const ProfileComponent = () => {

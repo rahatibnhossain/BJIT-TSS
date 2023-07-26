@@ -5,7 +5,7 @@ import { Mail, Notifications } from "@mui/icons-material";
 import { Avatar } from '@mui/material/index';
 import { LoginContext } from '../context/LoginContex';
 import { useNavigate } from 'react-router-dom/dist/index';
-import AvatarImage from './avatarImage';
+import AvatarImage from './AvatarImage';
 const StyledToolbar = styled(Toolbar)({
   display: "flex",
   justifyContent: "space-between"

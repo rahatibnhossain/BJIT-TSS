@@ -60,7 +60,7 @@ public class SecurityConfig {
                         "/api/application/apply",
                         "api/upload/file-upload/image",
                         "api/upload/file-upload/resume",
-                        "api/candidate/generate-admit",
+                        "api/candidate/generate-admit/**",
                         "api/candidate/dashboard",
                         "api/file-download/resume"
                 )

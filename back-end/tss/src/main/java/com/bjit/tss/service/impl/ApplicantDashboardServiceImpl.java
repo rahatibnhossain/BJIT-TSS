@@ -30,6 +30,7 @@ public class ApplicantDashboardServiceImpl implements ApplicantDashboardService 
     @Override
     public ResponseEntity<ApiResponse<?>> getApplicantDashboardData() {
 
+
         LoginInfo loginInfo = (LoginInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         List<ExamineeInfo> examineeInfo = examineeRepository.findAllByUserInfoUserIdAndCourseInfoIsAvailable(loginInfo.getUserInfo().getUserId(), true);
@@ -61,6 +62,7 @@ public class ApplicantDashboardServiceImpl implements ApplicantDashboardService 
             ApplicantDashboardMessage applicantDashboardMessage = new ApplicantDashboardMessage();
             applicantDashboardMessage.setDashboardMessage(examinee.getCourseInfo().getApplicantDashboardMessage());
             applicantDashboardMessage.setCourseName(examinee.getCourseInfo().getCourseName());
+            applicantDashboardMessage.setAdmitCardDownload(false);
 
             return applicantDashboardMessage;
         }).toList();
@@ -72,41 +74,63 @@ public class ApplicantDashboardServiceImpl implements ApplicantDashboardService 
                 if (candidate.getHrViva().getPassed() != null) {
                     if (candidate.getHrViva().getPassed()) {
                         applicantDashboardMessage.setDashboardMessage(candidate.getExamineeInfo().getCourseInfo().getHrVivaPassedDashboardMessage());
+                        applicantDashboardMessage.setAdmitCardDownload(false);
+                       
 
                     } else {
                         applicantDashboardMessage.setDashboardMessage("Sorry you did not qualify HR viva. Best of luck.");
+                        applicantDashboardMessage.setAdmitCardDownload(false);
+
                     }
 
                 } else if (candidate.getTechnicalViva().getPassed() != null) {
 
                     if (candidate.getTechnicalViva().getPassed()) {
                         applicantDashboardMessage.setDashboardMessage(candidate.getExamineeInfo().getCourseInfo().getTechnicalVivaPassedDashboardMessage());
+                        applicantDashboardMessage.setAdmitCardDownload(false);
+
                     } else {
                         applicantDashboardMessage.setDashboardMessage("Sorry you did not qualify technical viva. Best of luck.");
+                        applicantDashboardMessage.setAdmitCardDownload(false);
+
                     }
 
                 } else if (candidate.getAptitudeTest().getPassed() != null) {
 
                     if (candidate.getAptitudeTest().getPassed()) {
                         applicantDashboardMessage.setDashboardMessage(candidate.getExamineeInfo().getCourseInfo().getAptitudeTestPassedDashboardMessage());
+                        applicantDashboardMessage.setAdmitCardDownload(false);
+
                     } else {
                         applicantDashboardMessage.setDashboardMessage("Sorry you did not qualify aptitude test. Best of luck.");
+                        applicantDashboardMessage.setAdmitCardDownload(false);
+
                     }
 
                 } else if (candidate.getWrittenMarks().getPassed() != null) {
 
                     if (candidate.getWrittenMarks().getPassed()) {
                         applicantDashboardMessage.setDashboardMessage(candidate.getExamineeInfo().getCourseInfo().getWrittenPassedDashboardMessage());
+                        applicantDashboardMessage.setAdmitCardDownload(false);
+
                     } else {
                         applicantDashboardMessage.setDashboardMessage("Sorry you did not qualify written test. Best of luck.");
+                        applicantDashboardMessage.setAdmitCardDownload(false);
+
                     }
 
                 } else {
+
                     applicantDashboardMessage.setDashboardMessage(candidate.getExamineeInfo().getCourseInfo().getWrittenShortlistedDashboardMessage());
+                    applicantDashboardMessage.setAdmitCardDownload(true);
+
+
                 }
 
             } else if (candidate.getExamineeInfo().getRole() == Role.TRAINEE) {
                 applicantDashboardMessage.setDashboardMessage(candidate.getExamineeInfo().getCourseInfo().getTraineeDashboardMessage());
+                applicantDashboardMessage.setAdmitCardDownload(false);
+
             } else {
                 throw new UserException("Invalid Request");
             }

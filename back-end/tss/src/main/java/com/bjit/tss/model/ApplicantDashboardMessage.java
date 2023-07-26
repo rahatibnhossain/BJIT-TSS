@@ -15,4 +15,5 @@ public class ApplicantDashboardMessage {
 
     private String dashboardMessage;
     private String courseName;
+    private Boolean admitCardDownload;
 }
