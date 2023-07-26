@@ -13,11 +13,7 @@ public interface CandidateRepository extends JpaRepository<CandidateMarks, Long>
 
     Optional<CandidateMarks> findByExamineeInfoExamineeId(Long examineeId);
 
-    List<CandidateMarks> findAllByHrVivaPassedAndTechnicalVivaPassedAndAptitudeTestPassedAndWrittenMarksPassedAndExamineeInfoCourseInfoBatchCode(boolean b, boolean b1, boolean b2, boolean b3, String batchCode);
-
     List<CandidateMarks> findAllByExamineeInfoRoleAndExamineeInfoCourseInfoBatchCode(Role role, String batchCode);
-
-    List<CandidateMarks> findByWrittenMarksEvaluatorInfoEvaluatorIdAndExamineeInfoCourseInfoIsAvailable(Long evaluatorId, boolean b);
 
     List<CandidateMarks> findAllByExamineeInfoRoleAndExamineeInfoCourseInfoBatchCodeAndWrittenMarksEvaluatorInfoIsNull(Role role, String batchCode);
 
@@ -32,4 +28,6 @@ public interface CandidateRepository extends JpaRepository<CandidateMarks, Long>
     List<CandidateMarks> findAllByExamineeInfoRole(Role role);
 
     List<CandidateMarks> findAllByExamineeInfoUserInfoUserIdAndExamineeInfoCourseInfoIsAvailableAndExamineeInfoRole(Long userId, boolean b, Role role);
+
+    List<CandidateMarks> findAllByHrVivaPassedAndTechnicalVivaPassedAndAptitudeTestPassedAndWrittenMarksPassedAndExamineeInfoCourseInfoBatchCodeAndExamineeInfoRole(boolean b, boolean b1, boolean b2, boolean b3, String batchCode, Role role);
 }

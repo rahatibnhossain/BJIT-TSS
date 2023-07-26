@@ -70,7 +70,7 @@ public class RegisterServiceImpl implements RegisterService {
                 .email(registerRequest.getEmail())
                 .contactNumber(registerRequest.getContactNumber())
                 .degreeName(registerRequest.getDegreeName())
-                .educationalInstitute(registerRequest.getEducationalInstitute())
+                .educationalInstitute(registerRequest.getEducationalInstitute().toUpperCase())
                 .cgpa(registerRequest.getCgpa())
                 .passingYear(registerRequest.getPassingYear())
                 .presentAddress(registerRequest.getPresentAddress())

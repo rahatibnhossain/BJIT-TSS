@@ -109,11 +109,12 @@ const Navbar = ({ courseNumber, onClose }) => {
               "You are not logged in"
           }>
 
-            <Badge badgeContent={appliedCoursesGlobal} color="error">
-              <Mail />
-            </Badge>
+            {(role != "ADMIN" && role != "EVALUATOR") &&
+              <Badge badgeContent={appliedCoursesGlobal} color="error">
+                <Mail />
+              </Badge>
+            }
           </Tooltip>
-
           <Tooltip title={`There are ${courseNumber ? courseNumber : 0} courses available`}>
 
             <Badge badgeContent={courseNumber ? courseNumber : 0} color="error">
@@ -122,7 +123,7 @@ const Navbar = ({ courseNumber, onClose }) => {
           </Tooltip>
 
           {role == "APPLICANT" ?
-            <AvatarImage id={userData.userId} />
+            <AvatarImage id={userData.userId} size={30} />
             :
             <Avatar
               sx={{ width: 30, height: 30 }}
@@ -139,10 +140,10 @@ const Navbar = ({ courseNumber, onClose }) => {
             <AvatarImage id={userData.userId} />
             :
             <Avatar
-            sx={{ width: 30, height: 30 }}
-            src="https://www.w3schools.com/w3images/avatar2.png"
+              sx={{ width: 30, height: 30 }}
+              src="https://www.w3schools.com/w3images/avatar2.png"
 
-          />
+            />
           }
           <Typography variant="span">
             {name}

@@ -6,6 +6,7 @@ import com.bjit.tss.exception.ExamineeException;
 import com.bjit.tss.exception.UserException;
 import com.bjit.tss.mapper.ApiResponseMapper;
 import com.bjit.tss.mapper.CandidateMapper;
+import com.bjit.tss.model.request.SpecificInstitutionExamineeRequest;
 import com.bjit.tss.model.response.ApiResponse;
 import com.bjit.tss.model.request.ApplicationRequest;
 import com.bjit.tss.model.request.CourseRoleRequest;
@@ -90,5 +91,32 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .build();
 
         return ApiResponseMapper.mapToResponseEntityOK(listResponse, "All the " + courseRoleRequest.getRole() + " of the batch " + courseRoleRequest.getBatchCode() + " who have not been assigned to any evaluator for written mark.");
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse<?>> allExamineSpecificInstitution( SpecificInstitutionExamineeRequest specificInstitutionExamineeRequest) {
+        List<ExamineeInfo> examineeInfos = examineeRepository.findDistinctByUserInfoEducationalInstituteAndRoleAndCourseInfoIsAvailableAndCourseInfoBatchCode(specificInstitutionExamineeRequest.getEducationalInstitution(), specificInstitutionExamineeRequest.getRole(), true, specificInstitutionExamineeRequest.getBatchCode());
+        if (examineeInfos.size()==0) {
+            throw new UserException("No user found for this institution : "+specificInstitutionExamineeRequest.getEducationalInstitution());
+        }
+
+        ListResponse<?> listResponse = ListResponse.builder()
+                .dataLength(examineeInfos.size())
+                .listResponse(examineeInfos)
+                .build();
+
+        return ApiResponseMapper.mapToResponseEntityOK(listResponse);
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse<?>> allDistinctInstitution(CourseRoleRequest courseRoleRequest) {
+        List<String> institute = examineeRepository.findDistinctEducationalInstitutesByRoleAndCourseInfoIsAvailableAndCourseInfoBatchCode( courseRoleRequest.getRole(), true, courseRoleRequest.getBatchCode());
+
+        ListResponse<?> listResponse = ListResponse.builder()
+                .dataLength(institute.size())
+                .listResponse(institute)
+                .build();
+        
+        return ApiResponseMapper.mapToResponseEntityOK(listResponse);
     }
 }

@@ -6,6 +6,7 @@ import axios from '../api/axios';
 import ApplicantTable from '../components/ApplicantTable';
 import AptitudeMark from '../components/AptitudeMark';
 import WrittenMark from '../components/WrittenMark';
+import InputNumbersComponent from '../components/InputNumbersComponent ';
 
 
 const HeaderTypography = styled(Typography)(({ theme }) => ({
@@ -49,7 +50,7 @@ const WrittenTestPage = () => {
     setValue2("");
   };
 
-const [allCandidates, setAllCandidates] = useState([])
+  const [allCandidates, setAllCandidates] = useState([])
   const [passedCandidates, setPassedCandidates] = useState([]);
 
   const setSingleCourse = (course) => {
@@ -109,7 +110,7 @@ const [allCandidates, setAllCandidates] = useState([])
             aria-label="secondary tabs example"
           >
             <Tab value="passed-candidates" label="Written Test Passed Candidates" />
-            <Tab value="upload-mark" label="All Written Test Candidates" />
+            <Tab value="upload-mark" label="Written Test Cradentials" />
           </Tabs>
         </Box>
       </Box>
@@ -140,22 +141,15 @@ const [allCandidates, setAllCandidates] = useState([])
         <Box pt={7}>
 
           <HeaderTypography>
-            Select course to view all candidates of selected course.
+            Select written marks credentials
           </HeaderTypography>
-          <CourseCards courseButtonText={"Upload Aptitude Marks for this course"} courses={courses} pathValue={"single-course-candidate"} setValue={setValue2} setSingleCourse={setSingleCourseForUploadMark} />
+
+          <InputNumbersComponent type="Written" />
         </Box>
 
       }
 
-      {value == "upload-mark" && value2 == "single-course-update" &&
 
-
-        <Box pt={7}>
-<h1>gd</h1>
-          {/* <ApplicantTable applicants={allApplicants} setApplicants={setAllApplicants} action={approveApplicant} actionText={"Approve Applicant"} /> */}
-        </Box>
-
-      }
 
 
     </Box>

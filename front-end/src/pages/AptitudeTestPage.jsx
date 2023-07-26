@@ -7,6 +7,7 @@ import AptitudeMark from '../components/AptitudeMark';
 import CandidateTable from '../components/CandidateTable';
 import UploadAptitudeMark from "../components/UploadAptitudeMark";
 import JSON2Message from '../services/JSON2Message';
+import InputNumbersComponent from '../components/InputNumbersComponent ';
 
 
 const HeaderTypography = styled(Typography)(({ theme }) => ({
@@ -140,7 +141,7 @@ const AptitudeTestPage = () => {
 
   const uploadAptitudeMark = (formData) => {
     console.log(formData);
-   
+
 
 
 
@@ -196,6 +197,7 @@ const AptitudeTestPage = () => {
           >
             <Tab value="passed-candidates" label="Aptitude Test Passed Candidates" />
             <Tab value="upload-mark" label="Upload Aptitude Test Mark" />
+            <Tab value="upload-mark-credintials" label="Aptitude Test Credintials" />
           </Tabs>
         </Box>
       </Box>
@@ -240,7 +242,18 @@ const AptitudeTestPage = () => {
 
       {value == "upload-mark" && value2 == "single-course-update" && value3 == "upload-mark" &&
         <Box pt={7}>
-          <UploadAptitudeMark  candidate={selectedCandidate}  />
+          <UploadAptitudeMark candidate={selectedCandidate} />
+        </Box>
+      }
+
+      {value == "upload-mark-credintials" &&
+        <Box pt={7}>
+
+          <HeaderTypography>
+            Select aptitude marks credentials
+          </HeaderTypography>
+
+          <InputNumbersComponent type="Aptitude" />
         </Box>
       }
 

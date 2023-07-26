@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CandidateResponse {
+public class HiddenCodeCandidateResponse {
 
     private Long candidateId;
     private String firstName;
@@ -20,4 +20,5 @@ public class CandidateResponse {
     private String degreeName;
     private Integer passingYear;
     private String courseName;
+    private Long hiddenCode;
 }

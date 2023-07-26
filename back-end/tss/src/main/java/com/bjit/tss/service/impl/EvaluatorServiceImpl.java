@@ -1,15 +1,15 @@
 package com.bjit.tss.service.impl;
 
-
-import com.bjit.tss.entity.CandidateMarks;
 import com.bjit.tss.entity.EvaluatorInfo;
+import com.bjit.tss.entity.HiddenCodeInfo;
 import com.bjit.tss.mapper.ApiResponseMapper;
-import com.bjit.tss.mapper.CandidateMapper;
+import com.bjit.tss.mapper.HiddenCodeResponseMapper;
 import com.bjit.tss.model.response.ApiResponse;
+import com.bjit.tss.model.response.HiddenCodeCandidateResponse;
 import com.bjit.tss.model.response.ListResponse;
-import com.bjit.tss.model.response.CandidateResponse;
 import com.bjit.tss.repository.CandidateRepository;
 import com.bjit.tss.repository.EvaluatorRepository;
+import com.bjit.tss.repository.HiddenCodeRepository;
 import com.bjit.tss.service.EvaluatorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,19 +17,18 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
 @Service
 @RequiredArgsConstructor
 public class EvaluatorServiceImpl implements EvaluatorService {
     private final EvaluatorRepository evaluatorRepository;
     private final CandidateRepository candidateRepository;
+    private final HiddenCodeRepository hiddenCodeRepository;
 
     @Override
     public ResponseEntity<ApiResponse<?>> getAllEvaluator() {
         List<EvaluatorInfo> evaluatorInfo = evaluatorRepository.findAll();
 
         if (evaluatorInfo.size() == 0 ){
-
 
             ListResponse<?> listResponse = ListResponse.builder()
                     .dataLength(0)
@@ -44,26 +43,20 @@ public class EvaluatorServiceImpl implements EvaluatorService {
                     .listResponse(evaluatorInfo)
                     .build();
             return ApiResponseMapper.mapToResponseEntityOK(listResponse, "Evaluator List");
-
         }
-
     }
 
     @Override
     public ResponseEntity<ApiResponse<?>> getAssignedCandidate(Long evaluatorId) {
-        List<CandidateMarks> candidateMarks = candidateRepository.findByWrittenMarksEvaluatorInfoEvaluatorIdAndExamineeInfoCourseInfoIsAvailable(evaluatorId, true);
+        List<HiddenCodeInfo> hiddenCodeInfos = hiddenCodeRepository.findAllByCandidateMarksWrittenMarksEvaluatorInfoEvaluatorIdAndCandidateMarksExamineeInfoCourseInfoIsAvailable(evaluatorId, true);
 
-       List<CandidateResponse> candidateResponseList = candidateMarks.stream().map(CandidateMapper::mapToCandidateResponse).toList();
+        List<HiddenCodeCandidateResponse> hiddenCodeCandidateResponses = hiddenCodeInfos.stream().map(HiddenCodeResponseMapper::mapToHiddenCodeResponse).toList();
 
-        ListResponse listResponse = ListResponse.builder()
-                .dataLength(candidateResponseList.size())
-                .listResponse(candidateResponseList)
+        ListResponse<?> listResponse = ListResponse.builder()
+                .dataLength(hiddenCodeCandidateResponses.size())
+                .listResponse(hiddenCodeCandidateResponses)
                 .build();
-
-
 
         return ApiResponseMapper.mapToResponseEntityOK(listResponse, "List of assigned candidates to evaluator");
     }
-
-
 }

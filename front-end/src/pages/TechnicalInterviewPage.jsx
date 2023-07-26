@@ -8,6 +8,7 @@ import CandidateTable from '../components/CandidateTable';
 import UploadAptitudeMark from "../components/UploadAptitudeMark";
 import JSON2Message from '../services/JSON2Message';
 import UploadTechnicalMark from '../components/UploadTechnicalMark';
+import InputNumbersComponent from '../components/InputNumbersComponent ';
 
 
 const HeaderTypography = styled(Typography)(({ theme }) => ({
@@ -157,6 +158,7 @@ const TechnicalInterviewPage = () => {
           >
             <Tab value="passed-candidates" label="Technical Viva Passed Candidates" />
             <Tab value="upload-mark" label="Upload Technical Viva Test Mark" />
+            <Tab value="upload-mark-credintials" label="Technical Viva Credintials" />
           </Tabs>
         </Box>
       </Box>
@@ -177,7 +179,7 @@ const TechnicalInterviewPage = () => {
       {value == "passed-candidates" && value2 == "single-course-candidate" &&
 
         <Box pt={7}>
-          <AptitudeMark  type={"technical"} topMessage={"Candidate who passed technical viva"} applicants={passedCandidates} showAction={false} />
+          <AptitudeMark type={"technical"} topMessage={"Candidate who passed technical viva"} applicants={passedCandidates} showAction={false} />
         </Box>
 
       }
@@ -205,7 +207,16 @@ const TechnicalInterviewPage = () => {
         </Box>
       }
 
+      {value == "upload-mark-credintials" &&
+        <Box pt={7}>
 
+          <HeaderTypography>
+            Select Technical Viva marks credentials
+          </HeaderTypography>
+
+          <InputNumbersComponent type="Technical Viva" />
+        </Box>
+      }
     </Box>
 
   )

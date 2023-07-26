@@ -179,10 +179,11 @@ const EvaluatorManagement = () => {
 
     }
     const [batchCode, setBatchCode] = useState("");
-
+    const [selectedCourse, setSelectedCourse]= useState({})
 
     const setCourseAndShowAvailableApplicants = (course) => {
 
+        setSelectedCourse(course)
         console.log(course);
         setBatchCode(course.batchCode)
 
@@ -274,12 +275,17 @@ const EvaluatorManagement = () => {
                     setShowSuccessMessage(true)
                     setSuccessMessage(response.data.successMessage)
                     console.log(response?.data?.data);
+                    setCourseAndShowAvailableApplicants(selectedCourse);
+
                 }
             }).catch((error) => {
                 console.error('Error getting availave:', error);
                 setShowErrorMessage(true)
                 setErrorMessage(JSON2Message(JSON.stringify(error.response.data.errorMessage)))
             });
+
+
+
     }
 
 

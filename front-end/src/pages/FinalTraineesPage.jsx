@@ -8,6 +8,7 @@ import CandidateTable from '../components/CandidateTable';
 import JSON2Message from '../services/JSON2Message';
 import UploadHrVivaMark from '../components/UploadHrVivaMark';
 import FinalTraineeTable from '../components/FinalTraineeTable';
+import FinalTrainee from '../components/FinalTrainee';
 
 
 const HeaderTypography = styled(Typography)(({ theme }) => ({
@@ -43,7 +44,7 @@ const FinalTraineesPage = () => {
   const { allEvaluators, setAllEvaluators, loggedIn, setCourses, courses, unavailableCourses, setUnavailableCourses } = useContext(LoginContext);
 
 
-  const [value, setValue] = useState("passed-candidates")
+  const [value, setValue] = useState("final-trainees")
   const [value2, setValue2] = useState("")
   const [value3, setValue3] = useState("");
 
@@ -58,14 +59,19 @@ const FinalTraineesPage = () => {
 
   const [passedCandidates, setPassedCandidates] = useState([]);
 
+  const [finalTrainees, setfinalTrainees] = useState([])
+
+  const [selectedCourse, setSelectedCourse] = useState({})
+
   const setSingleCourse = (course) => {
     console.log(course.batchCode);
+    setSelectedCourse(course)
     console.log('Select Final');
 
 
-  
 
-    
+
+
     const token = window.localStorage.getItem("tss-token");
     const config = {
       headers: {
@@ -80,6 +86,23 @@ const FinalTraineesPage = () => {
           setShowSuccessMessage(true)
           setSuccessMessage(response.data.successMessage)
           console.log(response?.data?.data?.listResponse);
+          setfinalTrainees(response?.data?.data?.listResponse);
+
+        }
+      }).catch((error) => {
+        console.error('Error getting all passed:', error);
+        setShowErrorMessage(true)
+        setErrorMessage(JSON2Message(JSON.stringify(error.response.data.errorMessage)))
+      });
+
+
+      axios.get(`/api/final-trainee/all-passed/${course.batchCode}`, config)
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          setShowSuccessMessage(true)
+          setSuccessMessage(response.data.successMessage)
+          console.log(response?.data?.data?.listResponse);
           setPassedCandidates(response?.data?.data?.listResponse);
         }
       }).catch((error) => {
@@ -87,14 +110,16 @@ const FinalTraineesPage = () => {
         setShowErrorMessage(true)
         setErrorMessage(JSON2Message(JSON.stringify(error.response.data.errorMessage)))
       });
+
+
   }
 
   const setSingleCourseForUploadMark = (course) => {
     console.log(course);
     setValue2("single-course-update")
 
- 
-    
+
+
     const token = window.localStorage.getItem("tss-token");
     const config = {
       headers: {
@@ -119,10 +144,48 @@ const FinalTraineesPage = () => {
   }
 
   const [selectedCandidate, setSelectedCandidate] = useState({})
-  const selectAsTrainee = (candidate) => {
-    console.log(candidate);
-   
 
+
+  const selectAsTrainee = (candidate) => {
+
+
+
+    console.log(candidate);
+
+    const formData = {
+
+      candidateIds: [candidate.candidateId
+
+      ]
+    }
+
+
+    console.log(formData);
+    const token = window.localStorage.getItem("tss-token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    axios.post("/api/final-trainee/select", formData, config)
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          setShowSuccessMessage(true)
+          setSuccessMessage(response.data.successMessage)
+          console.log(response?.data?.data);
+
+
+        }
+      }).catch((error) => {
+        console.error('Error getting availave:', error);
+        setShowErrorMessage(true)
+        setErrorMessage(JSON2Message(JSON.stringify(error.response.data.errorMessage)))
+
+      });
+
+
+    setSingleCourse(selectedCourse);
 
   }
 
@@ -142,13 +205,13 @@ const FinalTraineesPage = () => {
             indicatorColor="secondary"
             aria-label="secondary tabs example"
           >
-            <Tab value="passed-candidates" label="Final Trainees" />
+            <Tab value="final-trainees" label="Final Trainees" />
             <Tab value="upload-mark" label="Select Final Trainiees" />
           </Tabs>
         </Box>
       </Box>
 
-      {value == "passed-candidates" && value2 == "" &&
+      {value == "final-trainees" && value2 == "" &&
 
         <Box pt={7}>
 
@@ -161,10 +224,10 @@ const FinalTraineesPage = () => {
 
       }
 
-      {value == "passed-candidates" && value2 == "single-course-candidate" &&
+      {value == "final-trainees" && value2 == "single-course-candidate" &&
 
         <Box pt={7}>
-          <AptitudeMark topMessage={"Final Trainees"} applicants={passedCandidates} showAction={false} />
+          <FinalTrainee topMessage={"Final Trainees"} applicants={finalTrainees} showAction={false} />
         </Box>
 
       }
@@ -184,7 +247,7 @@ const FinalTraineesPage = () => {
         <Box pt={7}>
 
 
-         
+
           <FinalTraineeTable applicants={allCandidates} setApplicants={setAllCandidates} action={selectAsTrainee} actionText={"Select as trainee"} />
         </Box>
       }

@@ -8,6 +8,7 @@ import CandidateTable from '../components/CandidateTable';
 import UploadAptitudeMark from "../components/UploadAptitudeMark";
 import JSON2Message from '../services/JSON2Message';
 import UploadHrVivaMark from '../components/UploadHrVivaMark';
+import InputNumbersComponent from '../components/InputNumbersComponent ';
 
 
 const HeaderTypography = styled(Typography)(({ theme }) => ({
@@ -157,6 +158,7 @@ const HrInterviewPage = () => {
           >
             <Tab value="passed-candidates" label="HR Viva Passed Candidates" />
             <Tab value="upload-mark" label="Upload HR Viva Test Mark" />
+            <Tab value="upload-mark-credintials" label="HR Viva Credintials" />
           </Tabs>
         </Box>
       </Box>
@@ -205,6 +207,18 @@ const HrInterviewPage = () => {
         </Box>
       }
 
+
+
+      {value == "upload-mark-credintials" &&
+        <Box pt={7}>
+
+          <HeaderTypography>
+            Select HR Viva marks credentials
+          </HeaderTypography>
+
+          <InputNumbersComponent type="HR Viva" />
+        </Box>
+      }
 
     </Box>
 

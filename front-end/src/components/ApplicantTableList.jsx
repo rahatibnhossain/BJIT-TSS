@@ -61,6 +61,15 @@ const ApplicantTableList = ({ topMessage, evaluator, applicants, setApplicants, 
                 <ResponsiveTable stickyHeader>
                     <TableHead>
                         <TableRow>
+                        <StyledTableCell>
+                                <TableSortLabel
+                                    active={sortField === 'hiddenCode'}
+                                    direction={sortField === 'hiddenCode' ? sortOrder : 'asc'}
+                                    onClick={() => handleSort('hiddenCode')}
+                                >
+                                    Hidden Code
+                                </TableSortLabel>
+                            </StyledTableCell>
                             <StyledTableCell>
                                 <TableSortLabel
                                     active={sortField === 'firstName'}
@@ -70,15 +79,7 @@ const ApplicantTableList = ({ topMessage, evaluator, applicants, setApplicants, 
                                     First Name
                                 </TableSortLabel>
                             </StyledTableCell>
-                            <StyledTableCell>
-                                <TableSortLabel
-                                    active={sortField === 'lastName'}
-                                    direction={sortField === 'lastName' ? sortOrder : 'asc'}
-                                    onClick={() => handleSort('lastName')}
-                                >
-                                    Last Name
-                                </TableSortLabel>
-                            </StyledTableCell>
+ 
                             <StyledTableCell>
                                 <TableSortLabel
                                     active={sortField === 'email'}
@@ -148,8 +149,8 @@ const ApplicantTableList = ({ topMessage, evaluator, applicants, setApplicants, 
                     <TableBody>
                         {sortedApplicants.map((applicant, index) => (
                             <TableRow key={index}>
+                                <TableCell>{applicant.hiddenCode}</TableCell>
                                 <TableCell>{applicant.firstName}</TableCell>
-                                <TableCell>{applicant.lastName}</TableCell>
                                 <TableCell>{applicant.email}</TableCell>
                                 <TableCell>{applicant.cgpa}</TableCell>
                                 <TableCell>{applicant.courseName}</TableCell>

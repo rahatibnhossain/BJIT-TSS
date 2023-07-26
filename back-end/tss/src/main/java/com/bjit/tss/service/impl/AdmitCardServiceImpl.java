@@ -52,7 +52,7 @@ public class AdmitCardServiceImpl implements AdmitCardService {
         String name = "Applicant Name : " + examineeInfo.get().getUserInfo().getFirstName() +
                 " " + examineeInfo.get().getUserInfo().getLastName();
         String id = "Applicant ID : " + examineeInfo.get().getExamineeId();
-        String courseName = "Course Name :"+ examineeInfo.get().getCourseInfo().getCourseName();
+        String courseName = "Course Name : "+ examineeInfo.get().getCourseInfo().getCourseName();
         String examTime = "Written Exam Time : " + examineeInfo.get().getCourseInfo().getWrittenExamTime();
         String InstructionTitle = "Instruction";
         String Instruction = examineeInfo.get().getCourseInfo().getWrittenExamInstruction();

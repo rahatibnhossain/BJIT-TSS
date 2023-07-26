@@ -32,7 +32,7 @@ public class FinalTraineeServiceImpl implements FinalTraineeService {
             throw new CourseException("Invalid batch");
         }
 
-        List<CandidateMarks> candidateMarks = candidateRepository.findAllByHrVivaPassedAndTechnicalVivaPassedAndAptitudeTestPassedAndWrittenMarksPassedAndExamineeInfoCourseInfoBatchCode(true,true,true,true,batchCode);
+        List<CandidateMarks> candidateMarks = candidateRepository.findAllByHrVivaPassedAndTechnicalVivaPassedAndAptitudeTestPassedAndWrittenMarksPassedAndExamineeInfoCourseInfoBatchCodeAndExamineeInfoRole(true,true,true,true,batchCode,Role.CANDIDATE);
         ListResponse listResponse = ListResponse.builder()
                 .dataLength(candidateMarks.size())
                 .listResponse(candidateMarks)

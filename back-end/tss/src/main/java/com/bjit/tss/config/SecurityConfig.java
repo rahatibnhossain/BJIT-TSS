@@ -84,6 +84,7 @@ public class SecurityConfig {
                         "api/candidate/all",
                         "/api/evaluation/assign-answer",
                         "/api/data-storage/set",
+                        "/api/data-storage/get",
                         "/api/evaluation/upload-mark/aptitude",
                         "/api/evaluation/upload-mark/technical",
                         "/api/evaluation/upload-mark/hr-viva",
@@ -94,7 +95,10 @@ public class SecurityConfig {
                         "/api/evaluator/assigned-candidates/**",
                         "/api/application/course/unassigned-candidates",
                         "/api/evaluation/passed-round",
-                        "api/file-download/resume/**"
+                        "api/file-download/resume/**",
+                        "/api/application/course/distinct",
+                        "/api/application/course/distinct_institution"
+
                 )
                 .hasAuthority("ADMIN")
                 .anyRequest()

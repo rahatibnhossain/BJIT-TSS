@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Tab, Tabs, Box, Typography } from '@mui/material';
+import { Tab, Tabs, Box, Typography, Button } from '@mui/material';
 import { LoginContext } from '../context/LoginContex';
 import CourseCards from '../components/CourseCards';
 import axios from '../api/axios';
@@ -8,13 +8,75 @@ import AllApplicantsTableForApprove from '../components/AllApplicantsTableForApp
 import { styled } from '@mui/material/styles';
 
 
+
 const HeaderTypography = styled(Typography)(({ theme }) => ({
     fontSize: '1.6rem',
     marginBottom: theme.spacing(2),
 }));
 
 
+
+
+
 const ApproveApplicantPage = () => {
+
+    const [allInstitute, setAllInstitute] = useState([])
+
+
+    const fetchIntitutesList=()=>{
+        let role = "APPLICANT"
+
+        const formData = {
+            role,
+            batchCode
+        };
+        console.log(formData);
+        
+        const token = window.localStorage.getItem("tss-token");
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+
+        axios.post(`/api/application/course/distinct_institution`, formData, config)
+            .then((response) => {
+                console.log(response);
+                console.log(response?.data?.data);
+
+
+                if (response.status === 200) {
+                    setShowSuccessMessage(true)
+                    setSuccessMessage(response.data.successMessage)
+                    console.log(response?.data?.data?.listResponse);
+                    setAllInstitute(response?.data?.data?.listResponse)
+
+
+                    setTimeout(() => {
+                        setShowSuccessMessage(false)
+                        setSuccessMessage("")
+
+
+
+                    }, 2000);
+                }
+            })
+            .catch((error) => {
+                console.error('Error uploading files:', error);
+                setShowErrorMessage(true)
+                setErrorMessage(JSON2Message(JSON.stringify(error.response.data.errorMessage)))
+                setTimeout(() => {
+                    setShowErrorMessage(false)
+                    setErrorMessage("")
+
+                }, 5000);
+
+
+            });
+
+    }
+
+
 
     const fetchApplicant = () => {
 
@@ -44,6 +106,49 @@ const ApproveApplicantPage = () => {
                     setSuccessMessage(response.data.successMessage)
                     console.log(response?.data?.data?.listResponse);
                     setAllApplicants(response?.data?.data?.listResponse)
+
+
+                    setTimeout(() => {
+                        setShowSuccessMessage(false)
+                        setSuccessMessage("")
+
+
+
+                    }, 2000);
+                }
+            })
+            .catch((error) => {
+                console.error('Error uploading files:', error);
+                setShowErrorMessage(true)
+                setErrorMessage(JSON2Message(JSON.stringify(error.response.data.errorMessage)))
+                setTimeout(() => {
+                    setShowErrorMessage(false)
+                    setErrorMessage("")
+
+                }, 5000);
+
+
+            });
+
+        role = "CANDIDATE"
+
+        const formData2 = {
+            role,
+            batchCode
+        };
+        console.log(formData2);
+
+        axios.post(`/api/application/course`, formData2, config)
+            .then((response) => {
+                console.log(response);
+                console.log(response?.data?.data);
+
+
+                if (response.status === 200) {
+                    setShowSuccessMessage(true)
+                    setSuccessMessage(response.data.successMessage)
+                    console.log(response?.data?.data?.listResponse);
+                    setAllCandidated(response?.data?.data?.listResponse)
 
 
                     setTimeout(() => {
@@ -271,6 +376,13 @@ const ApproveApplicantPage = () => {
         console.log(value2);
     }, [value, value2]);
 
+    const goBackToAllApplicants = () => {
+        setValue2("");
+    }
+    const goBackToApprovedCandidates = () => {
+        setValue2("");
+    }
+
 
     return (
         <Box mt={1}>
@@ -295,10 +407,6 @@ const ApproveApplicantPage = () => {
 
             </Box>
 
-
-
-
-
             {value == "approved-applicants" && value2 == "" &&
                 <Box pt={7}>
                     <HeaderTypography>
@@ -310,6 +418,7 @@ const ApproveApplicantPage = () => {
 
             {value == "approved-applicants" && value2 == "single-course-candidate" &&
                 <Box pt={7}>
+                    <Button onClick={goBackToApprovedCandidates}>Go Back</Button>
 
                     <ApplicantTable showAction={false} applicants={allCandidated} setApplicants={setAllApplicants} action={approveApplicant} actionText={"Approve Candidate"} />
                 </Box>
@@ -332,7 +441,7 @@ const ApproveApplicantPage = () => {
             {value == "all-applicants" && value2 == "single-course-applicant" &&
                 <Box pt={7}>
 
-                    <AllApplicantsTableForApprove showAction={true} applicants={allApplicants} setApplicants={setAllApplicants} action={approveApplicant} actionText={"Approve Applicant"} />
+                    <AllApplicantsTableForApprove batchCode={batchCode} allInstitute={allInstitute} fetchIntitutesList={fetchIntitutesList} goBack={goBackToAllApplicants} showAction={true} applicants={allApplicants} setApplicants={setAllApplicants} action={approveApplicant} actionText={"Approve Applicant"} />
                 </Box>
             }
 

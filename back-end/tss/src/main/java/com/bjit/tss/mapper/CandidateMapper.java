@@ -8,7 +8,7 @@ import com.bjit.tss.model.response.CandidateResponse;
 public class CandidateMapper {
 
     public static CandidateResponse mapToCandidateResponse(CandidateMarks candidateMarks ) {
-        CandidateResponse candidateResponse = CandidateResponse.builder()
+        return CandidateResponse.builder()
                 .candidateId(candidateMarks.getCandidateId())
                 .firstName(candidateMarks.getExamineeInfo().getUserInfo().getFirstName())
                 .lastName(candidateMarks.getExamineeInfo().getUserInfo().getLastName())
@@ -19,6 +19,5 @@ public class CandidateMapper {
                 .passingYear(candidateMarks.getExamineeInfo().getUserInfo().getPassingYear())
                 .courseName(candidateMarks.getExamineeInfo().getCourseInfo().getCourseName())
                 .build();
-        return candidateResponse;
     }
 }

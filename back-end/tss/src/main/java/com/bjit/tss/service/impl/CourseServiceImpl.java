@@ -34,6 +34,8 @@ public class CourseServiceImpl implements CourseService {
             throw new CourseException("A course already exists with the batch code " + courseModel.getBatchCode());
         }
 
+
+
         CourseInfo courseInfo = CourseMapper.mapToCourseInfo(courseModel);
         CourseInfo savedCourse = courseRepository.save(courseInfo);
         return ApiResponseMapper.mapToResponseEntityCreated(savedCourse, "Course created successfully.");

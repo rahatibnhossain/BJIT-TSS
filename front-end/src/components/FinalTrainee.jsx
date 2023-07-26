@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
-import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TableSortLabel, Button } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { styled, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TableSortLabel, Button, Box } from '@mui/material';
 import axios from '../api/axios';
+import ApplicantModal from './ApplicantModal'; 
+
+
+
+
+const HeaderTypography = styled(Typography)(({ theme }) => ({
+    fontSize: '1.6rem',
+    marginBottom: theme.spacing(2),
+}));
 
 const Container = styled(TableContainer)(({ theme }) => ({
     maxHeight: 440,
@@ -19,8 +27,9 @@ const ScrollableWrapper = styled('div')(({ theme }) => ({
     overflowX: 'auto',
 }));
 
-const FinalTraineeTable = ({ applicants, setApplicants, action, actionText }) => {
+const FinalTrainee = ({ type, topMessage, applicants, action, actionText, showAction }) => {
     console.log(applicants);
+
     const [sortField, setSortField] = useState('');
     const [sortOrder, setSortOrder] = useState('asc');
 
@@ -45,33 +54,39 @@ const FinalTraineeTable = ({ applicants, setApplicants, action, actionText }) =>
             }
         })
         : applicants;
+        
 
+        const [selectedApplicant, setSelectedApplicant] = useState(null);
+        const [showModal, setShowModal] = useState(false);
 
-    const [selectedApplicant, setSelectedApplicant] = useState(null);
-    const [showModal, setShowModal] = useState(false);
-
-    const handleOpenModal = (applicant) => {
-        setSelectedApplicant(applicant.examineeInfo);
-        setShowModal(true);
-    };
-    const handleCloseModal = () => {
-        setSelectedApplicant(null);
-        setShowModal(false);
-    };
-
+        const handleOpenModal = (applicant) => {
+            setSelectedApplicant(applicant.examineeInfo);
+            setShowModal(true);
+        };
+        const handleCloseModal = () => {
+            setSelectedApplicant(null);
+            setShowModal(false);
+        };
 
 
 
     return (
         <Box>
-
             <Container component={Paper}>
+                <Box p={2}>
+                    <HeaderTypography>
+
+                        {topMessage}
+                    </HeaderTypography>
+                </Box>
                 <ScrollableWrapper>
                     <ResponsiveTable stickyHeader>
                         <TableHead>
                             <TableRow>
                                 <StyledTableCell>
+
                                     <TableSortLabel  >
+
                                     </TableSortLabel>
                                 </StyledTableCell>
                                 <StyledTableCell>
@@ -84,7 +99,6 @@ const FinalTraineeTable = ({ applicants, setApplicants, action, actionText }) =>
                                     </TableSortLabel>
                                 </StyledTableCell>
 
-
                                 <StyledTableCell>
                                     <TableSortLabel
                                         active={sortField === 'fullMark'}
@@ -96,56 +110,58 @@ const FinalTraineeTable = ({ applicants, setApplicants, action, actionText }) =>
                                 </StyledTableCell>
                                 <StyledTableCell>
                                     <TableSortLabel
-                                        active={sortField === 'hrViva'}
-                                        direction={sortField === 'hrViva' ? sortOrder : 'asc'}
-                                        onClick={() => handleSort('hrViva')}
+                                        active={sortField === 'marks'}
+                                        direction={sortField === 'marks' ? sortOrder : 'asc'}
+                                        onClick={() => handleSort('marks')}
                                     >
-                                        HR Viva Mark
-                                    </TableSortLabel>
-                                </StyledTableCell>
-                                <StyledTableCell>
-                                    <TableSortLabel
-                                        active={sortField === 'technicalViva'}
-                                        direction={sortField === 'technicalViva' ? sortOrder : 'asc'}
-                                        onClick={() => handleSort('technicalViva')}
-                                    >
-                                        Technical Viva Mark
-                                    </TableSortLabel>
-                                </StyledTableCell>
-                                <StyledTableCell>
-                                    <TableSortLabel
-                                        active={sortField === 'aptitudeMark'}
-                                        direction={sortField === 'aptitudeMark' ? sortOrder : 'asc'}
-                                        onClick={() => handleSort('aptitudeMark')}
-                                    >
-                                        Aptitude Test Mark
-                                    </TableSortLabel>
-                                </StyledTableCell>
-                                <StyledTableCell>
-                                    <TableSortLabel
-                                        active={sortField === 'writtenMark'}
-                                        direction={sortField === 'writtenMark' ? sortOrder : 'asc'}
-                                        onClick={() => handleSort('writtenMark')}
-                                    >
-                                        Written Test Mark
+                                        HR Viva Marks
                                     </TableSortLabel>
                                 </StyledTableCell>
 
                                 <StyledTableCell>
-                                    <TableSortLabel >
+                                    <TableSortLabel   >
+                                        Technical Viva Marks
+                                    </TableSortLabel>
+                                </StyledTableCell>
+                                <StyledTableCell>
+                                    <TableSortLabel   >
+                                        Aptitude Test Marks
+                                    </TableSortLabel>
+                                </StyledTableCell>
+                                <StyledTableCell>
+                                    <TableSortLabel   >
+                                        Written Test Marks
                                     </TableSortLabel>
                                 </StyledTableCell>
 
+
+                                {
+                                    showAction &&
+                                    <StyledTableCell>
+
+                                        <TableSortLabel  >
+
+                                        </TableSortLabel>
+                                    </StyledTableCell>
+                                }
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {sortedApplicants.map((applicant, index) => (
                                 <TableRow key={index}>
+
+
+
                                     <TableCell>
+
+
                                         <Button variant="contained" color="primary" onClick={() => handleOpenModal(applicant)}>
                                             View Profile
                                         </Button>
+
+
                                     </TableCell>
+
                                     <TableCell>{applicant.examineeInfo.userInfo.firstName}</TableCell>
                                     <TableCell>{applicant.fullMark}</TableCell>
                                     <TableCell>{applicant.hrViva.roundMark}</TableCell>
@@ -153,11 +169,18 @@ const FinalTraineeTable = ({ applicants, setApplicants, action, actionText }) =>
                                     <TableCell>{applicant.aptitudeTest.roundMark}</TableCell>
                                     <TableCell>{applicant.writtenMarks.writtenMark}</TableCell>
 
-                                    <TableCell>
-                                        <Button variant="contained" color="secondary" onClick={() => action(applicant)}>
-                                            {actionText}
-                                        </Button>
-                                    </TableCell>
+
+
+
+                                    {
+                                        showAction &&
+                                        <TableCell>
+                                            <Button variant="contained" color="secondary" onClick={() => action(applicant)}>
+                                                {actionText}
+                                            </Button>
+                                        </TableCell>
+
+                                    }
 
 
                                 </TableRow>
@@ -175,11 +198,10 @@ const FinalTraineeTable = ({ applicants, setApplicants, action, actionText }) =>
                     />
                 )
             }
-        </Box >
+        </Box>
     );
 };
 
 
 
-
-export default FinalTraineeTable
+export default FinalTrainee

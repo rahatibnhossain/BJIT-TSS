@@ -6,7 +6,7 @@ import com.bjit.tss.model.CourseModel;
 public class CourseMapper {
 
     public static CourseInfo mapToCourseInfo(CourseModel courseModel) {
-        CourseInfo courseInfo = CourseInfo.builder()
+        return CourseInfo.builder()
                 .courseName(courseModel.getCourseName())
                 .applicationDeadline(courseModel.getApplicationDeadline())
                 .startDate(courseModel.getStartDate())
@@ -25,6 +25,5 @@ public class CourseMapper {
                 .hrVivaPassedDashboardMessage(courseModel.getHrVivaPassedDashboardMessage())
                 .writtenExamInstruction(courseModel.getWrittenExamInstruction())
                 .build();
-        return courseInfo;
     }
 }
