@@ -129,15 +129,17 @@ const NoticeBoardPage = () => {
 
     }
 
-    const handleAdmitDownload = (coursName) => {
+    const handleAdmitDownload = (dashboardMessage) => {
         console.log(userData);
-        console.log(coursName);
+        console.log(dashboardMessage);
+        console.log(dashboardMessage.examineeId);
+        console.log(dashboardMessage.courseName);
 
         const token = window.localStorage.getItem("tss-token");
 
 
         axios({
-          url: 'api/candidate/generate-admit/7', 
+          url: `api/candidate/generate-admit/${dashboardMessage.examineeId}`, 
           method: 'GET',
           responseType: 'blob',
              headers: {
@@ -147,7 +149,7 @@ const NoticeBoardPage = () => {
           const url = window.URL.createObjectURL(new Blob([response.data]));
           const link = document.createElement('a');
           link.href = url;
-          link.setAttribute('download', `admitcard_${coursName}_${userData.firstName}.pdf`); //or any other extension
+          link.setAttribute('download', `admitcard_${dashboardMessage.courseName}_${userData.firstName}.pdf`); //or any other extension
           document.body.appendChild(link);
           link.click();
 
@@ -220,7 +222,7 @@ return (
                             {selectedDashBoard.dashboardMessage}
                         </Typography>
                         {selectedDashBoard.admitCardDownload &&
-                            <Button variant="contained" color="primary" onClick={() => { handleAdmitDownload(selectedDashBoard.courseName) }}>
+                            <Button variant="contained" color="primary" onClick={() => { handleAdmitDownload(selectedDashBoard) }}>
                                 Download Admit Card
                             </Button>
                         }

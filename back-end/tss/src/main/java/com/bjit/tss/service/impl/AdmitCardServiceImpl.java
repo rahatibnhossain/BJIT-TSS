@@ -56,27 +56,34 @@ public class AdmitCardServiceImpl implements AdmitCardService {
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             Document document = new Document();
-            document.open();
+
 
             PdfWriter.getInstance(document, out);
+
+            document.open();
+
             Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 25, Color.black);
             Paragraph titlePara = new Paragraph(title, titleFont);
             titlePara.setAlignment(Element.ALIGN_CENTER);
+            document.add(titlePara);
+
 
             Font bodyFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18, Color.black);
             Paragraph namePara = new Paragraph(name, bodyFont);
             titlePara.setAlignment(Element.ALIGN_LEFT);
+            document.add(namePara);
+
+
 
             Paragraph idPara = new Paragraph(id, bodyFont);
             titlePara.setAlignment(Element.ALIGN_LEFT);
+            document.add(idPara);
 
             Paragraph examTimePara = new Paragraph(examTime, bodyFont);
             titlePara.setAlignment(Element.ALIGN_LEFT);
-
-            document.add(titlePara);
-            document.add(namePara);
-            document.add(idPara);
             document.add(examTimePara);
+
+            document.close();
 
             logger.info("Created pdf");
 

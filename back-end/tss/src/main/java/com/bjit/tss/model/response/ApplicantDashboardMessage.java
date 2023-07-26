@@ -1,4 +1,4 @@
-package com.bjit.tss.model;
+package com.bjit.tss.model.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApplicantDashboardMessage {
 
+    private Long examineeId;
     private String dashboardMessage;
     private String courseName;
     private Boolean admitCardDownload;

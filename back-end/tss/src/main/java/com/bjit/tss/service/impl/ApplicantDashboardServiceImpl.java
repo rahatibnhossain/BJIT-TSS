@@ -6,7 +6,7 @@ import com.bjit.tss.entity.LoginInfo;
 import com.bjit.tss.exception.UserException;
 import com.bjit.tss.mapper.ApiResponseMapper;
 import com.bjit.tss.model.response.ApiResponse;
-import com.bjit.tss.model.ApplicantDashboardMessage;
+import com.bjit.tss.model.response.ApplicantDashboardMessage;
 import com.bjit.tss.model.response.ListResponse;
 import com.bjit.tss.repository.CandidateRepository;
 import com.bjit.tss.repository.ExamineeRepository;
@@ -63,6 +63,7 @@ public class ApplicantDashboardServiceImpl implements ApplicantDashboardService 
             applicantDashboardMessage.setDashboardMessage(examinee.getCourseInfo().getApplicantDashboardMessage());
             applicantDashboardMessage.setCourseName(examinee.getCourseInfo().getCourseName());
             applicantDashboardMessage.setAdmitCardDownload(false);
+            applicantDashboardMessage.setExamineeId(examinee.getExamineeId());
 
             return applicantDashboardMessage;
         }).toList();
@@ -135,6 +136,7 @@ public class ApplicantDashboardServiceImpl implements ApplicantDashboardService 
                 throw new UserException("Invalid Request");
             }
             applicantDashboardMessage.setCourseName(candidate.getExamineeInfo().getCourseInfo().getCourseName());
+            applicantDashboardMessage.setExamineeId(candidate.getExamineeInfo().getExamineeId());
             return applicantDashboardMessage;
         }).toList();
 
