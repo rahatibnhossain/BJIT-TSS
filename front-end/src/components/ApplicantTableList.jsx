@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { styled,Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TableSortLabel, Button, Box } from '@mui/material';
+import { styled, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TableSortLabel, Button, Box } from '@mui/material';
 import axios from '../api/axios';
 
 const HeaderTypography = styled(Typography)(({ theme }) => ({
@@ -23,7 +23,7 @@ const ScrollableWrapper = styled('div')(({ theme }) => ({
     overflowX: 'auto',
 }));
 
-const ApplicantTableList = ({ topMessage, evaluator, applicants, setApplicants, action, actionText, showAction }) => {
+const ApplicantTableList = ({ showHidden, topMessage, evaluator, applicants, setApplicants, action, actionText, showAction }) => {
     const [sortField, setSortField] = useState('');
     const [sortOrder, setSortOrder] = useState('asc');
 
@@ -61,15 +61,19 @@ const ApplicantTableList = ({ topMessage, evaluator, applicants, setApplicants, 
                 <ResponsiveTable stickyHeader>
                     <TableHead>
                         <TableRow>
-                        <StyledTableCell>
-                                <TableSortLabel
-                                    active={sortField === 'hiddenCode'}
-                                    direction={sortField === 'hiddenCode' ? sortOrder : 'asc'}
-                                    onClick={() => handleSort('hiddenCode')}
-                                >
-                                    Hidden Code
-                                </TableSortLabel>
-                            </StyledTableCell>
+                            {!showHidden &&
+
+
+                                <StyledTableCell>
+                                    <TableSortLabel
+                                        active={sortField === 'hiddenCode'}
+                                        direction={sortField === 'hiddenCode' ? sortOrder : 'asc'}
+                                        onClick={() => handleSort('hiddenCode')}
+                                    >
+                                        Hidden Code
+                                    </TableSortLabel>
+                                </StyledTableCell>
+                            }
                             <StyledTableCell>
                                 <TableSortLabel
                                     active={sortField === 'firstName'}
@@ -79,16 +83,18 @@ const ApplicantTableList = ({ topMessage, evaluator, applicants, setApplicants, 
                                     First Name
                                 </TableSortLabel>
                             </StyledTableCell>
- 
-                            <StyledTableCell>
-                                <TableSortLabel
-                                    active={sortField === 'email'}
-                                    direction={sortField === 'email' ? sortOrder : 'asc'}
-                                    onClick={() => handleSort('email')}
-                                >
-                                    Email
-                                </TableSortLabel>
-                            </StyledTableCell>
+
+                            {!showHidden &&
+                                <StyledTableCell>
+                                    <TableSortLabel
+                                        active={sortField === 'email'}
+                                        direction={sortField === 'email' ? sortOrder : 'asc'}
+                                        onClick={() => handleSort('email')}
+                                    >
+                                        Email
+                                    </TableSortLabel>
+                                </StyledTableCell>
+                            }
                             <StyledTableCell>
                                 <TableSortLabel
                                     active={sortField === 'cgpa'}
@@ -140,7 +146,7 @@ const ApplicantTableList = ({ topMessage, evaluator, applicants, setApplicants, 
                                 <StyledTableCell>
 
                                     <TableSortLabel  >
-                                        
+
                                     </TableSortLabel>
                                 </StyledTableCell>
                             }
@@ -149,9 +155,11 @@ const ApplicantTableList = ({ topMessage, evaluator, applicants, setApplicants, 
                     <TableBody>
                         {sortedApplicants.map((applicant, index) => (
                             <TableRow key={index}>
-                                <TableCell>{applicant.hiddenCode}</TableCell>
+                                {!showHidden &&
+                                    <TableCell>{applicant.hiddenCode}</TableCell>}
                                 <TableCell>{applicant.firstName}</TableCell>
-                                <TableCell>{applicant.email}</TableCell>
+                                {!showHidden &&
+                                    <TableCell>{applicant.email}</TableCell>}
                                 <TableCell>{applicant.cgpa}</TableCell>
                                 <TableCell>{applicant.courseName}</TableCell>
                                 <TableCell>{applicant.presentAddress}</TableCell>

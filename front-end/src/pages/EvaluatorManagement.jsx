@@ -377,6 +377,7 @@ const EvaluatorManagement = () => {
                 <Box pt={7}>
 
                     <ApplicantTableList
+                    showHidden={true}
                         evaluator={searchedEvaluator}
                         topMessage={`Assigne candidats for ${searchedEvaluator.name}.`}
                         applicants={allAvailableApplicants}
