@@ -7,14 +7,12 @@ import com.bjit.tss.exception.HiddenCodeException;
 import com.bjit.tss.exception.UserException;
 import com.bjit.tss.mapper.ApiResponseMapper;
 import com.bjit.tss.mapper.EvaluatorMapper;
-import com.bjit.tss.model.request.AssignAnswerSheetRequest;
-import com.bjit.tss.model.request.RoundCandidatesRequest;
-import com.bjit.tss.model.request.UploadMarkRequest;
-import com.bjit.tss.model.request.UploadWrittenMarkRequest;
+import com.bjit.tss.model.request.*;
 import com.bjit.tss.model.response.ApiResponse;
 import com.bjit.tss.model.response.EvaluatorAssignmentResponse;
 import com.bjit.tss.model.response.ListResponse;
 import com.bjit.tss.repository.*;
+import com.bjit.tss.service.EmailService;
 import com.bjit.tss.service.EvaluationService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -39,6 +38,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     private final WrittenMarksRepository writtenMarksRepository;
     private final WrittenQuestionMarksRepository writtenQuestionMarksRepository;
     private final QuestionMarksRepository questionMarksRepository;
+    private final EmailService emailService;
 
     @Override
     @Transactional
@@ -183,6 +183,23 @@ public class EvaluationServiceImpl implements EvaluationService {
         writtenMarks.setWrittenMark(totalMark.get());
         writtenMarks.setWrittenQuestionMarks(savedQuestionMarks);
         writtenMarks.setPassed(isPassed);
+        if (isPassed){
+            String emailBody = hiddenCodeInfo.get().getCandidateMarks().getExamineeInfo().getCourseInfo().getWrittenPassedDashboardMessage();
+            List<String> to = new ArrayList<String>();
+            to.add(hiddenCodeInfo.get().getCandidateMarks().getExamineeInfo().getUserInfo().getEmail());
+            String[] toEmail = to.toArray(new String[0]);
+            String emailSubject = "Written Exam Passed";
+
+            EmailRequest emailRequest = EmailRequest.builder()
+                    .to(toEmail)
+                    .body(emailBody)
+                    .subject(emailSubject)
+                    .build();
+            ResponseEntity<ApiResponse<?>> emailResponse = emailService.sendEmail(emailRequest);
+
+            System.out.println(hiddenCodeInfo.get().getCandidateMarks().getExamineeInfo().getUserInfo().getFirstName()+ " was approved by admin. A email was sent to : "+hiddenCodeInfo.get().getCandidateMarks().getExamineeInfo().getUserInfo().getEmail());
+            System.out.println("The message was : "+emailBody );
+        }
 
         WrittenMarks savedMarks = writtenMarksRepository.save(writtenMarks);
         return ApiResponseMapper.mapToResponseEntityOK(savedMarks, "Mark updated successfully");
@@ -261,6 +278,24 @@ public class EvaluationServiceImpl implements EvaluationService {
         candidateMarks.get().getAptitudeTest().setRoundMark(totalMark.get());
         candidateMarks.get().getAptitudeTest().setPassed(isPassed);
         candidateMarks.get().getAptitudeTest().setRoundName(Round.APTITUDE);
+
+        if (isPassed){
+            String emailBody = candidateMarks.get().getExamineeInfo().getCourseInfo().getAptitudeTestPassedDashboardMessage();
+            List<String> to = new ArrayList<String>();
+            to.add(candidateMarks.get().getExamineeInfo().getUserInfo().getEmail());
+            String[] toEmail = to.toArray(new String[0]);
+            String emailSubject = "Aptitude Test Passed";
+
+            EmailRequest emailRequest = EmailRequest.builder()
+                    .to(toEmail)
+                    .body(emailBody)
+                    .subject(emailSubject)
+                    .build();
+            ResponseEntity<ApiResponse<?>> emailResponse = emailService.sendEmail(emailRequest);
+
+            System.out.println(candidateMarks.get().getExamineeInfo().getUserInfo().getFirstName()+ " was approved by admin. A email was sent to : "+candidateMarks.get().getExamineeInfo().getUserInfo().getEmail());
+            System.out.println("The message was : "+emailBody );
+        }
 
         questionNo.set(0);
         totalMark.set(0.0f);
@@ -341,6 +376,25 @@ public class EvaluationServiceImpl implements EvaluationService {
         candidateMarks.get().getTechnicalViva().setRoundMark(totalMark.get());
         candidateMarks.get().getTechnicalViva().setPassed(isPassed);
         candidateMarks.get().getTechnicalViva().setRoundName(Round.TECHNICAL);
+
+        if (isPassed){
+            String emailBody = candidateMarks.get().getExamineeInfo().getCourseInfo().getTechnicalVivaPassedDashboardMessage();
+            List<String> to = new ArrayList<String>();
+            to.add(candidateMarks.get().getExamineeInfo().getUserInfo().getEmail());
+            String[] toEmail = to.toArray(new String[0]);
+            String emailSubject = "Technical Test Passed";
+
+            EmailRequest emailRequest = EmailRequest.builder()
+                    .to(toEmail)
+                    .body(emailBody)
+                    .subject(emailSubject)
+                    .build();
+            ResponseEntity<ApiResponse<?>> emailResponse = emailService.sendEmail(emailRequest);
+
+            System.out.println(candidateMarks.get().getExamineeInfo().getUserInfo().getFirstName()+ " was approved by admin. A email was sent to : "+candidateMarks.get().getExamineeInfo().getUserInfo().getEmail());
+            System.out.println("The message was : "+emailBody );
+        }
+
 
         questionNo.set(0);
         totalMark.set(0.0f);
@@ -429,6 +483,23 @@ public class EvaluationServiceImpl implements EvaluationService {
         questionNo.set(0);
         totalMark.set(0.0f);
         CandidateMarks saved = candidateRepository.save(candidateMarks.get());
+
+        if(isPassed){
+            String emailBody = saved.getExamineeInfo().getCourseInfo().getHrVivaPassedDashboardMessage();
+            List<String> to = new ArrayList<String>();
+            to.add(saved.getExamineeInfo().getUserInfo().getEmail());
+            String[] toEmail = to.toArray(new String[0]);
+            String emailSubject = "HR Viva Passed";
+
+            EmailRequest emailRequest = EmailRequest.builder()
+                    .to(toEmail)
+                    .body(emailBody)
+                    .subject(emailSubject)
+                    .build();
+            ResponseEntity<ApiResponse<?>> emailResponse = emailService.sendEmail(emailRequest);
+            System.out.println(saved.getExamineeInfo().getUserInfo().getFirstName()+ " was approved by admin. A email was sent to : "+saved.getExamineeInfo().getUserInfo().getEmail());
+
+        }
         return ApiResponseMapper.mapToResponseEntityOK(saved, "HR viva mark uploaded successfully.");
     }
 
