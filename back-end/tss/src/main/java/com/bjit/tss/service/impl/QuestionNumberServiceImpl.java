@@ -6,6 +6,7 @@ import com.bjit.tss.model.response.ApiResponse;
 import com.bjit.tss.model.request.QuestionNumberRequest;
 import com.bjit.tss.repository.DataStorageRepository;
 import com.bjit.tss.service.QuestionNumberService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ public class QuestionNumberServiceImpl implements QuestionNumberService {
     private final DataStorageRepository dataStorageRepository;
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> setWrittenQuestionNumber(QuestionNumberRequest questionNumberRequest) {
         Optional<DataStorage> dataStorage1 = dataStorageRepository.findByDataKey("WrittenQuestionNumber");
         if (dataStorage1.isPresent()) {

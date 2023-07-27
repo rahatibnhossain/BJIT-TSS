@@ -7,6 +7,7 @@ import com.bjit.tss.model.response.ApiResponse;
 import com.bjit.tss.model.request.EmailRequest;
 import com.bjit.tss.service.EmailService;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -24,21 +25,25 @@ public class EmailServiceImpl implements EmailService {
     private String fromEmail;
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> sendEmail(EmailRequest emailRequest) {
-//        try
-//        {
-//            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-//            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false);
-//            mimeMessageHelper.setFrom(fromEmail);
-//            mimeMessageHelper.setTo(emailRequest.getTo());
-//            mimeMessageHelper.setText(emailRequest.getBody());
-//            mimeMessageHelper.setSubject(emailRequest.getSubject());
-//            javaMailSender.send(mimeMessage);
-//            return ApiResponseMapper.mapToResponseEntityOK(null,"Email sent successful.");
-//        }
-//        catch (Exception ex){
-//            throw new EmailException(ex.getMessage());
-//        }
-        return null;
+        try
+        {
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false);
+            mimeMessageHelper.setFrom(fromEmail);
+            mimeMessageHelper.setTo(emailRequest.getTo());
+            mimeMessageHelper.setText(emailRequest.getBody());
+            mimeMessageHelper.setSubject(emailRequest.getSubject());
+            javaMailSender.send(mimeMessage);
+
+        for (int i = 0; i < emailRequest.getTo().length; i++) {
+            System.out.println("Email was successfully sent to "+emailRequest.getTo()[i]);
+        }
+            return ApiResponseMapper.mapToResponseEntityOK(null,"Email sent successful.");
+        }
+        catch (Exception ex){
+            throw new EmailException(ex.getMessage());
+        }
     }
 }

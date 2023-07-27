@@ -9,6 +9,7 @@ import com.bjit.tss.repository.CandidateRepository;
 import com.bjit.tss.repository.ExamineeRepository;
 import com.bjit.tss.enums.Role;
 import com.bjit.tss.service.ApprovalService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ public class ApprovalServiceImpl implements ApprovalService {
     private final CandidateRepository candidateRepository;
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> approveApplicant(ApprovalRequest request) {
         Optional<ExamineeInfo> examineeInfo = examineeRepository.findById(request.getExamineeId());
         if (examineeInfo.isEmpty()) {
@@ -45,6 +47,7 @@ public class ApprovalServiceImpl implements ApprovalService {
             candidate.get().setExamineeInfo(examineeInfo.get());
             CandidateMarks saved = candidateRepository.save(candidate.get());
 
+            System.out.println(examineeInfo.get().getUserInfo().getFirstName()+ " was approved by admin whose email is : "+examineeInfo.get().getUserInfo().getEmail());
             return ApiResponseMapper.mapToResponseEntityOK(candidate.get());
         }
     }

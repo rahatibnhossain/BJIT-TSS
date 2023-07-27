@@ -43,8 +43,8 @@ public class RegisterServiceImpl implements RegisterService {
     private final ValidationRepository validationRepository;
     private final EmailService emailService;
 
-    @Transactional
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> applicantRegistration(RegisterRequest registerRequest) {
         if (registerRequest.getEmail() == null || registerRequest.getEmail().isEmpty()) {
             throw new AuthenticationException("Email is required.");
@@ -84,7 +84,7 @@ public class RegisterServiceImpl implements RegisterService {
         ValidationCodes validationCodes = ValidationCodes.builder()
                 .userInfo(userInfo)
                 .build();
-        
+
         validationRepository.save(validationCodes);
         LoginInfo saved = loginRepository.save(loginInfo);
         String jwtToken = jwtService.generateToken(loginInfo);
@@ -96,6 +96,7 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Override
+    @Transactional
     public void adminRegistration(String email, String password) {
         Optional<LoginInfo> checkAvailability = loginRepository.findByEmail(email);
         if (checkAvailability.isEmpty()) {
@@ -109,6 +110,7 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> mailValidation(ValidationRequest validationRequest) {
         LoginInfo loginInfo = (LoginInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<ValidationCodes> validationCodes = validationRepository.findByUserInfoUserId(loginInfo.getUserInfo().getUserId());
@@ -127,6 +129,7 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> evaluatorRegistration(EvaluatorRegisterRequest request) {
         Optional<LoginInfo> checkAvailability = loginRepository.findByEmail(request.getEmail());
         if (checkAvailability.isPresent()) {
@@ -162,14 +165,15 @@ public class RegisterServiceImpl implements RegisterService {
                 .build();
         ResponseEntity<ApiResponse<?>> emailResponse = emailService.sendEmail(emailRequest);
         LoginInfo saved = loginRepository.save(loginInfo);
+        System.out.println("An Evaluator was registered with "+loginInfo.getEmail());
         return ApiResponseMapper.mapToResponseEntityCreated(saved.getEvaluatorInfo(), "Evaluator is created.");
     }
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> sendEmailVerification() {
 
         LoginInfo loginInfo = (LoginInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
 
         Optional<ValidationCodes> validationCodes = validationRepository.findByUserInfoUserId(loginInfo.getUserInfo().getUserId());
         if (validationCodes.isEmpty()) {
@@ -188,6 +192,7 @@ public class RegisterServiceImpl implements RegisterService {
                 .subject(emailSubject)
                 .build();
         ResponseEntity<ApiResponse<?>> emailResponse = emailService.sendEmail(emailRequest);
+        System.out.println("Successfully send the verification code to "+loginInfo.getEmail()+"validation code is"+validationCodes.get().getValidationCode());
 
         return ApiResponseMapper.mapToResponseEntityOK(emailResponse, "Successfully send the verification code");
     }

@@ -16,6 +16,7 @@ import com.bjit.tss.repository.LoginRepository;
 import com.bjit.tss.repository.UserRepository;
 import com.bjit.tss.service.LoginService;
 import com.bjit.tss.model.response.ApiResponse;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,6 +37,7 @@ public class LoginServiceImpl implements LoginService {
     private final EvaluatorRepository evaluatorRepository;
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> login(LoginRequest loginRequest) {
         try {
             authenticationManager.authenticate(
@@ -79,6 +81,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> validation() {
 
         LoginInfo loginInfo= (LoginInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -129,8 +132,6 @@ public class LoginServiceImpl implements LoginService {
             return ApiResponseMapper.mapToResponseEntityOK(validationResponse, "Valid User");
 
         }
-
-
-        return ApiResponseMapper.mapToResponseEntityOK(null, "Valid User");
+        throw new UserException("Invalid user");
     }
 }

@@ -18,6 +18,7 @@ import com.bjit.tss.repository.ExamineeRepository;
 import com.bjit.tss.repository.UserRepository;
 import com.bjit.tss.enums.Role;
 import com.bjit.tss.service.ApplicationService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,6 +38,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final CandidateRepository candidateRepository;
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> applyCourse(ApplicationRequest applicationRequest) {
         LoginInfo loginInfo = (LoginInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<CourseInfo> courseInfo = courseRepository.findByBatchCode(applicationRequest.getBatchCode());
@@ -65,6 +67,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> allApplicationSpecific(CourseRoleRequest courseRoleRequest) {
         Optional<List<ExamineeInfo>> examineeInfos = examineeRepository.findByRoleAndCourseInfoIsAvailableAndCourseInfoBatchCode(courseRoleRequest.getRole(), true, courseRoleRequest.getBatchCode());
         if (examineeInfos.isEmpty()) {
@@ -79,6 +82,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> allUnassignedCandidates(CourseRoleRequest courseRoleRequest) {
 
         List<CandidateMarks> candidateMarksList = candidateRepository.findAllByExamineeInfoRoleAndExamineeInfoCourseInfoBatchCodeAndWrittenMarksEvaluatorInfoIsNull(courseRoleRequest.getRole(), courseRoleRequest.getBatchCode());
@@ -94,6 +98,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> allExamineSpecificInstitution( SpecificInstitutionExamineeRequest specificInstitutionExamineeRequest) {
         List<ExamineeInfo> examineeInfos = examineeRepository.findDistinctByUserInfoEducationalInstituteAndRoleAndCourseInfoIsAvailableAndCourseInfoBatchCode(specificInstitutionExamineeRequest.getEducationalInstitution(), specificInstitutionExamineeRequest.getRole(), true, specificInstitutionExamineeRequest.getBatchCode());
         if (examineeInfos.size()==0) {
@@ -109,6 +114,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> allDistinctInstitution(CourseRoleRequest courseRoleRequest) {
         List<String> institute = examineeRepository.findDistinctEducationalInstitutesByRoleAndCourseInfoIsAvailableAndCourseInfoBatchCode( courseRoleRequest.getRole(), true, courseRoleRequest.getBatchCode());
 
@@ -116,7 +122,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .dataLength(institute.size())
                 .listResponse(institute)
                 .build();
-        
+
         return ApiResponseMapper.mapToResponseEntityOK(listResponse);
     }
 }

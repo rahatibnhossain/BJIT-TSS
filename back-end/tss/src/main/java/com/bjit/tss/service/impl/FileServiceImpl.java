@@ -13,6 +13,7 @@ import com.bjit.tss.service.EmailService;
 import com.bjit.tss.service.FileService;
 import com.bjit.tss.utils.FileDownloaderUtils;
 import com.bjit.tss.utils.FileUploaderUtils;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -34,6 +35,7 @@ public class FileServiceImpl implements FileService {
     private final LoginRepository loginRepository;
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> uploadImage(MultipartFile image) {
         if (image.isEmpty()){
 
@@ -50,10 +52,12 @@ public class FileServiceImpl implements FileService {
         FileUploadResponse fileUploadResponse = FileUploadResponse.builder()
                 .filePath(path)
                 .build();
+        System.out.println("Profile picture was uploaded by : "+loginInfo.getEmail());
         return ApiResponseMapper.mapToResponseEntityCreated(fileUploadResponse, "Image Uploaded");
     }
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> uploadResume(MultipartFile resume) {
         if (resume.isEmpty()){
             throw new FileUploadException("No file is uploaded. Try again");
@@ -67,16 +71,16 @@ public class FileServiceImpl implements FileService {
         Path path= fileUploaderUtils.uploadFile(resume, false, String.valueOf(loginInfo.getUserInfo().getUserId()));
         loginInfo.getUserInfo().setResumeUrl(String.valueOf(path));
 
-
-
         loginRepository.save(loginInfo);
         FileUploadResponse fileUploadResponse = FileUploadResponse.builder()
                 .filePath(path)
                 .build();
+        System.out.println("Resume was uploaded by : "+loginInfo.getEmail());
         return ApiResponseMapper.mapToResponseEntityCreated(fileUploadResponse,"File Uploaded");
     }
 
     @Override
+    @Transactional
     public ResponseEntity<?> downloadImage(String fileName) throws IOException {
 
         FileDownloaderUtils downloadUtil = new FileDownloaderUtils();
@@ -96,6 +100,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<?> downloadResumeAdmin(String fileName) throws IOException {
         FileDownloaderUtils downloadUtil = new FileDownloaderUtils();
 
@@ -114,6 +119,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<?> downloadResume() throws IOException {
         LoginInfo loginInfo = (LoginInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String fileName = loginInfo.getUserInfo().getUserId().toString();

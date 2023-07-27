@@ -13,6 +13,7 @@ import com.bjit.tss.model.response.ListResponse;
 import com.bjit.tss.repository.CandidateRepository;
 import com.bjit.tss.repository.CourseRepository;
 import com.bjit.tss.service.FinalTraineeService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class FinalTraineeServiceImpl implements FinalTraineeService {
     private final CandidateRepository candidateRepository;
     private final CourseRepository courseRepository;
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> allPassedFinalTrainee(String batchCode) {
         Optional<CourseInfo> courseInfo = courseRepository.findByBatchCode(batchCode);
         if (courseInfo.isEmpty()){
@@ -41,6 +43,7 @@ public class FinalTraineeServiceImpl implements FinalTraineeService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> selectFinalTrainee(FinalTraineeSelectionRequest request) {
 
         List<CandidateMarks> candidateMarks = candidateRepository.findAllById(request.getCandidateIds());
@@ -70,10 +73,12 @@ public class FinalTraineeServiceImpl implements FinalTraineeService {
                 .listResponse(candidateMarksList)
                 .dataLength(candidateMarksList.size())
                 .build();
+        System.out.println(candidateMarksList.size()+" candidate was selected as final trainee.");
         return ApiResponseMapper.mapToResponseEntityOK(listResponse,"Trainee selection successful. Available vacancy is "+newAvailableVacancy);
     }
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> allFinalTrainee(String batchCode) {
         Optional<CourseInfo> courseInfo = courseRepository.findByBatchCode(batchCode);
         if (courseInfo.isEmpty()){

@@ -9,6 +9,7 @@ import com.bjit.tss.model.request.DataStorageRequest;
 import com.bjit.tss.model.response.ListResponse;
 import com.bjit.tss.repository.DataStorageRepository;
 import com.bjit.tss.service.DataStorageService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ public class DataStorageServiceImpl implements DataStorageService {
     private final DataStorageRepository dataStorageRepository;
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> setDataStorage(List<DataStorageRequest> dataStorageRequestList) {
         if (dataStorageRequestList.size() == 0) {
             throw new DataStorageException("Invalid Request");
@@ -49,6 +51,7 @@ public class DataStorageServiceImpl implements DataStorageService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> getDataStorage(List<DataStorageGetRequest> dataStorageGetRequests) {
         if (dataStorageGetRequests.size() == 0) {
             throw new DataStorageException("Invalid Request");

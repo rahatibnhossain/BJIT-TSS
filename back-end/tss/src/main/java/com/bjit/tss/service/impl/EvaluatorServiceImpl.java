@@ -11,6 +11,7 @@ import com.bjit.tss.repository.CandidateRepository;
 import com.bjit.tss.repository.EvaluatorRepository;
 import com.bjit.tss.repository.HiddenCodeRepository;
 import com.bjit.tss.service.EvaluatorService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ public class EvaluatorServiceImpl implements EvaluatorService {
     private final HiddenCodeRepository hiddenCodeRepository;
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> getAllEvaluator() {
         List<EvaluatorInfo> evaluatorInfo = evaluatorRepository.findAll();
 
@@ -47,6 +49,7 @@ public class EvaluatorServiceImpl implements EvaluatorService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> getAssignedCandidate(Long evaluatorId) {
         List<HiddenCodeInfo> hiddenCodeInfos = hiddenCodeRepository.findAllByCandidateMarksWrittenMarksEvaluatorInfoEvaluatorIdAndCandidateMarksExamineeInfoCourseInfoIsAvailable(evaluatorId, true);
 

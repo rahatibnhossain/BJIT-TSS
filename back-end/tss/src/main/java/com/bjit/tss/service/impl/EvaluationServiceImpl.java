@@ -16,6 +16,7 @@ import com.bjit.tss.model.response.EvaluatorAssignmentResponse;
 import com.bjit.tss.model.response.ListResponse;
 import com.bjit.tss.repository.*;
 import com.bjit.tss.service.EvaluationService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,6 +41,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     private final QuestionMarksRepository questionMarksRepository;
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> assignAnswerSheet(AssignAnswerSheetRequest request) {
         Optional<EvaluatorInfo> evaluatorInfo = evaluatorRepository.findById(request.getEvaluatorId());
         if (evaluatorInfo.isEmpty()) {
@@ -81,16 +83,16 @@ public class EvaluationServiceImpl implements EvaluationService {
 
         List<EvaluatorAssignmentResponse> assignmentResponseList = saved.stream().map(EvaluatorMapper::mapToEvaluatorAssignmentResponse).toList();
 
-
-        ListResponse listResponse = ListResponse.builder()
+        ListResponse<?> listResponse = ListResponse.builder()
                 .dataLength(assignmentResponseList.size())
                 .listResponse(assignmentResponseList)
                 .build();
-
+        System.out.println("Successfully assigned to " + evaluatorInfo.get().getName());
         return ApiResponseMapper.mapToResponseEntityOK(listResponse, "Successfully assigned to " + evaluatorInfo.get().getName());
     }
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> uploadWrittenMark(UploadWrittenMarkRequest request) {
         Optional<HiddenCodeInfo> hiddenCodeInfo = hiddenCodeRepository.findById(request.getHiddenCode());
         if (hiddenCodeInfo.isEmpty() || hiddenCodeInfo.get().getCandidateMarks().getWrittenMarks().getEvaluatorInfo() == null) {
@@ -187,6 +189,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> uploadAptitudeMark(UploadMarkRequest request) {
         Optional<CandidateMarks> candidateMarks = candidateRepository.findById(request.getCandidateId());
         if (candidateMarks.isEmpty()) {
@@ -267,6 +270,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> uploadTechnicalMark(UploadMarkRequest request) {
         Optional<CandidateMarks> candidateMarks = candidateRepository.findById(request.getCandidateId());
         if (candidateMarks.isEmpty()) {
@@ -346,6 +350,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> uploadHrVivaMark(UploadMarkRequest request) {
         Optional<CandidateMarks> candidateMarks = candidateRepository.findById(request.getCandidateId());
         if (candidateMarks.isEmpty()) {
@@ -364,7 +369,6 @@ public class EvaluationServiceImpl implements EvaluationService {
         if (Integer.parseInt(hrVivaQuestionNumber.get().getDataValue()) != (Integer) request.getMarks().size()) {
             throw new EvaluationException("Number of questions in hr viva is : " + hrVivaQuestionNumber.get().getDataValue());
         }
-
         AtomicReference<Integer> questionNo = new AtomicReference<>(0);
         AtomicReference<Float> totalMark = new AtomicReference<>(0.0f);
         List<QuestionMarks> questionMarks;
@@ -429,6 +433,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> getRoundPassedSpecific(RoundCandidatesRequest request) {
 
 
@@ -454,7 +459,6 @@ public class EvaluationServiceImpl implements EvaluationService {
             default:
                 throw new EvaluationException("Invalid Request");
         }
-
 
         ListResponse<?> listResponse = ListResponse.builder()
                 .listResponse(candidateMarks)

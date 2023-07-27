@@ -12,6 +12,7 @@ import com.bjit.tss.repository.CandidateRepository;
 import com.bjit.tss.repository.ExamineeRepository;
 import com.bjit.tss.enums.Role;
 import com.bjit.tss.service.ApplicantDashboardService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,6 +29,7 @@ public class ApplicantDashboardServiceImpl implements ApplicantDashboardService 
     private final CandidateRepository candidateRepository;
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> getApplicantDashboardData() {
 
 
@@ -76,12 +78,10 @@ public class ApplicantDashboardServiceImpl implements ApplicantDashboardService 
                     if (candidate.getHrViva().getPassed()) {
                         applicantDashboardMessage.setDashboardMessage(candidate.getExamineeInfo().getCourseInfo().getHrVivaPassedDashboardMessage());
                         applicantDashboardMessage.setAdmitCardDownload(false);
-                       
 
                     } else {
                         applicantDashboardMessage.setDashboardMessage("Sorry you did not qualify HR viva. Best of luck.");
                         applicantDashboardMessage.setAdmitCardDownload(false);
-
                     }
 
                 } else if (candidate.getTechnicalViva().getPassed() != null) {
@@ -93,7 +93,6 @@ public class ApplicantDashboardServiceImpl implements ApplicantDashboardService 
                     } else {
                         applicantDashboardMessage.setDashboardMessage("Sorry you did not qualify technical viva. Best of luck.");
                         applicantDashboardMessage.setAdmitCardDownload(false);
-
                     }
 
                 } else if (candidate.getAptitudeTest().getPassed() != null) {
@@ -105,7 +104,6 @@ public class ApplicantDashboardServiceImpl implements ApplicantDashboardService 
                     } else {
                         applicantDashboardMessage.setDashboardMessage("Sorry you did not qualify aptitude test. Best of luck.");
                         applicantDashboardMessage.setAdmitCardDownload(false);
-
                     }
 
                 } else if (candidate.getWrittenMarks().getPassed() != null) {
@@ -117,15 +115,11 @@ public class ApplicantDashboardServiceImpl implements ApplicantDashboardService 
                     } else {
                         applicantDashboardMessage.setDashboardMessage("Sorry you did not qualify written test. Best of luck.");
                         applicantDashboardMessage.setAdmitCardDownload(false);
-
                     }
-
                 } else {
 
                     applicantDashboardMessage.setDashboardMessage(candidate.getExamineeInfo().getCourseInfo().getWrittenShortlistedDashboardMessage());
                     applicantDashboardMessage.setAdmitCardDownload(true);
-
-
                 }
 
             } else if (candidate.getExamineeInfo().getRole() == Role.TRAINEE) {
@@ -156,9 +150,6 @@ public class ApplicantDashboardServiceImpl implements ApplicantDashboardService 
                     .build();
             return ApiResponseMapper.mapToResponseEntityOK(listResponse, "Applicant Dashboard");
         } else {
-
-
-
             ListResponse<?> listResponse = ListResponse.builder()
                     .dataLength(merge.size())
                     .listResponse(merge)

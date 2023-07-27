@@ -11,6 +11,7 @@ import com.bjit.tss.model.response.ListResponse;
 import com.bjit.tss.repository.CourseRepository;
 import com.bjit.tss.enums.Role;
 import com.bjit.tss.service.CourseService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,20 +29,21 @@ public class CourseServiceImpl implements CourseService {
     private final CourseRepository courseRepository;
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> createCourse(CourseModel courseModel) {
         Optional<CourseInfo> course = courseRepository.findByBatchCode(courseModel.getBatchCode());
         if (course.isPresent()) {
             throw new CourseException("A course already exists with the batch code " + courseModel.getBatchCode());
         }
 
-
-
         CourseInfo courseInfo = CourseMapper.mapToCourseInfo(courseModel);
         CourseInfo savedCourse = courseRepository.save(courseInfo);
+        System.out.println("A course was created with the batch code : "+savedCourse.getBatchCode());
         return ApiResponseMapper.mapToResponseEntityCreated(savedCourse, "Course created successfully.");
     }
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> allCourses() {
         List<CourseInfo> courseInfoList = courseRepository.findByIsAvailable(true);
         ListResponse listResponse = ListResponse.builder()
@@ -52,6 +54,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> getCourse(String batchCode) {
         LoginInfo loginInfo = (LoginInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<CourseInfo> courseInfo= Optional.of(new CourseInfo());
@@ -70,6 +73,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> updateCourse(String batchCode, CourseModel courseModel) {
         Optional<CourseInfo> course = courseRepository.findByBatchCode(batchCode);
         if (course.isEmpty()) {
@@ -88,9 +92,10 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<ApiResponse<?>> getUnavailableCourses() {
         List<CourseInfo> courseInfoList = courseRepository.findByIsAvailable(false);
-        ListResponse listResponse = ListResponse.builder()
+        ListResponse<?> listResponse = ListResponse.builder()
                 .dataLength(courseInfoList.size())
                 .listResponse(courseInfoList)
                 .build();
