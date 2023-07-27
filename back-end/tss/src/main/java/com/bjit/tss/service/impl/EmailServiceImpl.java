@@ -1,13 +1,17 @@
 package com.bjit.tss.service.impl;
 
 
+import com.bjit.tss.exception.EmailException;
+import com.bjit.tss.mapper.ApiResponseMapper;
 import com.bjit.tss.model.response.ApiResponse;
 import com.bjit.tss.model.request.EmailRequest;
 import com.bjit.tss.service.EmailService;
+import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 @Service

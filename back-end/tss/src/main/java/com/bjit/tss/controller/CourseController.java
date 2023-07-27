@@ -1,7 +1,7 @@
 package com.bjit.tss.controller;
 
 import com.bjit.tss.model.response.ApiResponse;
-import com.bjit.tss.model.CourseModel;
+import com.bjit.tss.model.request.CourseModel;
 import com.bjit.tss.service.CourseService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -74,8 +74,6 @@ public class RegisterServiceImpl implements RegisterService {
                 .cgpa(registerRequest.getCgpa())
                 .passingYear(registerRequest.getPassingYear())
                 .presentAddress(registerRequest.getPresentAddress())
-                .photoUrl(registerRequest.getPhotoUrl())
-                .resumeUrl(registerRequest.getResumeUrl())
                 .build();
         LoginInfo loginInfo = LoginInfo.builder()
                 .email(registerRequest.getEmail())
@@ -86,8 +84,7 @@ public class RegisterServiceImpl implements RegisterService {
         ValidationCodes validationCodes = ValidationCodes.builder()
                 .userInfo(userInfo)
                 .build();
-
-
+        
         validationRepository.save(validationCodes);
         LoginInfo saved = loginRepository.save(loginInfo);
         String jwtToken = jwtService.generateToken(loginInfo);
@@ -175,7 +172,7 @@ public class RegisterServiceImpl implements RegisterService {
 
 
         Optional<ValidationCodes> validationCodes = validationRepository.findByUserInfoUserId(loginInfo.getUserInfo().getUserId());
-        if(validationCodes.isEmpty()){
+        if (validationCodes.isEmpty()) {
             throw new UserException("No user found");
         }
 
@@ -192,6 +189,6 @@ public class RegisterServiceImpl implements RegisterService {
                 .build();
         ResponseEntity<ApiResponse<?>> emailResponse = emailService.sendEmail(emailRequest);
 
-        return ApiResponseMapper.mapToResponseEntityOK(emailResponse,"Successfully send the verification code");
+        return ApiResponseMapper.mapToResponseEntityOK(emailResponse, "Successfully send the verification code");
     }
 }

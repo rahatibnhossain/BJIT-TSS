@@ -14,23 +14,19 @@ import java.nio.file.StandardCopyOption;
 public class FileUploaderUtils {
 
     public final String UPLOAD_DIR = "C:\\Users\\Test\\Documents\\finalproject\\BJIT-TSS\\back-end\\tss\\src\\main\\resources\\static";
-//    public final String UPLOAD_DIR = "/home/rahat/projects/BJIT-TSS/back-end/tss/src/main/resources/static";
     public Path uploadFile(MultipartFile file, Boolean isImage, String name) {
         String fullPath = null;
         try {
             if (isImage) {
                 fullPath = UPLOAD_DIR + "\\image" + File.separator + name + ".jpeg";
-//                fullPath = UPLOAD_DIR + "/image" + File.separator + name + ".jpeg";
             } else {
                 fullPath = UPLOAD_DIR + "\\resume" + File.separator + name + ".pdf";
-//                fullPath = UPLOAD_DIR + "/resume" + File.separator + name + ".pdf";
             }
 
             Files.copy(file.getInputStream(), Paths.get(fullPath), StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception Ex) {
             throw new FileUploadException(Ex.getMessage());
         }
-
         return Paths.get(fullPath);
     }
 }

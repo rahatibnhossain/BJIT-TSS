@@ -30,5 +30,4 @@ public class DataStorageController {
         return dataStorageService.getDataStorage(dataStorageGetRequests);
     }
 
-
 }

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TableSortLabel, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import axios from '../api/axios';
+import ApplicantModal from './ApplicantModal';
 
 const Container = styled(TableContainer)(({ theme }) => ({
     maxHeight: 440,

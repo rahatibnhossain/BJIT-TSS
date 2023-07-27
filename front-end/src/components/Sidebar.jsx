@@ -6,10 +6,12 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { Home, School, AddBox, Login } from '@mui/icons-material';
+import { Home, School, AddBox, Login, AccountBox, Badge, Addchart, Assistant, BackupTable, HowToReg } from '@mui/icons-material';
 import { NavLink, useLocation } from "react-router-dom";
 
+import DomainVerificationIcon from '@mui/icons-material/DomainVerification';
 
+import FactCheckIcon from '@mui/icons-material/FactCheck';
 import Link from '@mui/material/Link';
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { LoginContext } from '../context/LoginContex';
@@ -129,7 +131,7 @@ const Sidebar = ({ close }) => {
               <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/final_trainees") }} component={NavLink} to="/final_trainees" variant="ListItemButton"   >
                 <ListItemButton >
                   <ListItemIcon>
-                    <Home />
+                    <AccountBox />
                   </ListItemIcon>
                   <ListItemText primary="Final Trainees" />
                 </ListItemButton>
@@ -139,7 +141,7 @@ const Sidebar = ({ close }) => {
               <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/hr_interview") }} component={NavLink} to="/hr_interview" variant="ListItemButton"   >
                 <ListItemButton >
                   <ListItemIcon>
-                    <Home />
+                    < Badge />
                   </ListItemIcon>
                   <ListItemText primary="HR Interview" />
                 </ListItemButton>
@@ -149,7 +151,7 @@ const Sidebar = ({ close }) => {
               <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/technical_interview") }} component={NavLink} to="/technical_interview" variant="ListItemButton"   >
                 <ListItemButton >
                   <ListItemIcon>
-                    <Home />
+                    <Addchart />
                   </ListItemIcon>
                   <ListItemText primary="Technical Interview" />
                 </ListItemButton>
@@ -159,7 +161,7 @@ const Sidebar = ({ close }) => {
               <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/aptitude_test") }} component={NavLink} to="/aptitude_test" variant="ListItemButton"   >
                 <ListItemButton >
                   <ListItemIcon>
-                    <Home />
+                    <Assistant />
                   </ListItemIcon>
                   <ListItemText primary="Aptitude Test" />
                 </ListItemButton>
@@ -170,7 +172,7 @@ const Sidebar = ({ close }) => {
               <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/written_test") }} component={NavLink} to="/written_test" variant="ListItemButton"   >
                 <ListItemButton >
                   <ListItemIcon>
-                    <Home />
+                    <BackupTable />
                   </ListItemIcon>
                   <ListItemText primary="Written Test" />
                 </ListItemButton>
@@ -182,7 +184,7 @@ const Sidebar = ({ close }) => {
               <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/approve_applicant") }} component={NavLink} to="/approve_applicant" variant="ListItemButton"   >
                 <ListItemButton >
                   <ListItemIcon>
-                    <Home />
+                    <FactCheckIcon />
                   </ListItemIcon>
                   <ListItemText primary="Approve Appicant" />
                 </ListItemButton>
@@ -195,7 +197,7 @@ const Sidebar = ({ close }) => {
               <Link flex={1} style={{ textDecoration: 'none', color: isActiveLink("/evaluator_management") }} component={NavLink} to="/evaluator_management" variant="ListItemButton"   >
                 <ListItemButton >
                   <ListItemIcon>
-                    <Home />
+                    <HowToReg />
                   </ListItemIcon>
                   <ListItemText primary="Evaluators" />
                 </ListItemButton>

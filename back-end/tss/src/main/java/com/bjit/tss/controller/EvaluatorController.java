@@ -24,5 +24,4 @@ public class EvaluatorController {
         return evaluatorService.getAssignedCandidate(evaluatorId);
 
     }
-
 }

@@ -6,7 +6,7 @@ import com.bjit.tss.exception.CourseException;
 import com.bjit.tss.mapper.ApiResponseMapper;
 import com.bjit.tss.mapper.CourseMapper;
 import com.bjit.tss.model.response.ApiResponse;
-import com.bjit.tss.model.CourseModel;
+import com.bjit.tss.model.request.CourseModel;
 import com.bjit.tss.model.response.ListResponse;
 import com.bjit.tss.repository.CourseRepository;
 import com.bjit.tss.enums.Role;

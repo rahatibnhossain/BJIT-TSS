@@ -32,7 +32,6 @@ public class FileServiceImpl implements FileService {
 
     private final FileUploaderUtils fileUploaderUtils;
     private final LoginRepository loginRepository;
-    private final UserRepository userRepository;
 
     @Override
     public ResponseEntity<ApiResponse<?>> uploadImage(MultipartFile image) {

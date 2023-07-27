@@ -55,7 +55,4 @@ public class RegisterRequest {
     @NotEmpty(message = "Present address cannot be empty")
     private String presentAddress;
 
-    private String photoUrl;
-
-    private String resumeUrl;
 }

@@ -33,7 +33,7 @@ public class FinalTraineeServiceImpl implements FinalTraineeService {
         }
 
         List<CandidateMarks> candidateMarks = candidateRepository.findAllByHrVivaPassedAndTechnicalVivaPassedAndAptitudeTestPassedAndWrittenMarksPassedAndExamineeInfoCourseInfoBatchCodeAndExamineeInfoRole(true,true,true,true,batchCode,Role.CANDIDATE);
-        ListResponse listResponse = ListResponse.builder()
+        ListResponse<?> listResponse = ListResponse.builder()
                 .dataLength(candidateMarks.size())
                 .listResponse(candidateMarks)
                 .build();

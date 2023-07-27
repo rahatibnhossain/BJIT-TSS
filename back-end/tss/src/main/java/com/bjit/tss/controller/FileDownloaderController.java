@@ -32,5 +32,4 @@ public class FileDownloaderController {
     public ResponseEntity<?> downloadResume() throws IOException {
         return fileService.downloadResume();
     }
-
 }

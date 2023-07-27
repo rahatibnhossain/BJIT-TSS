@@ -1,8 +1,6 @@
 package com.bjit.tss.mapper;
 
 import com.bjit.tss.entity.CandidateMarks;
-import com.bjit.tss.entity.CourseInfo;
-import com.bjit.tss.model.CourseModel;
 import com.bjit.tss.model.response.CandidateResponse;
 
 public class CandidateMapper {
