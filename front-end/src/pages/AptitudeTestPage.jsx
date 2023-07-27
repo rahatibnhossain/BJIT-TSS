@@ -8,6 +8,7 @@ import CandidateTable from '../components/CandidateTable';
 import UploadAptitudeMark from "../components/UploadAptitudeMark";
 import JSON2Message from '../services/JSON2Message';
 import InputNumbersComponent from '../components/InputNumbersComponent ';
+import AptitudePassed from '../components/AptitudePassed';
 
 
 const HeaderTypography = styled(Typography)(({ theme }) => ({
@@ -218,7 +219,7 @@ const AptitudeTestPage = () => {
       {value == "passed-candidates" && value2 == "single-course-candidate" &&
 
         <Box pt={7}>
-          <AptitudeMark type={"aptitude"} topMessage={"Candidate who passed aptitude test"} applicants={passedCandidates} showAction={false} />
+          <AptitudePassed type={"aptitude"} topMessage={"Candidate who passed aptitude test"} applicants={passedCandidates} showAction={false} />
         </Box>
 
       }

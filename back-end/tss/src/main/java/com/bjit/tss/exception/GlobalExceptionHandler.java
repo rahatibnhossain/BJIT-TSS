@@ -19,8 +19,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity<ApiResponse<?>> AllEx(Exception ex) {
-//        ex.printStackTrace();
-
         ExceptionModel<?> exceptionModel = ExceptionModel.builder()
                 .error(ex.getMessage())
                 .build();

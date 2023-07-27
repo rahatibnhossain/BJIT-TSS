@@ -8,6 +8,7 @@ import CourseComponent from '../components/CourseComponent';
 import { format } from 'date-fns';
 import CourseCards from '../components/CourseCards';
 import JSON2Message from '../services/JSON2Message';
+import ClipMessage from '../services/ClipMessage';
 
 const HeaderTypography = styled(Typography)(({ theme }) => ({
   fontSize: '1.6rem',
@@ -406,7 +407,7 @@ const AllCourses = () => {
                       <CourseMedia component="img" image={course.imageUrl} alt={course.title} />
                       <CourseContent>
                         <CourseTitle variant="h6">{course.courseName}</CourseTitle>
-                        <CourseDescription variant="body2">{course.courseDescription}</CourseDescription>
+                        <CourseDescription variant="body2">{ClipMessage(course.courseDescription, 85)}</CourseDescription>
                       </CourseContent>
                       <EnrollButton sx={{ bgcolor: "#2d2c72" }} variant="contained" color="primary" size="small">
                         Enroll Now

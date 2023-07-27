@@ -25,7 +25,7 @@ const ScrollableWrapper = styled('div')(({ theme }) => ({
     overflowX: 'auto',
 }));
 
-const AptitudeMark = ({ type, topMessage, applicants, action, actionText, showAction }) => {
+const AptitudePassed = ({ type, topMessage, applicants, action, actionText, showAction }) => {
     const [sortField, setSortField] = useState('');
     const [sortOrder, setSortOrder] = useState('asc');
 
@@ -116,34 +116,13 @@ const AptitudeMark = ({ type, topMessage, applicants, action, actionText, showAc
                         {sortedApplicants.map((applicant, index) => (
                             <TableRow key={index}>
 
-                                {type == "technical" &&
-                                    <>
-                                        <TableCell>{applicant.examineeInfo.userInfo.firstName}</TableCell>
-                                        <TableCell>{applicant.examineeInfo.userInfo.email}</TableCell>
-                                        <TableCell>{applicant.technicalViva.roundMark}</TableCell>
-                                        <TableCell>{applicant.technicalViva.questionMarksList.map((item) => item.questionMark).join(', ')}</TableCell>
-                                    </>
-                                }
-
-                                {type == "aptitude" &&
-                                    <>
-                                        <TableCell>{applicant.examineeInfo.userInfo.firstName}</TableCell>
-                                        <TableCell>{applicant.examineeInfo.userInfo.email}</TableCell>
-                                        <TableCell>{applicant.technicalViva.roundMark}</TableCell>
-                                        <TableCell>{applicant.technicalViva.questionMarksList.map((item) => item.questionMark).join(', ')}</TableCell>
 
 
-                                    </>
-                                }
+                                <TableCell>{applicant.examineeInfo.userInfo.firstName}</TableCell>
+                                <TableCell>{applicant.examineeInfo.userInfo.email}</TableCell>
+                                <TableCell>{applicant.aptitudeTest.roundMark}</TableCell>
+                                <TableCell>{applicant.aptitudeTest.questionMarksList.map((item) => item.questionMark).join(', ')}</TableCell>
 
-                                {type == "hrviva" &&
-                                    <>
-                                        <TableCell>{applicant.examineeInfo.userInfo.firstName}</TableCell>
-                                        <TableCell>{applicant.examineeInfo.userInfo.email}</TableCell>
-                                        <TableCell>{applicant.hrViva.roundMark}</TableCell>
-                                        <TableCell>{applicant.hrViva.questionMarksList.map((item) => item.questionMark).join(', ')}</TableCell>
-                                    </>
-                                }
 
 
                                 {
@@ -168,4 +147,6 @@ const AptitudeMark = ({ type, topMessage, applicants, action, actionText, showAc
 
 
 
-export default AptitudeMark
+
+
+export default AptitudePassed

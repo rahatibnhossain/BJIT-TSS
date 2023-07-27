@@ -11,4 +11,7 @@ public interface DataStorageService {
     ResponseEntity<ApiResponse<?>> setDataStorage(List<DataStorageRequest> dataStorageRequestList);
 
     ResponseEntity<ApiResponse<?>> getDataStorage(List<DataStorageGetRequest> dataStorageGetRequests);
-}
+
+    ResponseEntity<ApiResponse<?>> setDataStorageInit(List<DataStorageRequest> dataStorageRequestList) ;
+
+    }

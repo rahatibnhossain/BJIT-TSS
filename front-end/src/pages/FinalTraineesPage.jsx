@@ -54,7 +54,6 @@ const FinalTraineesPage = () => {
     setValue3("")
   };
 
-  const [allCandidates, setAllCandidates] = useState([])
 
 
   const [passedCandidates, setPassedCandidates] = useState([]);
@@ -134,7 +133,7 @@ const FinalTraineesPage = () => {
           setShowSuccessMessage(true)
           setSuccessMessage(response.data.successMessage)
           console.log(response?.data?.data?.listResponse);
-          setAllCandidates(response?.data?.data?.listResponse);
+          setPassedCandidates(response?.data?.data?.listResponse);
         }
       }).catch((error) => {
         console.error('Error getting all  passed:', error);
@@ -143,7 +142,6 @@ const FinalTraineesPage = () => {
       });
   }
 
-  const [selectedCandidate, setSelectedCandidate] = useState({})
 
 
   const selectAsTrainee = (candidate) => {
@@ -174,6 +172,7 @@ const FinalTraineesPage = () => {
           setShowSuccessMessage(true)
           setSuccessMessage(response.data.successMessage)
           console.log(response?.data?.data);
+          setSingleCourse(selectedCourse);
 
 
         }
@@ -185,7 +184,6 @@ const FinalTraineesPage = () => {
       });
 
 
-    setSingleCourse(selectedCourse);
 
   }
 
@@ -248,7 +246,7 @@ const FinalTraineesPage = () => {
 
 
 
-          <FinalTraineeTable applicants={allCandidates} setApplicants={setAllCandidates} action={selectAsTrainee} actionText={"Select as trainee"} />
+          <FinalTraineeTable applicants={passedCandidates} setApplicants={setPassedCandidates} action={selectAsTrainee} actionText={"Select as trainee"} />
         </Box>
       }
 

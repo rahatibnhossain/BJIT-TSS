@@ -71,4 +71,28 @@ public class DataStorageServiceImpl implements DataStorageService {
 
         return ApiResponseMapper.mapToResponseEntityOK(listResponse, "Getting data successfully.");
     }
+    @Override
+    @Transactional
+    public ResponseEntity<ApiResponse<?>> setDataStorageInit(List<DataStorageRequest> dataStorageRequestList) {
+        if (dataStorageRequestList.size() == 0) {
+            throw new DataStorageException("Invalid Request");
+        }
+        List<DataStorage> dataStorageList = dataStorageRequestList.stream().map((request) -> {
+            Optional<DataStorage> dataStorage1 = dataStorageRepository.findByDataKey(request.getDataKey());
+            if (dataStorage1.isPresent()) {
+                return null;
+            } else {
+                DataStorage dataStorage = DataStorage.builder()
+                        .dataKey(request.getDataKey())
+                        .dataValue(request.getDataValue())
+                        .build();
+                return dataStorageRepository.save(dataStorage);
+            }
+        }).toList();
+        ListResponse<?> listResponse = ListResponse.builder()
+                .dataLength(dataStorageList.size())
+                .listResponse(dataStorageList)
+                .build();
+        return ApiResponseMapper.mapToResponseEntityOK(listResponse);
+    }
 }

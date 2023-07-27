@@ -8,8 +8,13 @@ import axios from '../api/axios';
 const ProfileComponent = () => {
   const navigate = useNavigate();
   const { userData, loggedIn, role } = useContext(LoginContext);
+ 
+  let imageSrc;
 
-  const imageSrc = "http://localhost:8085/api/file-download/image/" + userData.userId.toString();
+  if (role === 'APPLICANT') {
+    
+     imageSrc = "http://localhost:8085/api/file-download/image/" + userData.userId.toString();
+  }
 
 
   useEffect(() => {

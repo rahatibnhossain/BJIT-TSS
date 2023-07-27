@@ -192,7 +192,7 @@ public class RegisterServiceImpl implements RegisterService {
                 .subject(emailSubject)
                 .build();
         ResponseEntity<ApiResponse<?>> emailResponse = emailService.sendEmail(emailRequest);
-        System.out.println("Successfully send the verification code to "+loginInfo.getEmail()+"validation code is"+validationCodes.get().getValidationCode());
+        System.out.println("Successfully send the verification code to "+loginInfo.getEmail()+" validation code is : "+validationCodes.get().getValidationCode());
 
         return ApiResponseMapper.mapToResponseEntityOK(emailResponse, "Successfully send the verification code");
     }

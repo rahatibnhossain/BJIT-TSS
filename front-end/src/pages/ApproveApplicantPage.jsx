@@ -441,7 +441,7 @@ const ApproveApplicantPage = () => {
             {value == "all-applicants" && value2 == "single-course-applicant" &&
                 <Box pt={7}>
 
-                    <AllApplicantsTableForApprove batchCode={batchCode} allInstitute={allInstitute} fetchIntitutesList={fetchIntitutesList} goBack={goBackToAllApplicants} showAction={true} applicants={allApplicants} setApplicants={setAllApplicants} action={approveApplicant} actionText={"Approve Applicant"} />
+                    <AllApplicantsTableForApprove fetchApplicant={fetchApplicant} batchCode={batchCode} allInstitute={allInstitute} fetchIntitutesList={fetchIntitutesList} goBack={goBackToAllApplicants} showAction={true} applicants={allApplicants} setApplicants={setAllApplicants} action={approveApplicant} actionText={"Approve Applicant"} />
                 </Box>
             }
 

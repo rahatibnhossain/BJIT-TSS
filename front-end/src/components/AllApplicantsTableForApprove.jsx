@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Menu, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TableSortLabel, Button, Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import axios from '../api/axios';
-import ApplicantModal from './ApplicantModal'; 
+import ApplicantModal from './ApplicantModal';
 
 
 const Container = styled(TableContainer)(({ theme }) => ({
@@ -21,7 +21,7 @@ const ScrollableWrapper = styled('div')(({ theme }) => ({
     overflowX: 'auto',
 }));
 
-const AllApplicantsTableForApprove = ({ batchCode, allInstitute, fetchIntitutesList, goBack, applicants, showAction, setApplicants, action, actionText }) => {
+const AllApplicantsTableForApprove = ({fetchApplicant, batchCode, allInstitute, fetchIntitutesList, goBack, applicants, showAction, setApplicants, action, actionText }) => {
 
 
 
@@ -103,61 +103,65 @@ const AllApplicantsTableForApprove = ({ batchCode, allInstitute, fetchIntitutesL
     const searchInstitution = (name) => {
 
         setAnchorEl(null);
+        if (name == "all") {
+
+            fetchApplicant();
+        } else {
 
 
 
-        let role = "APPLICANT"
+            let role = "APPLICANT"
 
-        const formData = {
-            role,
-            batchCode,
-            educationalInstitution: name
-        };
-        console.log(formData);
+            const formData = {
+                role,
+                batchCode,
+                educationalInstitution: name
+            };
+            console.log(formData);
 
-        const token = window.localStorage.getItem("tss-token");
-        const config = {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        };
+            const token = window.localStorage.getItem("tss-token");
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            };
 
-        axios.post(`/api/application/course/distinct`, formData, config)
-            .then((response) => {
-                console.log(response);
-                console.log(response?.data?.data);
-
-
-                if (response.status === 200) {
-                    setShowSuccessMessage(true)
-                    setSuccessMessage(response.data.successMessage)
-                    console.log(response?.data?.data?.listResponse);
-                    setApplicants(response?.data?.data?.listResponse)
+            axios.post(`/api/application/course/distinct`, formData, config)
+                .then((response) => {
+                    console.log(response);
+                    console.log(response?.data?.data);
 
 
+                    if (response.status === 200) {
+                        setShowSuccessMessage(true)
+                        setSuccessMessage(response.data.successMessage)
+                        console.log(response?.data?.data?.listResponse);
+                        setApplicants(response?.data?.data?.listResponse)
+
+
+                        setTimeout(() => {
+                            setShowSuccessMessage(false)
+                            setSuccessMessage("")
+
+
+
+                        }, 2000);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error uploading files:', error);
+                    setShowErrorMessage(true)
+                    setErrorMessage(JSON2Message(JSON.stringify(error.response.data.errorMessage)))
                     setTimeout(() => {
-                        setShowSuccessMessage(false)
-                        setSuccessMessage("")
+                        setShowErrorMessage(false)
+                        setErrorMessage("")
+
+                    }, 5000);
 
 
+                });
 
-                    }, 2000);
-                }
-            })
-            .catch((error) => {
-                console.error('Error uploading files:', error);
-                setShowErrorMessage(true)
-                setErrorMessage(JSON2Message(JSON.stringify(error.response.data.errorMessage)))
-                setTimeout(() => {
-                    setShowErrorMessage(false)
-                    setErrorMessage("")
-
-                }, 5000);
-
-
-            });
-
-
+        }
     }
 
     useEffect(() => {
@@ -200,6 +204,8 @@ const AllApplicantsTableForApprove = ({ batchCode, allInstitute, fetchIntitutesL
                                             open={Boolean(anchorEl)}
                                             onClose={handleClose}
                                         >
+                                            <MenuItem sx={{ flex: 1 }} onClick={() => { searchInstitution("all") }}>Show All</MenuItem>
+
                                             {allInstitute.map((value) => {
 
                                                 return (
