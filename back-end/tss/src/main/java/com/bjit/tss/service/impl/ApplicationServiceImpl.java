@@ -89,7 +89,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         List<CandidateResponse> candidateResponseList = candidateMarksList.stream().map(CandidateMapper::mapToCandidateResponse).toList();
 
-        ListResponse listResponse = ListResponse.builder()
+        ListResponse<?> listResponse = ListResponse.builder()
                 .dataLength(candidateResponseList.size())
                 .listResponse(candidateResponseList)
                 .build();

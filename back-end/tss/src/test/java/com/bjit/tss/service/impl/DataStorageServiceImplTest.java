@@ -7,7 +7,6 @@ import com.bjit.tss.model.request.DataStorageRequest;
 import com.bjit.tss.model.response.ApiResponse;
 import com.bjit.tss.model.response.ListResponse;
 import com.bjit.tss.repository.DataStorageRepository;
-import com.bjit.tss.service.impl.DataStorageServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -42,7 +41,6 @@ class DataStorageServiceImplTest {
         dataStorageRequestList.add(DataStorageRequest.builder().dataKey("key1").dataValue("value1").build());
         dataStorageRequestList.add(DataStorageRequest.builder().dataKey("key2").dataValue("value2").build());
 
-        // Mocking the behavior of the dataStorageRepository
         when(dataStorageRepository.findByDataKey("key1")).thenReturn(Optional.empty());
         when(dataStorageRepository.findByDataKey("key2")).thenReturn(Optional.empty());
         when(dataStorageRepository.save(any(DataStorage.class))).thenAnswer(invocation -> invocation.getArgument(0));
@@ -71,7 +69,6 @@ class DataStorageServiceImplTest {
         dataStorageGetRequests.add(DataStorageGetRequest.builder().dataKey("key1").build());
         dataStorageGetRequests.add(DataStorageGetRequest.builder().dataKey("key2").build());
 
-        // Mocking the behavior of the dataStorageRepository
         DataStorage data1 = DataStorage.builder().dataKey("key1").dataValue("value1").build();
         DataStorage data2 = DataStorage.builder().dataKey("key2").dataValue("value2").build();
         when(dataStorageRepository.findByDataKey("key1")).thenReturn(Optional.of(data1));

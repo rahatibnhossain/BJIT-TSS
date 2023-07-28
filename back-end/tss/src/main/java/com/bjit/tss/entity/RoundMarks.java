@@ -1,7 +1,5 @@
 package com.bjit.tss.entity;
 
-import com.bjit.tss.entity.QuestionMarks;
-import com.bjit.tss.enums.Role;
 import com.bjit.tss.enums.Round;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

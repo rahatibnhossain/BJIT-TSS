@@ -1,11 +1,9 @@
 package com.bjit.tss.controller;
 
-import com.bjit.tss.model.request.AdmitCardRequest;
 import com.bjit.tss.model.response.ApiResponse;
 import com.bjit.tss.service.AdmitCardService;
 import com.bjit.tss.service.ApplicantDashboardService;
 import com.bjit.tss.service.CandidateService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
