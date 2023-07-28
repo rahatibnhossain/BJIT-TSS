@@ -312,6 +312,9 @@ public class EvaluationServiceImpl implements EvaluationService {
         if (!candidateMarks.get().getAptitudeTest().getPassed()) {
             throw new EvaluationException("Invalid Request");
         }
+        if (!candidateMarks.get().getWrittenMarks().getPassed()) {
+            throw new EvaluationException("Invalid Request");
+        }
 
         Optional<DataStorage> technicalQuestionNumber = dataStorageRepository.findByDataKey("TechnicalQuestionNumber");
         if (technicalQuestionNumber.isEmpty()) {
@@ -405,6 +408,12 @@ public class EvaluationServiceImpl implements EvaluationService {
             throw new UserException("Candidate id is invalid");
         }
 
+        if (!candidateMarks.get().getAptitudeTest().getPassed()) {
+            throw new EvaluationException("Invalid Request");
+        }
+        if (!candidateMarks.get().getWrittenMarks().getPassed()) {
+            throw new EvaluationException("Invalid Request");
+        }
         if (!candidateMarks.get().getTechnicalViva().getPassed()) {
             throw new EvaluationException("Invalid Request");
         }
