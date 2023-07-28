@@ -57,7 +57,7 @@ public class FinalTraineeServiceImpl implements FinalTraineeService {
 
         List<CandidateMarks> traineeLists = candidateRepository.findAllByExamineeInfoRoleAndExamineeInfoCourseInfoBatchCode(Role.TRAINEE,candidateMarks.get(0).getExamineeInfo().getCourseInfo().getBatchCode());
 
-        Integer availableVacancy=  Integer.parseInt(String.valueOf(candidates.get(0).getExamineeInfo().getCourseInfo().getVacancy())) -Integer.parseInt(String.valueOf(traineeLists.size()));
+        Integer availableVacancy= Math.toIntExact(candidates.get(0).getExamineeInfo().getCourseInfo().getVacancy() - traineeLists.size());
         if (candidates.size()+traineeLists.size()>candidates.get(0).getExamineeInfo().getCourseInfo().getVacancy()){
             throw new TraineeSelectionException("Available vacancy is "+ availableVacancy+" number of trainees. You have selected "+ candidateMarks.size()+" trainees");
         }
@@ -86,7 +86,7 @@ public class FinalTraineeServiceImpl implements FinalTraineeService {
         }
 
         List<CandidateMarks> candidateMarks = candidateRepository.findAllByExamineeInfoRole(Role.TRAINEE);
-        ListResponse listResponse = ListResponse.builder()
+        ListResponse<?> listResponse = ListResponse.builder()
                 .dataLength(candidateMarks.size())
                 .listResponse(candidateMarks)
                 .build();
