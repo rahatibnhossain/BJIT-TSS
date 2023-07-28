@@ -32,13 +32,9 @@ public class ApplicantDashboardServiceImpl implements ApplicantDashboardService 
     @Transactional
     public ResponseEntity<ApiResponse<?>> getApplicantDashboardData() {
 
-
         LoginInfo loginInfo = (LoginInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         List<ExamineeInfo> examineeInfo = examineeRepository.findAllByUserInfoUserIdAndCourseInfoIsAvailable(loginInfo.getUserInfo().getUserId(), true);
-
         List<ExamineeInfo> filteredApplicant = examineeInfo.stream().filter(examinee -> {
-
             if (examinee.getRole() == Role.APPLICANT) {
                 return true;
             } else {
@@ -47,7 +43,6 @@ public class ApplicantDashboardServiceImpl implements ApplicantDashboardService 
         }).toList();
 
         List<CandidateMarks> candidateMarks = candidateRepository.findAllByExamineeInfoUserInfoUserIdAndExamineeInfoCourseInfoIsAvailableAndExamineeInfoRole(loginInfo.getUserInfo().getUserId(), true, Role.CANDIDATE);
-
         List<ApplicantDashboardMessage> dashboardMessage;
         List<ApplicantDashboardMessage> dashboardMessageFiltered;
         dashboardMessageFiltered = filteredApplicant.stream().map(examinee -> {
