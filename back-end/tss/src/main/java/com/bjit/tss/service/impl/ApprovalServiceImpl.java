@@ -63,12 +63,10 @@ public class ApprovalServiceImpl implements ApprovalService {
                     .build();
             CandidateMarks saved = candidateRepository.save(candidateMarks);
 
-
             return ApiResponseMapper.mapToResponseEntityOK(saved);
         } else {
             candidate.get().setExamineeInfo(examineeInfo.get());
             CandidateMarks saved = candidateRepository.save(candidate.get());
-
             System.out.println(examineeInfo.get().getUserInfo().getFirstName()+ " was approved by admin whose email is : "+examineeInfo.get().getUserInfo().getEmail());
 
             return ApiResponseMapper.mapToResponseEntityOK(candidate.get());

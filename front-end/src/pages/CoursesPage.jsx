@@ -146,7 +146,7 @@ const AllCourses = () => {
     setAptitudeTestPassedDashboardMessage(c.traineeDashboardMessage);
     setHrVivaPassedDashboardMessage(c.hrVivaPassedDashboardMessage);
     setTraineeDashboardMessage(c.traineeDashboardMessage);
-    setWrittenExamInstruction(c.setWrittenExamInstruction);
+    setWrittenExamInstruction(c.writtenExamInstruction);
 
   }
 

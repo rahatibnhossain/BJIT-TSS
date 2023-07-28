@@ -22,7 +22,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EvaluatorServiceImpl implements EvaluatorService {
     private final EvaluatorRepository evaluatorRepository;
-    private final CandidateRepository candidateRepository;
     private final HiddenCodeRepository hiddenCodeRepository;
 
     @Override
@@ -31,7 +30,6 @@ public class EvaluatorServiceImpl implements EvaluatorService {
         List<EvaluatorInfo> evaluatorInfo = evaluatorRepository.findAll();
 
         if (evaluatorInfo.size() == 0 ){
-
             ListResponse<?> listResponse = ListResponse.builder()
                     .dataLength(0)
                     .listResponse(evaluatorInfo)
@@ -52,7 +50,6 @@ public class EvaluatorServiceImpl implements EvaluatorService {
     @Transactional
     public ResponseEntity<ApiResponse<?>> getAssignedCandidate(Long evaluatorId) {
         List<HiddenCodeInfo> hiddenCodeInfos = hiddenCodeRepository.findAllByCandidateMarksWrittenMarksEvaluatorInfoEvaluatorIdAndCandidateMarksExamineeInfoCourseInfoIsAvailable(evaluatorId, true);
-
         List<HiddenCodeCandidateResponse> hiddenCodeCandidateResponses = hiddenCodeInfos.stream().map(HiddenCodeResponseMapper::mapToHiddenCodeResponse).toList();
 
         ListResponse<?> listResponse = ListResponse.builder()

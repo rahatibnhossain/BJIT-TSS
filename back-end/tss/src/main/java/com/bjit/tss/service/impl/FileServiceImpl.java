@@ -81,8 +81,6 @@ public class FileServiceImpl implements FileService {
     public ResponseEntity<?> downloadImage(String fileName) throws IOException {
 
         FileDownloaderUtils downloadUtil = new FileDownloaderUtils();
-
-
         Resource  resource = downloadUtil.getFileAsResourceImage(fileName);
 
         if (resource == null) {
@@ -100,8 +98,6 @@ public class FileServiceImpl implements FileService {
     @Transactional
     public ResponseEntity<?> downloadResumeAdmin(String fileName) throws IOException {
         FileDownloaderUtils downloadUtil = new FileDownloaderUtils();
-
-
         Resource  resource = downloadUtil.getFileAsResourceResume(fileName);
 
         if (resource == null) {

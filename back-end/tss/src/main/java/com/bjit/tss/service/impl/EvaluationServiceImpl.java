@@ -80,7 +80,6 @@ public class EvaluationServiceImpl implements EvaluationService {
         }).toList();
 
         List<HiddenCodeInfo> saved = hiddenCodeRepository.saveAll(result);
-
         List<EvaluatorAssignmentResponse> assignmentResponseList = saved.stream().map(EvaluatorMapper::mapToEvaluatorAssignmentResponse).toList();
 
         ListResponse<?> listResponse = ListResponse.builder()
@@ -272,7 +271,6 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
 
         boolean isPassed = totalMark.get() >= Float.parseFloat(passingMark.get().getDataValue());
-
         List<QuestionMarks> questionMarksList = questionMarksRepository.saveAll(questionMarks);
         candidateMarks.get().getAptitudeTest().setQuestionMarksList(questionMarksList);
         candidateMarks.get().getAptitudeTest().setRoundMark(totalMark.get());
@@ -299,7 +297,6 @@ public class EvaluationServiceImpl implements EvaluationService {
 
         questionNo.set(0);
         totalMark.set(0.0f);
-
         CandidateMarks saved = candidateRepository.save(candidateMarks.get());
         return ApiResponseMapper.mapToResponseEntityOK(saved, "Aptitude test mark uploaded successfully.");
     }
@@ -370,7 +367,6 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
 
         boolean isPassed = totalMark.get() >= Float.parseFloat(passingMark.get().getDataValue());
-
         List<QuestionMarks> questionMarksList = questionMarksRepository.saveAll(questionMarks);
         candidateMarks.get().getTechnicalViva().setQuestionMarksList(questionMarksList);
         candidateMarks.get().getTechnicalViva().setRoundMark(totalMark.get());
@@ -395,10 +391,8 @@ public class EvaluationServiceImpl implements EvaluationService {
             System.out.println("The message was : "+emailBody );
         }
 
-
         questionNo.set(0);
         totalMark.set(0.0f);
-
         CandidateMarks saved = candidateRepository.save(candidateMarks.get());
         return ApiResponseMapper.mapToResponseEntityOK(saved, "Technical viva mark uploaded successfully.");
     }
@@ -470,13 +464,11 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
 
         boolean isPassed = totalMark.get() >= Float.parseFloat(passingMark.get().getDataValue());
-
         List<QuestionMarks> questionMarksList = questionMarksRepository.saveAll(questionMarks);
         candidateMarks.get().getHrViva().setQuestionMarksList(questionMarksList);
         candidateMarks.get().getHrViva().setRoundMark(totalMark.get());
         candidateMarks.get().getHrViva().setPassed(isPassed);
         candidateMarks.get().getHrViva().setRoundName(Round.HR);
-
         Float fullMark = candidateMarks.get().getWrittenMarks().getWrittenMark() + candidateMarks.get().getAptitudeTest().getRoundMark() + candidateMarks.get().getTechnicalViva().getRoundMark() + candidateMarks.get().getHrViva().getRoundMark();
         candidateMarks.get().setFullMark(fullMark);
 
@@ -506,7 +498,6 @@ public class EvaluationServiceImpl implements EvaluationService {
     @Override
     @Transactional
     public ResponseEntity<ApiResponse<?>> getRoundPassedSpecific(RoundCandidatesRequest request) {
-
 
         List<CandidateMarks> candidateMarks = null;
 

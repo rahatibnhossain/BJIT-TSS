@@ -93,6 +93,7 @@ public class DataStorageServiceImpl implements DataStorageService {
                 .dataLength(dataStorageList.size())
                 .listResponse(dataStorageList)
                 .build();
+
         return ApiResponseMapper.mapToResponseEntityOK(listResponse);
     }
 }

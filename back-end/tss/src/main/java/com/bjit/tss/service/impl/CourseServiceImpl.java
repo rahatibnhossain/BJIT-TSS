@@ -46,7 +46,7 @@ public class CourseServiceImpl implements CourseService {
     @Transactional
     public ResponseEntity<ApiResponse<?>> allCourses() {
         List<CourseInfo> courseInfoList = courseRepository.findByIsAvailable(true);
-        ListResponse listResponse = ListResponse.builder()
+        ListResponse<?> listResponse = ListResponse.builder()
                 .dataLength(courseInfoList.size())
                 .listResponse(courseInfoList)
                 .build();

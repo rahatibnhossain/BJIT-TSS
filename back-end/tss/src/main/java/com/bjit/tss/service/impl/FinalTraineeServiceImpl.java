@@ -47,7 +47,6 @@ public class FinalTraineeServiceImpl implements FinalTraineeService {
     public ResponseEntity<ApiResponse<?>> selectFinalTrainee(FinalTraineeSelectionRequest request) {
 
         List<CandidateMarks> candidateMarks = candidateRepository.findAllById(request.getCandidateIds());
-
         List<CandidateMarks> candidates = candidateMarks.stream().filter(candidate1 ->{
             return candidate1.getExamineeInfo().getRole() != Role.TRAINEE;
         } ).toList();
@@ -56,7 +55,6 @@ public class FinalTraineeServiceImpl implements FinalTraineeService {
         }
 
         List<CandidateMarks> traineeLists = candidateRepository.findAllByExamineeInfoRoleAndExamineeInfoCourseInfoBatchCode(Role.TRAINEE,candidateMarks.get(0).getExamineeInfo().getCourseInfo().getBatchCode());
-
         Integer availableVacancy= Math.toIntExact(candidates.get(0).getExamineeInfo().getCourseInfo().getVacancy() - traineeLists.size());
         if (candidates.size()+traineeLists.size()>candidates.get(0).getExamineeInfo().getCourseInfo().getVacancy()){
             throw new TraineeSelectionException("Available vacancy is "+ availableVacancy+" number of trainees. You have selected "+ candidateMarks.size()+" trainees");

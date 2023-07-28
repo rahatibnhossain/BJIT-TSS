@@ -109,8 +109,6 @@ public class RegisterServiceImpl implements RegisterService {
             return ApiResponseMapper.mapToResponseEntityCreated(savedLoginInfo);
         }
         return ApiResponseMapper.mapToResponseEntityOK(checkAvailability);
-
-
     }
 
     @Override

@@ -86,7 +86,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     public ResponseEntity<ApiResponse<?>> allUnassignedCandidates(CourseRoleRequest courseRoleRequest) {
 
         List<CandidateMarks> candidateMarksList = candidateRepository.findAllByExamineeInfoRoleAndExamineeInfoCourseInfoBatchCodeAndWrittenMarksEvaluatorInfoIsNull(courseRoleRequest.getRole(), courseRoleRequest.getBatchCode());
-
         List<CandidateResponse> candidateResponseList = candidateMarksList.stream().map(CandidateMapper::mapToCandidateResponse).toList();
 
         ListResponse<?> listResponse = ListResponse.builder()
@@ -117,7 +116,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Transactional
     public ResponseEntity<ApiResponse<?>> allDistinctInstitution(CourseRoleRequest courseRoleRequest) {
         List<String> institute = examineeRepository.findDistinctEducationalInstitutesByRoleAndCourseInfoIsAvailableAndCourseInfoBatchCode( courseRoleRequest.getRole(), true, courseRoleRequest.getBatchCode());
-
         ListResponse<?> listResponse = ListResponse.builder()
                 .dataLength(institute.size())
                 .listResponse(institute)
