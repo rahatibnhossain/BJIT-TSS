@@ -46,15 +46,6 @@ public class ApplicantDashboardServiceImpl implements ApplicantDashboardService 
             }
         }).toList();
 
-        List<ExamineeInfo> filteredCandidate = examineeInfo.stream().filter(examinee -> {
-
-            if (examinee.getRole() == Role.CANDIDATE) {
-                return true;
-            } else {
-                return false;
-            }
-        }).toList();
-
         List<CandidateMarks> candidateMarks = candidateRepository.findAllByExamineeInfoUserInfoUserIdAndExamineeInfoCourseInfoIsAvailableAndExamineeInfoRole(loginInfo.getUserInfo().getUserId(), true, Role.CANDIDATE);
 
         List<ApplicantDashboardMessage> dashboardMessage;

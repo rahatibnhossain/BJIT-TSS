@@ -4,7 +4,6 @@ import com.bjit.tss.entity.ExamineeInfo;
 import com.bjit.tss.entity.LoginInfo;
 import com.bjit.tss.exception.AdmitGenerationException;
 import com.bjit.tss.exception.UserException;
-import com.bjit.tss.model.request.AdmitCardRequest;
 import com.bjit.tss.repository.ExamineeRepository;
 import com.bjit.tss.enums.Role;
 import com.bjit.tss.service.AdmitCardService;
@@ -13,8 +12,6 @@ import com.lowagie.text.Font;
 import com.lowagie.text.pdf.PdfWriter;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -60,7 +57,6 @@ public class AdmitCardServiceImpl implements AdmitCardService {
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             Document document = new Document();
-
 
             PdfWriter.getInstance(document, out);
             document.open();
