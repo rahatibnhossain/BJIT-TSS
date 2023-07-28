@@ -7,7 +7,6 @@ import com.bjit.tss.mapper.HiddenCodeResponseMapper;
 import com.bjit.tss.model.response.ApiResponse;
 import com.bjit.tss.model.response.HiddenCodeCandidateResponse;
 import com.bjit.tss.model.response.ListResponse;
-import com.bjit.tss.repository.CandidateRepository;
 import com.bjit.tss.repository.EvaluatorRepository;
 import com.bjit.tss.repository.HiddenCodeRepository;
 import com.bjit.tss.service.EvaluatorService;
