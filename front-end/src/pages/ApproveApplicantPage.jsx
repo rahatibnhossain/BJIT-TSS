@@ -108,13 +108,7 @@ const ApproveApplicantPage = () => {
                     setAllApplicants(response?.data?.data?.listResponse)
 
 
-                    setTimeout(() => {
-                        setShowSuccessMessage(false)
-                        setSuccessMessage("")
-
-
-
-                    }, 2000);
+      
                 }
             })
             .catch((error) => {
@@ -151,13 +145,7 @@ const ApproveApplicantPage = () => {
                     setAllCandidated(response?.data?.data?.listResponse)
 
 
-                    setTimeout(() => {
-                        setShowSuccessMessage(false)
-                        setSuccessMessage("")
-
-
-
-                    }, 2000);
+          
                 }
             })
             .catch((error) => {
@@ -203,6 +191,7 @@ const ApproveApplicantPage = () => {
 
                 console.log(response);
                 fetchApplicant();
+                fetchIntitutesList();
 
 
             })

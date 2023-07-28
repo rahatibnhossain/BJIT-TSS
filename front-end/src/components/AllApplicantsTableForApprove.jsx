@@ -137,6 +137,7 @@ const AllApplicantsTableForApprove = ({fetchApplicant, batchCode, allInstitute, 
                         setSuccessMessage(response.data.successMessage)
                         console.log(response?.data?.data?.listResponse);
                         setApplicants(response?.data?.data?.listResponse)
+                    
 
 
                         setTimeout(() => {
