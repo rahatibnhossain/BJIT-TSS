@@ -97,7 +97,7 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Override
     @Transactional
-    public void adminRegistration(String email, String password) {
+    public ResponseEntity<ApiResponse<?>> adminRegistration(String email, String password) {
         Optional<LoginInfo> checkAvailability = loginRepository.findByEmail(email);
         if (checkAvailability.isEmpty()) {
             LoginInfo loginInfo = LoginInfo.builder()
@@ -105,8 +105,12 @@ public class RegisterServiceImpl implements RegisterService {
                     .password(passwordEncoder.encode(password))
                     .role(Role.ADMIN)
                     .build();
-            loginRepository.save(loginInfo);
+            LoginInfo savedLoginInfo= loginRepository.save(loginInfo);
+            return ApiResponseMapper.mapToResponseEntityCreated(savedLoginInfo);
         }
+        return ApiResponseMapper.mapToResponseEntityOK(checkAvailability);
+
+
     }
 
     @Override

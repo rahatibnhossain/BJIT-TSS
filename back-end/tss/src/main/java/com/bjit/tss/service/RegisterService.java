@@ -10,7 +10,7 @@ public interface RegisterService {
 
     ResponseEntity<ApiResponse<?>> applicantRegistration(RegisterRequest registerRequest);
 
-    void adminRegistration(String email, String password);
+    ResponseEntity<ApiResponse<?>> adminRegistration(String email, String password);
 
     ResponseEntity<ApiResponse<?>> mailValidation(ValidationRequest validationRequest);
 
